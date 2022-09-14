@@ -1,0 +1,148 @@
+<div class="p-2">
+	<div class="p-2">
+		<h3 class="font-semibold text-lg uppercase text-blue-900">Reservation Form</h3>
+		<div class="flex justify-start pb-2">
+			<button 
+				(click)="reservedCottage()"
+				mat-raised-button 
+				class="bg-blue-600 text-white"
+			>
+				Reserve
+			</button>&nbsp;
+			<div class="w-1 h-10 bg-slate-400 rounded"></div>&nbsp;
+			<button 
+				mat-raised-button
+				(click)="clearForm()"
+			>
+				Clear
+			</button>
+		</div>
+		<div class="bg-green-700 h-5 mb-2"></div>
+
+		<div class="flex justify-between">  
+			<div class="w-1/2 p-1">
+				<form [formGroup]="reservationForm">
+					<mat-form-field appearance="fill" class="text-xs w-1/2 pr-1">
+						<mat-label>Firstname</mat-label>
+						<input type="text" autocomplete="off" formControlName="firstname"  matInput>
+						<mat-error *ngIf="firstname?.touched && firstname?.errors?.['required']">Firstname is required.</mat-error>
+					</mat-form-field>
+
+					<mat-form-field appearance="fill" class="text-xs w-1/2">
+						<mat-label>Lastname</mat-label>
+						<input type="text" autocomplete="off" formControlName="lastname" matInput>
+						<mat-error *ngIf="lastname?.touched && lastname?.errors?.['required']">lastname is required.</mat-error>
+					</mat-form-field>
+
+					<mat-form-field appearance="fill" class="text-xs w-1/2 pr-1">
+						<mat-label>Contact</mat-label>
+						<span matPrefix>+63 &nbsp;</span>
+						<input type="text" autocomplete="off" formControlName="contact" matInput maxlength="10">
+						<mat-error *ngIf="contact?.touched && contact?.errors?.['required']">contact is required.</mat-error>
+					</mat-form-field>
+
+					<mat-form-field appearance="fill" class="text-xs w-1/2">
+						<mat-label>Address</mat-label>
+						<input type="text" autocomplete="off" formControlName="address" matInput>
+						<mat-error *ngIf="address?.touched && address?.errors?.['required']">address is required.</mat-error>
+					</mat-form-field>
+
+					<mat-form-field appearance="fill" class="text-xs w-1/2 pr-1">
+						<mat-label>Available Cottage</mat-label>
+						<mat-select multiple formControlName="cottage">
+							<mat-option *ngFor="let item of cottageList" [value]="item"> {{item}} </mat-option>
+						</mat-select>
+						<mat-error *ngIf="cottage?.touched && cottage?.errors?.['required']">cottage is required.</mat-error>
+					</mat-form-field>
+
+					<mat-form-field appearance="fill" class="text-xs w-1/2">
+						<mat-label>Date Range</mat-label>
+						<input type="date" autocomplete="off" formControlName="dateReserved" matInput>
+						<mat-error *ngIf="dateReserved?.touched && dateReserved?.errors?.['required']">date is required.</mat-error>
+					</mat-form-field>
+
+					<mat-form-field appearance="fill" class="text-xs w-full">
+						<mat-label>Comments (Optional)</mat-label>
+						<input type="text" formControlName="comment" matInput autocomplete="off">
+						<mat-error *ngIf="comment?.touched && comment?.errors?.['required']">Pls enter N/A to procceed is required.</mat-error>
+					</mat-form-field>
+				</form>
+			</div>
+			<div class="w-1/3">
+				<table class="w-full border">
+					<thead class="bg-green-700 h-4">
+						<tr>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody class="text-xs" >
+						<tr>
+							<td class="p-2 text-lg">Total</td>
+							<td class="p-2 text-lg">00.000</td>
+						</tr>
+						<tr >
+							<td class="p-2 text-lg">Cash</td>
+							<td class="p-2">
+								<mat-form-field class="text-sm w-full">
+									<input type="text" matInput autocomplete="off">
+								</mat-form-field>
+							</td>
+						</tr>
+						<tr class="bg-gray-400">
+							<td class="p-2">Change</td>
+							<td class="p-2">.00</td>
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="bg-green-700 h-5">
+			<a class="text-white hover:underline text-xs p-2 cursor-pointer">Reservation List</a>
+		</div>
+		<div class="flex justify-end">
+			<mat-form-field class="text-xs">
+				<mat-label>Search</mat-label>
+				<mat-icon matPrefix>search</mat-icon>
+				<input type="text" matInput autocomplete="off">
+			</mat-form-field>
+		</div>
+		<table class="w-full mt-2 border">
+			<thead class="text-xs uppercase text-left bg-slate-400">
+				<tr>
+					<th class="p-1">No.</th>
+					<th class="p-1">RC #</th>
+					<th class="p-1">Complete name</th>
+					<th class="p-1">Address</th>
+					<!-- <th class="p-1">Reserved Type</th> -->
+					<th class="p-1">Reserved Cottage</th>
+					<th class="p-1">Date Reserved</th>
+					<th class="p-1">Expired date</th>
+					<th class="p-1">Reserved by</th>
+					<th class="p-1">Status</th>
+					<th class="p-1">Action</th>
+				</tr>
+			</thead>
+			<tbody class="text-xs text-left">
+				<tr class="hover:bg-yellow-50 cursor-pointer">
+					<td class="p-1">1.</td>
+					<td class="p-1">RC-COT0001</td>
+					<td class="p-1 w-36 max-w-xs break-words">Dexter louie Aniez</td>
+					<td class="p-1 w-36 max-w-xs break-words">Tawagan Pagadian City</td>
+						<!-- <td class="p-1">Ordinary</td> -->
+					<td class="p-1">#12</td>
+					<td class="p-1">09/15/2022</td>
+					<td class="p-1">09/15/2022</td>
+					<td class="p-1">Marjorie</td>
+					<td class="p-1">paid</td>
+					<td class="p-1">
+						<a class="italic text-blue-600 hover:underline cursor-pointer">Occupied</a> |
+						<a class="italic text-slate-600 hover:underline cursor-pointer">Edit</a> |
+						<a class="capitalize italic text-red-700 hover:underline cursor-pointer">cancel</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
