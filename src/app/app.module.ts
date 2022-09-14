@@ -15,6 +15,9 @@ import { UserComponent } from './components/wrapper/user/user.component';
 import { SidebarComponent } from './components/wrapper/sidebar/sidebar.component';
 import { WrapperComponent } from './components/wrapper/wrapper/wrapper.component';
 import { ReservationComponent } from './components/routes/reservation/reservation.component';
+import { UserMasterComponent } from './components/routes/user-master/user-master.component';
+import { CottageMasterComponent } from './components/routes/cottage-master/cottage-master.component';
+import { CalendarComponent } from './components/routes/calendar/calendar.component';
 /** Angular material */
 import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
@@ -26,9 +29,14 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
-import { UserMasterComponent } from './components/routes/user-master/user-master.component';
-import { CottageMasterComponent } from './components/routes/cottage-master/cottage-master.component';
-import { CalendarComponent } from './components/routes/calendar/calendar.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import {MatExpansionModule} from '@angular/material/expansion';
+/** calendar events */
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+/** chart  */
+import { NgChartsModule } from 'ng2-charts';
 
 const materialModules = [
   MatSelectModule,
@@ -38,7 +46,10 @@ const materialModules = [
   MatMenuModule,
   MatListModule,
   MatSidenavModule,
-  MatIconModule
+  MatIconModule,
+  MatButtonToggleModule,
+  NgbModalModule,
+  MatExpansionModule
 ]
 @NgModule({
   declarations: [
@@ -64,7 +75,12 @@ const materialModules = [
     FlexLayoutModule,
     AppRoutingModule,
     HttpClientModule,
-    ...materialModules
+    ...materialModules,
+    NgChartsModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    })
   ],
   exports: [
     ...materialModules
