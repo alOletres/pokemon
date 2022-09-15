@@ -77,8 +77,9 @@ events: CalendarEvent[] = [
     draggable: true,
   },
   {
+    //an event no end date
     start: startOfDay(new Date()),
-    title: 'An event with no end date',
+    title: 'Birthday event',
     color: { ...colors['yellow'] },
     actions: this.actions,
   },
@@ -90,9 +91,10 @@ events: CalendarEvent[] = [
     allDay: true,
   },
   {
+    // A draggable and resizable event
     start: addHours(startOfDay(new Date()), 2),
     end: addHours(new Date(), 2),
-    title: 'A draggable and resizable event',
+    title: 'Wedding event',
     color: { ...colors['yellow'] },
     actions: this.actions,
     resizable: {

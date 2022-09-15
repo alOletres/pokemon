@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-cottage-master',
@@ -6,10 +7,42 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./cottage-master.component.css']
 })
 export class CottageMasterComponent implements OnInit {
+	cottageForm!: FormGroup;
+	type: string[] = ['Ordinary', 'Special'];
+  constructor(private fb: FormBuilder) {
+		this.cottageForm = this.fb.group({
+			cottageType: [null, Validators.required],
+			cottageNumber: [null, Validators.required],
+			cottagePrice: [null, Validators.required]
+		});
+	}
 
-  constructor() { }
+	get cottageType () {
+		return this.cottageForm.get('cottageType');
+	}
+
+	get cottageNumber () {
+		return this.cottageForm.get('cottageNumber');
+	}
+
+	get cottagePrice () {
+		return this.cottageForm.get('cottagePrice');
+	}
 
   ngOnInit(): void {
   }
+
+	saveCottage () {
+		try {
+			if (this.cottageForm.invalid) {
+				this.cottageForm.markAllAsTouched();
+			} else {
+
+			}
+		} catch (err) {
+			console.log(err);
+			
+		}
+	}
 
 }

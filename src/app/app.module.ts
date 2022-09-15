@@ -30,7 +30,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatExpansionModule} from '@angular/material/expansion';
 /** calendar events */
 import { CalendarModule, DateAdapter } from 'angular-calendar';
@@ -48,7 +47,6 @@ const materialModules = [
   MatSidenavModule,
   MatIconModule,
   MatButtonToggleModule,
-  NgbModalModule,
   MatExpansionModule
 ]
 @NgModule({

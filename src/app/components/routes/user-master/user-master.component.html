@@ -3,36 +3,45 @@
 	<div class="p-2">
 		<h3 class="font-semibold text-lg uppercase text-blue-900">User master Form</h3>
 		<div class="flex justify-start pb-2">
-			<button mat-raised-button class="bg-blue-600 text-white">Save</button>&nbsp;
+			<button 
+				mat-raised-button 
+				class="bg-blue-600 text-white"
+				(click)="saveUser()"
+				>
+				Save
+			</button>&nbsp;
 			<div class="w-1 h-10 bg-slate-400 rounded"></div>&nbsp;
 			<button mat-raised-button >Clear</button>
 		</div>
 		<div class="bg-green-700 h-5 mb-2"></div>
 
 		<div class="w-1/2">
-			<form>
+			<form [formGroup]="userForm"> 
 				<mat-form-field appearance="fill" class="text-xs w-1/2 pr-1">
 					<mat-label>Firstname</mat-label>
-					<input type="text" matInput autocomplete="off">
+					<input type="text" formControlName="firstname" matInput autocomplete="off">
+					<mat-error *ngIf="firstname?.touched && firstname?.errors?.['required']">Firstname is required</mat-error>
 				</mat-form-field>
 
 				<mat-form-field appearance="fill" class="text-xs w-1/2">
 					<mat-label>Lastname</mat-label>
-					<input type="text" matInput autocomplete="off">
+					<input type="text" formControlName="lastname" matInput autocomplete="off">
+					<mat-error *ngIf="lastname?.touched && lastname?.errors?.['required']">Lastname is required</mat-error>
 				</mat-form-field>
 
 				<mat-form-field appearance="fill" class="text-xs w-1/2 pr-1">
 					<mat-label>Contact</mat-label>
-					<span matPrefix>+63</span>
-					<input type="text" matInput autocomplete="off">
+					<span matPrefix>+63 &nbsp;</span>
+					<input type="text" formControlName="contact" matInput autocomplete="off">
+					<mat-error *ngIf="contact?.touched && contact?.errors?.['required']">Contact is required</mat-error>
 				</mat-form-field>
 
 				<mat-form-field appearance="fill" class="text-xs w-1/2">
 					<mat-label>User type</mat-label>
-					<mat-select>
-						<mat-option>Admin</mat-option>
-						<mat-option>Cashier</mat-option>
+					<mat-select formControlName="type">
+						<mat-option *ngFor="let user of userType" [value]="user">{{user}}</mat-option>
 					</mat-select>
+					<mat-error *ngIf="type?.touched && type?.errors?.['required']">Type is required</mat-error>
 				</mat-form-field>
 			</form>
 		</div>
@@ -55,7 +64,7 @@
 			<tbody class="text-xs text-left">
 				<tr class="hover:bg-yellow-50 cursor-pointer">
 					<td class="p-1">1.</td>
-					<td class="p-1 w-36 max-w-xs break-words">Dexter louie Aniez</td>
+					<td class="p-1 w-36 max-w-xs break-words capitalize">marjorie bulay</td>
 					<td class="p-1">+63938 383 9373</td>
 					<td class="p-1">Admin</td>
 					<td class="p-1">09/15/2022</td>

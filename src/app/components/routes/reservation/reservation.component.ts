@@ -16,6 +16,7 @@ export class ReservationComponent implements OnInit {
 			firstname: [null, Validators.required],
 			lastname: [null, Validators.required],
 			contact: [null, Validators.required],
+			eventName: [null, Validators.required],
 			address: [null, Validators.required],
 			cottage: [null, Validators.required],
 			dateReserved: [null, Validators.required],
@@ -33,6 +34,10 @@ export class ReservationComponent implements OnInit {
 
 	get contact () {
 		return this.reservationForm.get('contact');
+	}
+
+	get eventName () {
+		return this.reservationForm.get('eventName');
 	}
 
 	get address () {
