@@ -61,10 +61,20 @@
 						<mat-error *ngIf="cottage?.touched && cottage?.errors?.['required']">cottage is required.</mat-error>
 					</mat-form-field>
 
-					<mat-form-field appearance="fill" class="text-xs w-1/2">
+					<!-- <mat-form-field appearance="fill" class="text-xs w-1/2">
 						<mat-label>Date Range</mat-label>
 						<input type="date" autocomplete="off" formControlName="dateReserved" matInput>
 						<mat-error *ngIf="dateReserved?.touched && dateReserved?.errors?.['required']">date is required.</mat-error>
+					</mat-form-field> -->
+
+					<mat-form-field appearance="fill" class="text-xs w-1/2">
+						<mat-label>Enter a date range</mat-label>
+						<mat-date-range-input [rangePicker]="picker">
+							<input matInput formControlName="start" matStartDate placeholder="Start date">
+							<input matInput formControlName="end" matEndDate placeholder="End date">
+						</mat-date-range-input>
+						<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+						<mat-date-range-picker #picker></mat-date-range-picker>
 					</mat-form-field>
 
 					<mat-form-field appearance="fill" class="text-xs w-full">
