@@ -1,0 +1,47 @@
+<div class="flex justify-between">
+	<div class="flex justify-start">
+		<img class=" h-8 w-8"  src="assets/resort.jpg" alt="">
+		<h3 class="font-medium text-gray-500" mat-dialog-title>Sign-in!</h3>
+	</div>
+	<a 
+		(click)="signUp()"
+		class="font-medim text-blue-500 hover:underline cursor-pointer text-xs"
+		>
+		Sign-up
+	</a>
+</div>
+
+<mat-dialog-content>
+	<div class="flex flex-col">
+		<form [formGroup]="sign_inForm" class="text-xs">
+			<mat-form-field appearance="outline" class="w-full">
+				<mat-label>Username</mat-label>
+				<input type="text" formControlName="username" matInput autocomplete="off">
+				<mat-error *ngIf="username?.touched && username?.errors?.['required']">Username is required</mat-error>
+			</mat-form-field>
+
+			<mat-form-field appearance="outline" class="w-full">
+				<mat-label>Password</mat-label>
+				<input type="password" formControlName="password" matInput autocomplete="off">
+				<mat-error *ngIf="password?.touched && password?.errors?.['required']">Password is required</mat-error>
+			</mat-form-field>
+			
+		</form>
+	</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+	<button mat-button mat-dialog-close>Close</button>
+	<button 
+		class="bg-yellow-400 text-white"
+		mat-raised-button
+		>
+		Are you a Guest?
+	</button>
+	<button
+		(click)="signIn()"
+		class="bg-blue-600 text-white" 
+		mat-raised-button
+		>
+		Sign in!
+	</button>
+</mat-dialog-actions>

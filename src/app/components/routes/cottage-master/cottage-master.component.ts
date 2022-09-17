@@ -13,6 +13,7 @@ export class CottageMasterComponent implements OnInit {
 		this.cottageForm = this.fb.group({
 			cottageType: [null, Validators.required],
 			cottageNumber: [null, Validators.required],
+			capacity: [null, Validators.required],
 			cottagePrice: [null, Validators.required]
 		});
 	}
@@ -23,6 +24,10 @@ export class CottageMasterComponent implements OnInit {
 
 	get cottageNumber () {
 		return this.cottageForm.get('cottageNumber');
+	}
+
+	get capacity () {
+		return this.cottageForm.get('capacity');
 	}
 
 	get cottagePrice () {

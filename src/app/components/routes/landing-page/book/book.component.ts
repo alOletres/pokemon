@@ -11,8 +11,8 @@ export class BookComponent implements OnInit {
 	bookForm!: FormGroup;
 	cottageForm!: FormGroup;
 	paymentForm!: FormGroup;
-
-	typeCottage: string[] = ['Floating cottage', 'Non-Float cottage']
+	availableCottage: string[] = ['COT-0001', 'COT-0002', 'COT-0003'];
+	typeCottage: string[] = ['Floating cottage', 'Non-Float cottage'];
   constructor(private fb: FormBuilder) {
 		this.bookForm = this.fb.group({
 			firstname: [null, Validators.required],
@@ -20,9 +20,9 @@ export class BookComponent implements OnInit {
 			contact: [null, Validators.required],
 			event: [null, Validators.required],
 			address:[null, Validators.required],		
-			type: [null, Validators.required],
-			start: [null, Validators.required],
-			end: [null, Validators.required],
+			// type: [null, Validators.required],
+			// start: [null, Validators.required],
+			// end: [null, Validators.required],
 			comment: null
 		});
 
@@ -36,7 +36,8 @@ export class BookComponent implements OnInit {
 
 		this.cottageForm = this.fb.group({
 			type: ['Floating cottage', Validators.required],
-			event: ['Birthday', Validators.required]
+			availableCottage: [null, Validators.required],
+			event: ['Birthday', Validators.required],
 		});
 	}
 
@@ -75,9 +76,9 @@ export class BookComponent implements OnInit {
 		return this.bookForm.get('address');
 	}
 
-	get type () {
-		return this.bookForm.get('type');
-	}
+	// get type () {
+	// 	return this.bookForm.get('type');
+	// }
 
 	get start () {
 		return this.bookForm.get('start');

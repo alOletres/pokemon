@@ -37,6 +37,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatBadgeModule} from '@angular/material/badge';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
 /** calendar events */
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -49,6 +51,10 @@ import { CarouselModule } from './module/carousel/carousel.module';
 import { ContactComponent } from './components/routes/landing-page/contact/contact.component';
 import { BookComponent } from './components/routes/landing-page/book/book.component';
 import { OnlineReservationComponent } from './components/routes/online-reservation/online-reservation.component';
+import { AboutComponent } from './components/routes/landing-page/about/about.component';
+import { ReservationDateComponent } from './globals/dialog/reservation-date/reservation-date.component';
+import { SignInComponent } from './globals/dialog/sign-in/sign-in.component';
+import { SignUpComponent } from './globals/dialog/sign-up/sign-up.component';
 
 const materialModules = [
   MatBadgeModule,
@@ -64,7 +70,9 @@ const materialModules = [
   MatButtonToggleModule,
   MatExpansionModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatDialogModule,
+  MatTabsModule
 ]
 @NgModule({
   declarations: [
@@ -84,7 +92,11 @@ const materialModules = [
     HomePageComponent,
     ContactComponent,
     BookComponent,
-    OnlineReservationComponent
+    OnlineReservationComponent,
+    AboutComponent,
+    ReservationDateComponent,
+    SignInComponent,
+    SignUpComponent
   ],
   imports: [
     CommonModule,

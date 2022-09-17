@@ -1,0 +1,57 @@
+<div class="flex justify-start">
+	<img src="assets/resort.jpg" class="w-8 h-8" alt="">
+	<h3 mat-dialog-title class="font-medium text-gray-500">Sign up!</h3>
+</div>
+
+<mat-dialog-content>
+	<form [formGroup]="sign_upForm"> 
+		<mat-form-field appearance="outline" class="w-full text-xs">
+			<mat-label>Fistname</mat-label>
+			<input type="text" formControlName="firstname" matInput autocomplete="off">
+			<mat-error *ngIf="firstname?.touched && firstname?.errors?.['required']">Firstname is required</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline" class="w-full text-xs">
+			<mat-label>Lastname</mat-label>
+			<input type="text" formControlName="lastname" matInput autocomplete="off">
+			<mat-error *ngIf="lastname?.touched && lastname?.errors?.['required']">Lastname is required</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline" class="w-full text-xs">
+			<mat-label>Contact</mat-label>
+			<span matPrefix>+63 &nbsp;</span>
+			<input type="text" formControlName="contact" maxlength="10" matInput autocomplete="off">
+			<mat-error *ngIf="contact?.touched && contact?.errors?.['required']">Contact is required</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline" class="w-full text-xs">
+			<mat-label>Address</mat-label>
+			<textarea matInput formControlName="address" autocomplete="off"></textarea>
+			<mat-error *ngIf="address?.touched && address?.errors?.['required']">Address is required</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline" class="w-full text-xs">
+			<mat-label>User Password</mat-label>
+			<input type="password" formControlName="password" matInput autocomplete="off">
+			<mat-error *ngIf="password?.touched && password?.errors?.['required']">Password is required</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline" class="w-full text-xs">
+			<mat-label>Re-type Password</mat-label>
+			<input type="password" formControlName="re_typePassword" matInput autocomplete="off">
+			<mat-error *ngIf="re_typePassword?.touched && re_typePassword?.errors?.['required']">Re-type Password is required</mat-error>
+		</mat-form-field>
+		
+	</form>
+</mat-dialog-content>
+
+ <mat-dialog-actions align="end">
+	<button mat-button mat-dialog-close>Close</button>
+	<button 
+		class="bg-blue-600 text-white"
+		mat-raised-button
+		(click)="signUp()"
+		>
+		Sign up
+	</button>
+ </mat-dialog-actions>

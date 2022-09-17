@@ -12,6 +12,7 @@ import { HomePageComponent } from './components/routes/landing-page/home-page/ho
 import { ContactComponent } from './components/routes/landing-page/contact/contact.component';
 import { BookComponent } from './components/routes/landing-page/book/book.component';
 import { OnlineReservationComponent } from './components/routes/online-reservation/online-reservation.component';
+import { AboutComponent } from './components/routes/landing-page/about/about.component';
 const routes: Routes = [
 	{
 		path: '',
@@ -37,6 +38,10 @@ const routes: Routes = [
 			{
 				path: 'login',
 				component: AuthComponent
+			},
+			{
+				path: 'about',
+				component: AboutComponent
 			}
 		]
 	},

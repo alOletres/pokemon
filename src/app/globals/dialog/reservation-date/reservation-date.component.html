@@ -1,0 +1,63 @@
+<div class="flex justify-between">
+	<div class="flex justify-start">
+		<img class=" h-8 w-8"  src="assets/resort.jpg" alt="">
+		<h3 mat-dialog-title>RVS RESORT</h3>
+	</div>
+
+	<div>
+		<p class="text-sm font-medium text-gray-500 dark:text-white">Booked Date List!</p>
+	</div>
+</div>
+
+<mat-dialog-content>
+	<form [formGroup]="dateForm">
+		<mat-form-field appearance="outline" class="w-full pr-2 text-xs ">
+			<mat-label>Select Available Date</mat-label>
+			<mat-date-range-input [rangePicker]="picker" >
+				<input matInput formControlName="start" readonly="true" [min]="minDate" matStartDate placeholder="Start date">
+				<input matInput formControlName="end" readonly="true" [min]="minDate" matEndDate placeholder="End date">
+			</mat-date-range-input>
+			<mat-datepicker-toggle class="text-lg" matSuffix [for]="picker"></mat-datepicker-toggle>
+			<mat-date-range-picker #picker ></mat-date-range-picker>
+			<mat-error *ngIf="start?.touched && start?.errors?.['required'] || end?.touched && end?.errors?.['required']">Date is required</mat-error>
+		</mat-form-field>
+	</form>
+	<table class="w-full text-xs">
+		<thead >
+			<tr class="uppercase text-gray-500 text-left">
+				<th class="p-2">cottage type</th>
+				<th class="p-2">cottage no.</th>
+				<th class="p-2">Booked date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="text-xs">
+				<td class="p-2">Floating cottage</td>
+				<td class="p-2">COT-0001</td>
+				<td class="p-2">09/27/2022 - 09/30/2022</td>
+			</tr>
+			<tr class="text-xs">
+				<td class="p-2">Floating cottage</td>
+				<td class="p-2">COT-0001</td>
+				<td class="p-2">10/27/2022 - 10/30/2022</td>
+			</tr>
+		</tbody>
+	</table>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+	<button mat-dialog-close mat-button> Close </button>
+	<button
+		(click)="reservedCottage()" 
+		mat-raised-button 
+		class="bg-yellow-400 text-white"
+		>
+		Reserve Cottage
+	</button>
+	<button
+		(click)="fillOutInfo()" 
+		mat-raised-button 
+		class="bg-blue-700 text-white"
+		>
+		Fill out information
+	</button>
+</mat-dialog-actions>
