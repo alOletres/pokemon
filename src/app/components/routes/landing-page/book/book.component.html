@@ -1,0 +1,197 @@
+<div fxLayout="row" fxLayoutAlign="center center">
+	<mat-stepper linear #stepper >
+		<mat-step [stepControl]="bookForm" [editable]="isEditable">
+			<form class="text-xs" [formGroup]="bookForm" >
+				<ng-template matStepLabel>Fill out your information</ng-template>
+				<mat-form-field class="pr-2 w-1/3">
+					<mat-label>Firstname</mat-label>
+					<input type="text" formControlName="firstname" matInput autocomplete="off">
+					<mat-error *ngIf="firstname?.touched && firstname?.errors?.['required']">firstname is required</mat-error>
+				</mat-form-field>
+
+				<mat-form-field class="pr-2 w-1/3">
+					<mat-label>Lastname</mat-label>
+					<input type="text" formControlName="lastname" matInput autocomplete="off">
+					<mat-error *ngIf="lastname?.touched && lastname?.errors?.['required']">lastname is required</mat-error>
+				</mat-form-field>
+
+				<mat-form-field class="w-1/3">
+					<mat-label>Contact</mat-label>
+					<span matPrefix>+63 &nbsp;</span>
+					<input type="text" maxlength="10" matInput formControlName="contact" autocomplete="off">
+					<mat-error *ngIf="contact?.touched && contact?.errors?.['required']">contact is required</mat-error>
+				</mat-form-field>
+
+				<mat-form-field class="pr-2 w-1/3">
+					<mat-label>Event name</mat-label>
+					<input type="text" matInput autocomplete="off" formControlName="event">
+					<mat-error *ngIf="event?.touched && event?.errors?.['required']">event is required</mat-error>
+				</mat-form-field>
+
+				<mat-form-field class="pr-2 w-1/3">
+					<mat-label>Address</mat-label>
+					<input type="text" matInput autocomplete="off" formControlName="address">
+					<mat-error *ngIf="address?.touched && address?.errors?.['required']">address is required</mat-error>
+				</mat-form-field>
+
+				<mat-form-field class="w-1/3">
+					<mat-label>Type of Cottage</mat-label>
+					<mat-select formControlName="type">
+						<mat-option *ngFor="let cottage of typeCottage" [value]="cottage">{{cottage}}</mat-option>
+					</mat-select>
+					<mat-error *ngIf="type?.touched && type?.errors?.['required']">cottage type is required</mat-error>
+				</mat-form-field>
+
+				<mat-form-field class="w-1/3 pr-2">
+					<mat-label>Enter a date reserve</mat-label>
+					<mat-date-range-input [rangePicker]="picker">
+						<input matInput formControlName="start" matStartDate placeholder="Start date">
+						<input matInput formControlName="end" matEndDate placeholder="End date">
+					</mat-date-range-input>
+					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+					<mat-date-range-picker #picker></mat-date-range-picker>
+					<mat-error *ngIf="start?.touched && start?.errors?.['required'] || end?.touched && end?.errors?.['required']">Date is required</mat-error>
+				</mat-form-field>
+
+				<mat-form-field class="w-2/3">
+					<mat-label>Comments (Optional)</mat-label>
+					<textarea matInput formControlName="comment"></textarea>
+				</mat-form-field>
+
+				<div class="flex justify-end">
+					<button 
+						mat-button 
+						matStepperNext
+						(click)="onNextBook()"
+						>
+						Next
+					</button>
+				</div>
+			</form>
+		</mat-step>	
+
+		<mat-step [stepControl]="cottageForm" [editable]="isEditable">
+			<form [formGroup]="cottageForm">
+				<ng-template  matStepLabel>Cottage</ng-template>
+				<div fxLayout="row">
+					<div class="bg-gray-400 rounded h-80 w-1/4 text-white font-semibold" fxLayoutAlign="center center">COTTAGE PHOTO</div>
+					<div class="w-3/4 pl-4">
+						<p class="text-sm font-medium text-gray-500 dark:text-white">Cottage Breakdown!</p>
+						<br>
+						<mat-form-field class="text-xs pr-4 w-1/3" floatLabel="always">
+							<mat-label>Cottage type</mat-label>
+							<input type="text" formControlName="type" class="text-xs"  readonly="true" matInput autocomplete="off">
+						</mat-form-field>
+
+						<mat-form-field class="text-xs w-1/3" floatLabel="always">
+							<mat-label>Event name</mat-label>
+							<input type="text" formControlName="event" matInput class="text-xs"  readonly="true" autocomplete="off">
+						</mat-form-field>
+
+						<div class="pt-2">
+							<p class="text-xs font-medium text-gray-700 dark:text-white">Reserved date</p>
+							<p class="text-xs font-medium text-gray-500 dark:text-white">09/17/2022 - 09/18/2022</p>
+						</div>
+
+						<div class="pt-2">
+							<p class="text-xs font-medium text-gray-700 dark:text-white">Number of days</p>
+							<p class="text-xs font-medium text-gray-500 dark:text-white">2days</p>
+						</div>
+
+						<div class="pt-2">
+							<p class="text-xs font-medium text-gray-700 dark:text-white">Cottage no.</p>
+							<p class="text-xs font-medium text-gray-500 dark:text-white">COT-001</p>
+						</div>
+
+						<div class="pt-2">
+							<p class="text-xs font-medium text-gray-700 dark:text-white">Cottage Amount</p>
+							<p class="text-xs font-medium text-gray-500 dark:text-white">{{500 | currency : "&#8369;"}}</p>
+						</div>
+
+						<div class="pt-4">
+							<p class="text-xs font-bold text-green-700 dark:text-white">Reminder!</p>
+							<p class="text-xs font-medium text-gray-500 dark:text-white">You can take picture before you proceed!</p>
+						</div>
+					</div>
+				</div>
+				<div class="flex justify-end">
+					<button 
+						mat-button 
+						matStepperNext
+						>
+						Reserved
+					</button>
+				</div>
+			</form>
+		</mat-step>
+
+		<mat-step [stepControl]="paymentForm" [editable]="isEditable">
+			<form class="text-xs" [formGroup]="paymentForm">
+				<ng-template matStepLabel>Payment method</ng-template>
+				<div fxLayout="row">
+					<div class="bg-gray-400 rounded h-80 w-1/4 text-white font-semibold" fxLayoutAlign="center center">RECEIPT PHOTO</div>
+					<div class="w-3/4 pl-4 ">
+						<p class="text-sm font-medium text-gray-500 dark:text-white">Sender Info!</p>
+						<mat-form-field class="w-1/2 pr-2">
+							<mat-label>Account name</mat-label>
+							<input type="text" formControlName="accountName" matInput autocomplete="off">
+							<mat-error *ngIf="accountName?.touched && accountName?.errors?.['required']">Account name is required</mat-error>
+						</mat-form-field>
+
+						<mat-form-field class="w-1/2">
+							<mat-label>Account number</mat-label>
+							<span matPrefix>+63 &nbsp;</span>
+							<input type="text" formControlName="accountNumber" matInput autocomplete="off">
+							<mat-error *ngIf="accountNumber?.touched && accountNumber?.errors?.['required']">Account number is required</mat-error>
+						</mat-form-field>
+
+						<mat-form-field class="w-3/4 pr-2">
+							<mat-label>Reference number</mat-label>
+							<input type="text" formControlName="reference" matInput autocomplete="off">
+							<mat-error *ngIf="reference?.touched && reference?.errors?.['required']">Reference is required</mat-error>
+						</mat-form-field>
+
+						<mat-form-field class="w-1/4 pr-2">
+							<mat-label>Amount</mat-label>
+							<input type="text" formControlName="amount" matInput autocomplete="off">
+							<mat-error *ngIf="amount?.touched && amount?.errors?.['required']">Amount is required</mat-error>
+						</mat-form-field>
+
+						<mat-form-field class="w-full">
+							<mat-label>Remarks (Optional)</mat-label>
+							<input type="text" formControlName="remarks" matInput autocomplete="off"> 
+						</mat-form-field>
+						<div class="pt-4">
+							<div >
+								<div class="">
+									<p>Send Via Gcash!  </p> 
+									<span class="text-sm font-medium text-gray-500 dark:text-white">+63 917 312 1605</span>
+								</div> <br>
+								<div>
+									<p>Acount Name</p>
+									<span class="text-sm font-medium text-gray-500 dark:text-white">RVS RESORT</span>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="flex justify-end">
+					<button 
+						mat-button 
+						matStepperNext
+						(click)="onPaid()"
+						>
+						Paid
+					</button>
+				</div>
+			</form>
+		</mat-step>
+
+		<mat-step>
+			<ng-template matStepLabel>Done</ng-template>
+		</mat-step>
+	</mat-stepper>
+</div>

@@ -1,0 +1,16 @@
+@import "src/app/styles/variables";
+@import "src/app/styles/colors";
+@import "src/app/styles/font";
+
+mat-toolbar.page-header {
+	display: flex;
+	justify-content: space-between;
+	padding: 50px 24px 16px 24px;
+	background: none;
+	height: auto;
+
+	@media (max-width: $small) {
+		flex-direction: column;
+		align-items: baseline;
+	}
+}

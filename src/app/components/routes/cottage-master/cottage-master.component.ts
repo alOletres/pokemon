@@ -8,7 +8,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class CottageMasterComponent implements OnInit {
 	cottageForm!: FormGroup;
-	type: string[] = ['Ordinary', 'Special'];
+	type: string[] = ['Floating cottage', 'Non-Floating cottage'];
   constructor(private fb: FormBuilder) {
 		this.cottageForm = this.fb.group({
 			cottageType: [null, Validators.required],

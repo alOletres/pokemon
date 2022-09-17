@@ -7,10 +7,38 @@ import { ReservationComponent } from './components/routes/reservation/reservatio
 import { CottageMasterComponent } from './components/routes/cottage-master/cottage-master.component';
 import { UserMasterComponent } from './components/routes/user-master/user-master.component';
 import { CalendarComponent } from './components/routes/calendar/calendar.component';
+import { LandingPageComponent } from './components/routes/landing-page/landing-page.component';
+import { HomePageComponent } from './components/routes/landing-page/home-page/home-page.component';
+import { ContactComponent } from './components/routes/landing-page/contact/contact.component';
+import { BookComponent } from './components/routes/landing-page/book/book.component';
+import { OnlineReservationComponent } from './components/routes/online-reservation/online-reservation.component';
 const routes: Routes = [
 	{
 		path: '',
-		component: AuthComponent
+		component: LandingPageComponent,
+		children: [
+			{
+				path: '',
+				redirectTo: '/home',
+				pathMatch: 'full'
+			},
+			{
+				path: 'home',
+				component: HomePageComponent
+			},
+			{
+				path: 'contact',
+				component: ContactComponent
+			},
+			{
+				path: 'book',
+				component: BookComponent
+			},
+			{
+				path: 'login',
+				component: AuthComponent
+			}
+		]
 	},
 	{
 		path: '',
@@ -18,7 +46,7 @@ const routes: Routes = [
 		children: [
 			{
 				path: '',
-				redirectTo: '/dash',
+				redirectTo: '/dash-board',
 				pathMatch: 'full'
 			},
 			{
@@ -40,6 +68,10 @@ const routes: Routes = [
 			{
 				path: 'calendar-events',
 				component: CalendarComponent
+			},
+			{
+				path: 'online-reservation',
+				component: OnlineReservationComponent
 			}
 		]
 	}

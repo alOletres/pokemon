@@ -19,7 +19,6 @@ export class ReservationComponent implements OnInit {
 			eventName: [null, Validators.required],
 			address: [null, Validators.required],
 			cottage: [null, Validators.required],
-			// dateReserved: [null, Validators.required],
 			start: [null, Validators.required],
 			end: [null, Validators.required],
 			comment: ['N/A', Validators.required]	

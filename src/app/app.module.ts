@@ -18,6 +18,8 @@ import { ReservationComponent } from './components/routes/reservation/reservatio
 import { UserMasterComponent } from './components/routes/user-master/user-master.component';
 import { CottageMasterComponent } from './components/routes/cottage-master/cottage-master.component';
 import { CalendarComponent } from './components/routes/calendar/calendar.component';
+import { LandingPageComponent } from './components/routes/landing-page/landing-page.component';
+import { HomePageComponent } from './components/routes/landing-page/home-page/home-page.component';
 /** Angular material */
 import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
@@ -33,13 +35,24 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatBadgeModule} from '@angular/material/badge';
 /** calendar events */
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 /** chart  */
 import { NgChartsModule } from 'ng2-charts';
 
+
+/** carousel */
+import { CarouselModule } from './module/carousel/carousel.module';
+import { ContactComponent } from './components/routes/landing-page/contact/contact.component';
+import { BookComponent } from './components/routes/landing-page/book/book.component';
+import { OnlineReservationComponent } from './components/routes/online-reservation/online-reservation.component';
+
 const materialModules = [
+  MatBadgeModule,
+  MatStepperModule,
   MatSelectModule,
   MatInputModule,
   MatCardModule,
@@ -66,7 +79,12 @@ const materialModules = [
     ReservationComponent,
     UserMasterComponent,
     CottageMasterComponent,
-    CalendarComponent
+    CalendarComponent,
+    LandingPageComponent,
+    HomePageComponent,
+    ContactComponent,
+    BookComponent,
+    OnlineReservationComponent
   ],
   imports: [
     CommonModule,
@@ -79,6 +97,7 @@ const materialModules = [
     HttpClientModule,
     ...materialModules,
     NgChartsModule,
+    CarouselModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,

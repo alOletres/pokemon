@@ -1,13 +1,13 @@
 <div class="p-2">
 	<div class="p-2">
-		<h3 class="font-semibold text-lg uppercase text-blue-900">Reservation Form</h3>
+		<h3 class="font-semibold text-lg uppercase text-blue-900">Walkin Reservation Form</h3>
 		<div class="flex justify-start pb-2">
 			<button 
 				(click)="reservedCottage()"
 				mat-raised-button 
 				class="bg-blue-600 text-white"
 			>
-				Reserve
+			 Reserve
 			</button>&nbsp;
 			<div class="w-1 h-10 bg-slate-400 rounded"></div>&nbsp;
 			<button 
@@ -17,7 +17,7 @@
 				Clear
 			</button>
 		</div>
-		<div class="bg-green-700 h-5 mb-2"></div>
+		<div class="bg-gray-500 h-5 mb-2"></div>
 
 		<div class="flex justify-between">  
 			<div class="w-1/2 p-1">
@@ -61,12 +61,6 @@
 						<mat-error *ngIf="cottage?.touched && cottage?.errors?.['required']">cottage is required.</mat-error>
 					</mat-form-field>
 
-					<!-- <mat-form-field appearance="fill" class="text-xs w-1/2">
-						<mat-label>Date Range</mat-label>
-						<input type="date" autocomplete="off" formControlName="dateReserved" matInput>
-						<mat-error *ngIf="dateReserved?.touched && dateReserved?.errors?.['required']">date is required.</mat-error>
-					</mat-form-field> -->
-
 					<mat-form-field appearance="fill" class="text-xs w-1/2">
 						<mat-label>Enter a date range</mat-label>
 						<mat-date-range-input [rangePicker]="picker">
@@ -86,7 +80,7 @@
 			</div>
 			<div class="w-1/3">
 				<table class="w-full border">
-					<thead class="bg-green-700 h-4">
+					<thead class="bg-blue-500 h-4">
 						<tr>
 							<th></th>
 							<th></th>
@@ -114,7 +108,7 @@
 				</table>
 			</div>
 		</div>
-		<div class="bg-green-700 h-5">
+		<div class="bg-gray-500 h-5">
 			<a class="text-white hover:underline text-xs p-2 cursor-pointer">Reservation List</a>
 		</div>
 		<div class="flex justify-end">
@@ -133,8 +127,8 @@
 					<th class="p-1">Address</th>
 					<!-- <th class="p-1">Reserved Type</th> -->
 					<th class="p-1">Reserved Cottage</th>
-					<th class="p-1">Date Reserved</th>
-					<th class="p-1">Expired date</th>
+					<th class="p-1">Start date</th>
+					<th class="p-1">End date</th>
 					<th class="p-1">Reserved by</th>
 					<th class="p-1">Status</th>
 					<th class="p-1">Action</th>

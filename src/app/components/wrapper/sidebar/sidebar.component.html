@@ -4,7 +4,11 @@
 	</mat-list-item>
 	<hr>
 	<mat-list-item [routerLink]="['/reservation']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-		<mat-icon>assignment</mat-icon> <span>Reservation</span>
+		<mat-icon>assignment</mat-icon> <span>Walkin Reservation</span>
+	</mat-list-item>
+
+	<mat-list-item [routerLink]="['/online-reservation']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+		<mat-icon>assignment</mat-icon> <span matBadge="1" matBadgeOverlap="false">Online Reservation</span>
 	</mat-list-item>
 	
 	<mat-list-item [routerLink]="['/calendar-events']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">

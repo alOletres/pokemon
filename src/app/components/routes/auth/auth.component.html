@@ -1,4 +1,4 @@
-<div class="login-wrapper relative" fxLayout="row" fxLayoutAlign="center center">
+<!-- <div class="login-wrapper relative" fxLayout="row" fxLayoutAlign="center center">
 	<mat-card class="box">
 	<h3 class="uppercase">Good Day User!</h3>
 	<form (ngSubmit)="LoginUser()" class="login-form">
@@ -21,4 +21,40 @@
 		</button>
 	</form>
 	</mat-card>
+</div> -->
+
+<div fxLayout="row">
+	<div class="w-3/4 pr-4 h-96"></div>
+	<div class="w-1/4">
+		<div class="w-full bg-yellow-300 h-40  border-t-2 border-l-2 border-r-2" fxLayoutAlign="center center" >
+			<div  class="font-semibold text-white" >LOGIN FORM</div>
+		</div>
+		<div class="border-r-2 border-l-2  border-b-2 h-60 w-full p-5">
+			<form [formGroup]="loginForm" class="text-xs">
+				<mat-form-field appearance="fill" class="w-full ">
+					<mat-label>Username</mat-label>
+					<input type="text" matInput formControlName="username" autocomplete="off">
+					<mat-error *ngIf="username?.touched && username?.errors?.['required']">Username is required</mat-error>
+				</mat-form-field>
+
+				<mat-form-field appearance="fill" class="w-full">
+					<mat-label>Password</mat-label>
+					<input type="password" matInput formControlName="password" autocomplete="off">
+					<mat-error *ngIf="password?.touched && password?.errors?.['required']">Password is required</mat-error>
+				</mat-form-field>
+				
+				<div class="text-center pt-3">
+					<button 
+						(click)="LoginUser()"
+						type="submit" 
+						mat-raised-button 
+						class="text-yellow-300 w-full "
+						>
+						Login
+					</button>
+					<a class="hover:underline text-gray-600 cursor-pointer text-center">forgot password?</a>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>

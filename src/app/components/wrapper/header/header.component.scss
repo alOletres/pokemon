@@ -3,7 +3,7 @@
 @import 'src/app/styles/variables';
 
 .header {
-	background-color: $dark-green;
+	background-color: $dark-blue;
 	display: flex;
 	justify-content: space-between;
 	position: fixed;
@@ -19,7 +19,7 @@
 	}
 
 	&__title-button {
-		background-color: $dark-green;
+		background-color: $dark-blue;
 		box-shadow: none;
 
 		&:hover {
