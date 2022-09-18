@@ -45,7 +45,7 @@
 											class="bg-red-500 text-white w-full"
 											mat-raised-button
 											>
-											Cancel
+											Cancel Cottage
 										</button>
 									</div>
 								</div>
@@ -90,7 +90,7 @@
 											class="bg-red-500 text-white w-full"
 											mat-raised-button
 											>
-											Cancel
+											Cancel Cottage
 										</button>
 									</div>
 								</div>
@@ -109,7 +109,7 @@
 						<mat-card-content>
 							<form class="text-xs mt-4" [formGroup]="bookForm" >
 								<ng-template matStepLabel>Fill out your information</ng-template>
-								<mat-form-field appearance="outline" class="pr-2 w-1/2">
+								<mat-form-field appearance="outline" class="pr-2 lg:w-1/2 sm:w-full">
 									<mat-label>Firstname</mat-label>
 									<input type="text" formControlName="firstname" matInput autocomplete="off">
 									<mat-error *ngIf="firstname?.touched && firstname?.errors?.['required']">firstname is required</mat-error>
@@ -228,13 +228,15 @@
 
 
 				<div class="flex justify-end">
-					<button 
-						mat-raised-button 
-						class="bg-red-600 text-white"
-						>
-						Cancel
-					</button> 
-					&nbsp;
+					<div class="pr-2">
+						<button 
+							mat-raised-button
+							matStepperPrevious 
+							class="bg-yellow-400 text-white"
+							>
+							Back
+						</button> 
+					</div>
 					<button 
 						class="bg-blue-600 text-white"
 						mat-raised-button 

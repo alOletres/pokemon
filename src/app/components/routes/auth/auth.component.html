@@ -23,41 +23,53 @@
 	</mat-card>
 </div> -->
 
-<div fxLayout="row" class="p-6">
-	<div class="w-3/4 pr-4 h-96"></div>
-	<div class="w-1/4">
-		<div class="w-full bg-yellow-300 h-40  border-t-2 border-l-2 border-r-2" fxLayoutAlign="center center" >
-			<div  class="font-semibold text-white" >LOGIN FORM</div>
-		</div>
-		<div class="border-r-2 border-l-2  border-b-2 h-60 w-full p-5">
-			<form [formGroup]="loginForm" class="text-xs">
-				<mat-form-field appearance="fill" class="w-full ">
-					<mat-label>Username</mat-label>
-					<input type="text" matInput formControlName="username" autocomplete="off">
-					<mat-error *ngIf="username?.touched && username?.errors?.['required']">Username is required</mat-error>
-				</mat-form-field>
+<div fxLayout="row" class="p-6 flex justify-center">
+	<div class="w-1/4 bg-blue-800 rounded h-auto" fxLayoutAlign="center center">
+		<div class="text-white" >
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-72 h-72">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+			</svg>
 
-				<mat-form-field appearance="fill" class="w-full">
-					<mat-label>Password</mat-label>
-					<input type="password" matInput formControlName="password" autocomplete="off">
-					<mat-error *ngIf="password?.touched && password?.errors?.['required']">Password is required</mat-error>
-				</mat-form-field>
-				
-				<div class="text-center pt-3">
-					<button 
-						(click)="LoginUser()"
-						type="submit" 
-						mat-raised-button 
-						class="bg-blue-600 text-white w-full pb-4"
-						>
-						Login
-					</button>
-					
-				</div><br>
-				<div class="text-center">
-					<a class="hover:underline text-gray-600 cursor-pointer text-center mt-4 capitalize">forgot password?</a>
+		</div>
+	</div>
+	<div class="w-1/4">
+		<div class="w-full">
+			<div class="w-full bg-yellow-300 h-40  border-t-2 border-l-2 border-r-2" fxLayoutAlign="center center" >
+				<div  class="font-semibold text-white" >
+					<img src="assets/resort.png" class=" w-44 h-44 " alt="">
 				</div>
-			</form>
+			</div>
+			<div class="border-r-2 border-l-2  border-b-2 h-64 w-full p-5">
+				<form [formGroup]="loginForm" class="text-xs">
+					<mat-form-field appearance="outline" class="w-full ">
+						<mat-label>Username</mat-label>
+						<input type="text" matInput formControlName="username" autocomplete="off">
+						<mat-error *ngIf="username?.touched && username?.errors?.['required']">Username is required</mat-error>
+					</mat-form-field>
+
+					<mat-form-field appearance="outline" class="w-full">
+						<mat-label>Password</mat-label>
+						<input type="password" matInput formControlName="password" autocomplete="off">
+						<mat-error *ngIf="password?.touched && password?.errors?.['required']">Password is required</mat-error>
+					</mat-form-field>
+					
+					<div class="text-center pt-3">
+						<button 
+							(click)="LoginUser()"
+							type="submit" 
+							mat-raised-button 
+							class="bg-blue-600 text-white w-full pb-4"
+							>
+							Login
+						</button>
+						
+					</div><br>
+					<div class="text-center pb-2">
+						<a class="hover:underline text-gray-600 cursor-pointer text-center mt-2 capitalize">forgot password?</a>
+					</div>
+					
+				</form>
+			</div>
 		</div>
 	</div>
 </div>

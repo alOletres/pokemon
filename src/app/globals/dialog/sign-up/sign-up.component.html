@@ -1,5 +1,5 @@
 <div class="flex justify-start">
-	<img src="assets/resort.jpg" class="w-8 h-8" alt="">
+	<img src="assets/resort.png" class="w-8 h-8" alt="">
 	<h3 mat-dialog-title class="font-medium text-gray-500">Sign up!</h3>
 </div>
 
@@ -31,7 +31,7 @@
 		</mat-form-field>
 
 		<mat-form-field appearance="outline" class="w-full text-xs">
-			<mat-label>User Password</mat-label>
+			<mat-label>Create Password</mat-label>
 			<input type="password" formControlName="password" matInput autocomplete="off">
 			<mat-error *ngIf="password?.touched && password?.errors?.['required']">Password is required</mat-error>
 		</mat-form-field>
