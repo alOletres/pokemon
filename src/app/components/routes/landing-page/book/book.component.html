@@ -4,38 +4,30 @@
 
 			<div class="flex flex-row">
 				<!-- cottage book -->
-				<div class="w-3/4 pr-4">
-					<mat-tab-group >
+				<div class="w-1/2 pr-4">
+					<mat-tab-group class="border-2 text-xs rounded">
 						<mat-tab label="Floating cottage: COT-0001">
-							<div class="flex flex-row mt-2">
-								<div class="bg-gray-500 rounded h-72 w-1/4 text-white font-semibold" fxLayoutAlign="center center">COTTAGE PHOTO</div>
+							<div class="flex flex-row p-2">
+								<div class="bg-gray-500 rounded h-auto w-1/2 text-white font-semibold" fxLayoutAlign="center center">COTTAGE PHOTO</div>
 								
-								<div class="w-3/4 pl-4">
+								<div class="w-1/2 pl-4">
 									<p class="text-sm font-medium text-gray-500 dark:text-white">Cottage Breakdown!</p>
 									<br>
-									<mat-form-field class="text-xs pr-4 w-1/3" floatLabel="always">
+									<mat-form-field class="text-xs w-full" floatLabel="always">
 										<mat-label>Cottage type</mat-label>
 										<input type="text" matInput value="Floating" readonly="true" autocomplete="off">
 									</mat-form-field>
 
-									<mat-form-field class="text-xs w-1/3 pr-2" floatLabel="always">
+									<mat-form-field class="text-xs w-full" floatLabel="always">
 										<mat-label>Available Cottage</mat-label>
 										<input type="text" matInput value="COT-0001"  readonly="true" autocomplete="off">
 									</mat-form-field>
 
-									<mat-form-field class="text-xs w-1/3" floatLabel="always">
-										<mat-label>Event name</mat-label>
-										<input type="text"  matInput class="text-xs" value="Birthday"  readonly="true" autocomplete="off">
-									</mat-form-field>
-
 									<div class="pt-2">
-										<p class="text-xs font-medium text-gray-700 dark:text-white">Reserved date</p>
-										<p class="text-xs font-medium text-gray-500 dark:text-white">09/17/2022 - 09/18/2022</p>
-									</div>
-
-									<div class="pt-2">
-										<p class="text-xs font-medium text-gray-700 dark:text-white">Cottage no.</p>
-										<p class="text-xs font-medium text-gray-500 dark:text-white">COT-001</p>
+										<p class="text-xs font-medium text-gray-700 dark:text-white">Description</p>
+										<p class="text-xs font-medium text-gray-500 dark:text-white">
+											Lorem, ipsum dolor sit amet consectetur adipisicing elit. consectetur accusamus? Autem quis ipsum tempora corporis?
+										</p>
 									</div>
 
 									<div class="pt-2">
@@ -44,177 +36,143 @@
 									</div>
 
 									<div class="pt-2">
-										<p class="text-xs font-medium text-gray-700 dark:text-white">Total Amount</p>
+										<p class="text-xs font-medium text-gray-700 dark:text-white">Cottage price</p>
 										<p class="text-xs font-medium text-gray-500 dark:text-white">{{500 | currency : "&#8369;"}}</p>
 									</div>
-<!-- 
-									<div class="pt-4">
-										<p class="text-xs font-bold text-green-700 dark:text-white">Reminder!</p>
-										<p class="text-xs font-medium text-gray-500 dark:text-white">You can take picture before you proceed!</p>
-									</div> -->
+
+									<div>
+										<button 
+											class="bg-red-500 text-white w-full"
+											mat-raised-button
+											>
+											Cancel
+										</button>
+									</div>
 								</div>
 							</div>
 						</mat-tab>
 						<mat-tab label="Floating cottage: COT-0002">
-							<p>content 2</p>
+							<div class="flex flex-row p-2">
+								<div class="bg-gray-500 rounded h-auto w-1/2 text-white font-semibold" fxLayoutAlign="center center">COTTAGE PHOTO</div>
+								
+								<div class="w-1/2 pl-4">
+									<p class="text-sm font-medium text-gray-500 dark:text-white">Cottage Breakdown!</p>
+									<br>
+									<mat-form-field class="text-xs w-full" floatLabel="always">
+										<mat-label>Cottage type</mat-label>
+										<input type="text" matInput value="Floating" readonly="true" autocomplete="off">
+									</mat-form-field>
+
+									<mat-form-field class="text-xs w-full" floatLabel="always">
+										<mat-label>Available Cottage</mat-label>
+										<input type="text" matInput value="COT-0001"  readonly="true" autocomplete="off">
+									</mat-form-field>
+
+									<div class="pt-2">
+										<p class="text-xs font-medium text-gray-700 dark:text-white">Description</p>
+										<p class="text-xs font-medium text-gray-500 dark:text-white">
+											Lorem, ipsum dolor sit amet consectetur adipisicing elit. consectetur accusamus? Autem quis ipsum tempora corporis?
+										</p>
+									</div>
+
+									<div class="pt-2">
+										<p class="text-xs font-medium text-gray-700 dark:text-white">Capacity</p>
+										<p class="text-xs font-medium text-gray-500 dark:text-white">11 persons</p>
+									</div>
+
+									<div class="pt-2">
+										<p class="text-xs font-medium text-gray-700 dark:text-white">Cottage price</p>
+										<p class="text-xs font-medium text-gray-500 dark:text-white">{{500 | currency : "&#8369;"}}</p>
+									</div>
+
+									<div>
+										<button 
+											class="bg-red-500 text-white w-full"
+											mat-raised-button
+											>
+											Cancel
+										</button>
+									</div>
+								</div>
+							</div>
 						</mat-tab>
 					</mat-tab-group>
 				</div>
 
-				<div class="w-1/4">
-					<table class="w-full border-2 text-xs">
-						<thead class="bg-gray-400 w-full h-5 border-2">
-							<tr>
-								<th></th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="p-2 text-slate-500">Sub total</td>
-								<td class="p-2 text-slate-500">{{900 | currency : "&#8369;"}}</td>
-							</tr>
-							<tr>
-								<td class="p-2 text-slate-500">Number of days</td>
-								<td class="p-2 text-slate-500">2</td>
-							</tr>
-							<tr class="border-2">
-								<td class="p-2 text-slate-500">Grand total</td>
-								<td class="p-2 text-slate-500">{{908 | currency : "&#8369;"}} 
-							</tr>
-						</tbody>
-					</table>
+
+				<div class="w-1/2">
+					<!-- customer information -->
+					<mat-card>
+						<mat-card-title class="pt-2">
+							<h4 class="font-semibold text-xs text-gray-500">Fill out personal information here!</h4>
+						</mat-card-title>
+						<mat-card-content>
+							<form class="text-xs mt-4" [formGroup]="bookForm" >
+								<ng-template matStepLabel>Fill out your information</ng-template>
+								<mat-form-field appearance="outline" class="pr-2 w-1/2">
+									<mat-label>Firstname</mat-label>
+									<input type="text" formControlName="firstname" matInput autocomplete="off">
+									<mat-error *ngIf="firstname?.touched && firstname?.errors?.['required']">firstname is required</mat-error>
+								</mat-form-field>
+
+								<mat-form-field appearance="outline" class="w-1/2">
+									<mat-label>Lastname</mat-label>
+									<input type="text" formControlName="lastname" matInput autocomplete="off">
+									<mat-error *ngIf="lastname?.touched && lastname?.errors?.['required']">lastname is required</mat-error>
+								</mat-form-field>
+
+								<mat-form-field appearance="outline" class="w-1/2 pr-2">
+									<mat-label>Event name</mat-label>
+									<input type="text" matInput autocomplete="off" formControlName="event">
+									<mat-error *ngIf="event?.touched && event?.errors?.['required']">event is required</mat-error>
+								</mat-form-field>
+
+								<mat-form-field appearance="outline" class="w-1/2">
+									<mat-label>Contact</mat-label>
+									<span matPrefix>+63 &nbsp;</span>
+									<input type="text" maxlength="10" matInput formControlName="contact" autocomplete="off">
+									<mat-error *ngIf="contact?.touched && contact?.errors?.['required']">contact is required</mat-error>
+								</mat-form-field>
+
+								<mat-form-field appearance="outline" class=" w-full">
+									<mat-label>Address</mat-label>
+									<textarea matInput autocomplete="off" formControlName="address"></textarea>
+									<mat-error *ngIf="address?.touched && address?.errors?.['required']">address is required</mat-error>
+								</mat-form-field>
+
+								<mat-form-field appearance="outline" class="w-full">
+									<mat-label>Comments (Optional)</mat-label>
+									<textarea matInput rows="2" formControlName="comment"></textarea>
+								</mat-form-field>
+
+								<div class="flex justify-between">
+									<div class="">
+										<p class="text-xs font-semibold text-gray-700 dark:text-white">Reserved date</p>
+										<p class="text-xs font-medium text-gray-500 dark:text-white">09/17/2022 - 09/18/2022</p>
+									</div>
+									<div class="">
+										<p class="text-xs font-semibold text-gray-700 dark:text-white">Number of Days</p>
+										<p class="text-xs font-medium text-gray-500 dark:text-white">2 days</p>
+									</div>
+									<div class="">
+										<p class="text-xs font-semibold text-gray-700 dark:text-white">Total amount</p>
+										<p class="text-xs font-medium text-gray-500 dark:text-white">{{1000 | currency : "&#8369;"}}</p>
+									</div>
+									<button 
+										class="text-white bg-blue-600"
+										mat-raised-button 
+										matStepperNext
+										(click)="onNextBook()"
+										>
+										Next
+									</button>
+								</div>
+							</form>
+						</mat-card-content>
+					</mat-card>
 				</div>
 			</div>
-
-			<div class="bg-gray-400 h-3 mt-4"></div>
-			<!-- customer information -->
-			<form class="text-xs mt-4" [formGroup]="bookForm" >
-				<ng-template matStepLabel>Fill out your information</ng-template>
-				<mat-form-field appearance="outline" class="pr-2 w-1/3">
-					<mat-label>Firstname</mat-label>
-					<input type="text" formControlName="firstname" matInput autocomplete="off">
-					<mat-error *ngIf="firstname?.touched && firstname?.errors?.['required']">firstname is required</mat-error>
-				</mat-form-field>
-
-				<mat-form-field appearance="outline" class="pr-2 w-1/3">
-					<mat-label>Lastname</mat-label>
-					<input type="text" formControlName="lastname" matInput autocomplete="off">
-					<mat-error *ngIf="lastname?.touched && lastname?.errors?.['required']">lastname is required</mat-error>
-				</mat-form-field>
-
-				<mat-form-field appearance="outline" class="w-1/3">
-					<mat-label>Contact</mat-label>
-					<span matPrefix>+63 &nbsp;</span>
-					<input type="text" maxlength="10" matInput formControlName="contact" autocomplete="off">
-					<mat-error *ngIf="contact?.touched && contact?.errors?.['required']">contact is required</mat-error>
-				</mat-form-field>
-
-				<mat-form-field appearance="outline" class="pr-2 w-1/4">
-					<mat-label>Event name</mat-label>
-					<input type="text" matInput autocomplete="off" formControlName="event">
-					<mat-error *ngIf="event?.touched && event?.errors?.['required']">event is required</mat-error>
-				</mat-form-field>
-
-				<mat-form-field appearance="outline" class=" w-3/4">
-					<mat-label>Address</mat-label>
-					<input type="text" matInput autocomplete="off" formControlName="address">
-					<mat-error *ngIf="address?.touched && address?.errors?.['required']">address is required</mat-error>
-				</mat-form-field>
-
-				<!-- <mat-form-field class="w-1/3 pr-2">
-					<mat-label>Enter a date reserve</mat-label>
-					<mat-date-range-input [rangePicker]="picker">
-						<input matInput formControlName="start" matStartDate placeholder="Start date">
-						<input matInput formControlName="end" matEndDate placeholder="End date">
-					</mat-date-range-input>
-					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-					<mat-date-range-picker #picker></mat-date-range-picker>
-					<mat-error *ngIf="start?.touched && start?.errors?.['required'] || end?.touched && end?.errors?.['required']">Date is required</mat-error>
-				</mat-form-field> -->
-
-				<mat-form-field appearance="outline" class="w-full">
-					<mat-label>Comments (Optional)</mat-label>
-					<textarea matInput formControlName="comment"></textarea>
-				</mat-form-field>
-
-				<div class="flex justify-end">
-					<button 
-						mat-button 
-						matStepperNext
-						(click)="onNextBook()"
-						>
-						Next
-					</button>
-				</div>
-			</form>
 		</mat-step>	
-
-		<!-- <mat-step [stepControl]="cottageForm" [editable]="isEditable">
-			<form [formGroup]="cottageForm">
-				<ng-template  matStepLabel>Reserve Cottage</ng-template>
-				<div fxLayout="row">
-					<div class="bg-gray-400 rounded h-80 w-1/4 text-white font-semibold" fxLayoutAlign="center center">COTTAGE PHOTO</div>
-					<div class="w-3/4 pl-4">
-						<p class="text-sm font-medium text-gray-500 dark:text-white">Cottage Breakdown!</p>
-						<br>
-						<mat-form-field class="text-xs pr-4 w-1/3" floatLabel="always">
-							<mat-label>Cottage type</mat-label>
-							<mat-select formControlName="type">
-								<mat-option *ngFor="let type of typeCottage" [value]="type">{{type}}</mat-option>
-							</mat-select>
-						</mat-form-field>
-
-						<mat-form-field class="text-xs w-1/3 pr-2">
-							<mat-label>Available Cottage</mat-label>
-							<mat-select formControlName="availableCottage" >
-								<mat-option *ngFor="let cot of availableCottage" [value]="cot">{{cot}}</mat-option>
-							</mat-select>
-						</mat-form-field>
-
-						<mat-form-field class="text-xs w-1/3" floatLabel="always">
-							<mat-label>Event name</mat-label>
-							<input type="text" formControlName="event" matInput class="text-xs"  readonly="true" autocomplete="off">
-						</mat-form-field>
-
-						<div class="pt-2">
-							<p class="text-xs font-medium text-gray-700 dark:text-white">Reserved date</p>
-							<p class="text-xs font-medium text-gray-500 dark:text-white">09/17/2022 - 09/18/2022</p>
-						</div>
-
-						<div class="pt-2">
-							<p class="text-xs font-medium text-gray-700 dark:text-white">Number of days</p>
-							<p class="text-xs font-medium text-gray-500 dark:text-white">2days</p>
-						</div>
-
-						<div class="pt-2">
-							<p class="text-xs font-medium text-gray-700 dark:text-white">Cottage no.</p>
-							<p class="text-xs font-medium text-gray-500 dark:text-white">COT-001</p>
-						</div>
-
-						<div class="pt-2">
-							<p class="text-xs font-medium text-gray-700 dark:text-white">Total Amount</p>
-							<p class="text-xs font-medium text-gray-500 dark:text-white">{{500 | currency : "&#8369;"}}</p>
-						</div>
-
-						<div class="pt-4">
-							<p class="text-xs font-bold text-green-700 dark:text-white">Reminder!</p>
-							<p class="text-xs font-medium text-gray-500 dark:text-white">You can take picture before you proceed!</p>
-						</div>
-					</div>
-				</div>
-				<div class="flex justify-end">
-					<button mat-button class="text-red-600">Cancel</button>
-					<button 
-						class="text-green-600"
-						mat-button 
-						matStepperNext
-						>
-						Procceed
-					</button>
-				</div>
-			</form>
-		</mat-step> -->
 
 		<mat-step [stepControl]="paymentForm" [editable]="isEditable">
 			<form class="text-xs" [formGroup]="paymentForm">
@@ -223,32 +181,32 @@
 					<div class="bg-gray-400 rounded h-80 w-1/4 text-white font-semibold" fxLayoutAlign="center center">RECEIPT PHOTO</div>
 					<div class="w-3/4 pl-4 ">
 						<p class="text-sm font-medium text-gray-500 dark:text-white">Sender Info!</p>
-						<mat-form-field class="w-1/2 pr-2">
+						<mat-form-field appearance="outline" class="w-1/2 pr-2">
 							<mat-label>Account name</mat-label>
 							<input type="text" formControlName="accountName" matInput autocomplete="off">
 							<mat-error *ngIf="accountName?.touched && accountName?.errors?.['required']">Account name is required</mat-error>
 						</mat-form-field>
 
-						<mat-form-field class="w-1/2">
+						<mat-form-field appearance="outline" class="w-1/2">
 							<mat-label>Account number</mat-label>
 							<span matPrefix>+63 &nbsp;</span>
 							<input type="text" formControlName="accountNumber" matInput autocomplete="off">
 							<mat-error *ngIf="accountNumber?.touched && accountNumber?.errors?.['required']">Account number is required</mat-error>
 						</mat-form-field>
 
-						<mat-form-field class="w-3/4 pr-2">
+						<mat-form-field appearance="outline" class="w-3/4 pr-2">
 							<mat-label>Reference number</mat-label>
 							<input type="text" formControlName="reference" matInput autocomplete="off">
 							<mat-error *ngIf="reference?.touched && reference?.errors?.['required']">Reference is required</mat-error>
 						</mat-form-field>
 
-						<mat-form-field class="w-1/4 pr-2">
+						<mat-form-field appearance="outline" class="w-1/4 pr-2">
 							<mat-label>Amount</mat-label>
 							<input type="text" formControlName="amount" matInput autocomplete="off">
 							<mat-error *ngIf="amount?.touched && amount?.errors?.['required']">Amount is required</mat-error>
 						</mat-form-field>
 
-						<mat-form-field class="w-full">
+						<mat-form-field appearance="outline" class="w-full">
 							<mat-label>Remarks (Optional)</mat-label>
 							<input type="text" formControlName="remarks" matInput autocomplete="off"> 
 						</mat-form-field>
@@ -270,14 +228,20 @@
 
 
 				<div class="flex justify-end">
-					<button mat-button class="text-red-600">Cancel</button>
 					<button 
-						class="text-green-600"
-						mat-button 
+						mat-raised-button 
+						class="bg-red-600 text-white"
+						>
+						Cancel
+					</button> 
+					&nbsp;
+					<button 
+						class="bg-blue-600 text-white"
+						mat-raised-button 
 						matStepperNext
 						(click)="onPaid()"
 						>
-						Procceed
+						Submit
 					</button>
 				</div>
 			</form>
