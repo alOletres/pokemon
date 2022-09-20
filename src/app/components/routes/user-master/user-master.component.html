@@ -17,26 +17,26 @@
 
 		<div class="w-1/2">
 			<form [formGroup]="userForm"> 
-				<mat-form-field appearance="fill" class="text-xs w-1/2 pr-1">
+				<mat-form-field appearance="outline" class="text-xs w-1/2 pr-1">
 					<mat-label>Firstname</mat-label>
 					<input type="text" formControlName="firstname" matInput autocomplete="off">
 					<mat-error *ngIf="firstname?.touched && firstname?.errors?.['required']">Firstname is required</mat-error>
 				</mat-form-field>
 
-				<mat-form-field appearance="fill" class="text-xs w-1/2">
+				<mat-form-field appearance="outline" class="text-xs w-1/2">
 					<mat-label>Lastname</mat-label>
 					<input type="text" formControlName="lastname" matInput autocomplete="off">
 					<mat-error *ngIf="lastname?.touched && lastname?.errors?.['required']">Lastname is required</mat-error>
 				</mat-form-field>
 
-				<mat-form-field appearance="fill" class="text-xs w-1/2 pr-1">
+				<mat-form-field appearance="outline" class="text-xs w-1/2 pr-1">
 					<mat-label>Contact</mat-label>
 					<span matPrefix>+63 &nbsp;</span>
 					<input type="text" formControlName="contact" matInput autocomplete="off">
 					<mat-error *ngIf="contact?.touched && contact?.errors?.['required']">Contact is required</mat-error>
 				</mat-form-field>
 
-				<mat-form-field appearance="fill" class="text-xs w-1/2">
+				<mat-form-field appearance="outline" class="text-xs w-1/2">
 					<mat-label>User type</mat-label>
 					<mat-select formControlName="type">
 						<mat-option *ngFor="let user of userType" [value]="user">{{user}}</mat-option>

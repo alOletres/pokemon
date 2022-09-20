@@ -11,6 +11,7 @@ export class ReservationComponent implements OnInit {
 
   reservationForm!: FormGroup;
 	cottageList: string[] = ['#01', '#02', '#03', '#04', '#05'];
+	cottageType: string[] = ['Floating cottage', 'Non-floating cottage'];
   constructor(private fb: FormBuilder, private http_common: CommonServiceService) {
 		this.reservationForm = this.fb.group({
 			firstname: [null, Validators.required],

@@ -17,43 +17,50 @@
 				Clear
 			</button>
 		</div>
-		<div class="bg-gray-500 h-5 mb-2"></div>
+		<div class="bg-gray-500 h-3 mb-2"></div>
 
 		<div class="flex justify-between">  
 			<div class="w-1/2 p-1">
 				<form [formGroup]="reservationForm">
-					<mat-form-field appearance="fill" class="text-xs w-1/2 pr-1">
+					<mat-form-field appearance="outline" class="text-xs w-1/2 pr-1">
 						<mat-label>Firstname</mat-label>
 						<input type="text" autocomplete="off" formControlName="firstname"  matInput>
 						<mat-error *ngIf="firstname?.touched && firstname?.errors?.['required']">Firstname is required.</mat-error>
 					</mat-form-field>
 
-					<mat-form-field appearance="fill" class="text-xs w-1/2">
+					<mat-form-field appearance="outline" class="text-xs w-1/2">
 						<mat-label>Lastname</mat-label>
 						<input type="text" autocomplete="off" formControlName="lastname" matInput>
 						<mat-error *ngIf="lastname?.touched && lastname?.errors?.['required']">lastname is required.</mat-error>
 					</mat-form-field>
 
-					<mat-form-field appearance="fill" class="text-xs w-1/2 pr-1">
+					<mat-form-field appearance="outline" class="text-xs w-1/2 pr-1">
 						<mat-label>Contact</mat-label>
 						<span matPrefix>+63 &nbsp;</span>
 						<input type="text" autocomplete="off" formControlName="contact" matInput maxlength="10">
 						<mat-error *ngIf="contact?.touched && contact?.errors?.['required']">contact is required.</mat-error>
 					</mat-form-field>
 
-					<mat-form-field appearance="fill" class="text-xs w-1/2">
+					<mat-form-field appearance="outline" class="text-xs w-1/2">
 						<mat-label>Event Name</mat-label>
 						<input type="text" autocomplete="off" formControlName="eventName" matInput >
 						<mat-error *ngIf="eventName?.touched && eventName?.errors?.['required']">event is required.</mat-error>
 					</mat-form-field>
 					
-					<mat-form-field appearance="fill" class="text-xs w-full">
+					<mat-form-field appearance="outline" class="text-xs w-full">
 						<mat-label>Address</mat-label>
 						<input type="text" autocomplete="off" formControlName="address" matInput>
 						<mat-error *ngIf="address?.touched && address?.errors?.['required']">address is required.</mat-error>
 					</mat-form-field>
 
-					<mat-form-field appearance="fill" class="text-xs w-1/2 pr-1">
+					<mat-form-field appearance="outline" class="text-xs w-1/2 pr-1">
+						<mat-label>Select Cottage type</mat-label>
+						<mat-select>
+							<mat-option *ngFor="let type of cottageType">{{type}}</mat-option>
+						</mat-select>
+					</mat-form-field>
+
+					<mat-form-field appearance="outline" class="text-xs w-1/2">
 						<mat-label>Available Cottage</mat-label>
 						<mat-select multiple formControlName="cottage">
 							<mat-option *ngFor="let item of cottageList" [value]="item"> {{item}} </mat-option>
@@ -61,7 +68,7 @@
 						<mat-error *ngIf="cottage?.touched && cottage?.errors?.['required']">cottage is required.</mat-error>
 					</mat-form-field>
 
-					<mat-form-field appearance="fill" class="text-xs w-1/2">
+					<mat-form-field appearance="outline" class="text-xs w-full">
 						<mat-label>Enter a date range</mat-label>
 						<mat-date-range-input [rangePicker]="picker">
 							<input matInput formControlName="start" matStartDate placeholder="Start date">
@@ -71,7 +78,7 @@
 						<mat-date-range-picker #picker></mat-date-range-picker>
 					</mat-form-field>
 
-					<mat-form-field appearance="fill" class="text-xs w-full">
+					<mat-form-field appearance="outline" class="text-xs w-full">
 						<mat-label>Comments (Optional)</mat-label>
 						<textarea type="text" formControlName="comment" matInput autocomplete="off"></textarea>
 						<mat-error *ngIf="comment?.touched && comment?.errors?.['required']">Pls enter N/A to procceed is required.</mat-error>
@@ -108,8 +115,8 @@
 				</table>
 			</div>
 		</div>
-		<div class="bg-gray-500 h-5">
-			<a class="text-white hover:underline text-xs p-2 cursor-pointer">Reservation List</a>
+		<div class="bg-gray-500 h-3">
+			<a class="text-white hover:underline text-xs p-2 cursor-pointer"></a>
 		</div>
 		<div class="flex justify-end">
 			<mat-form-field class="text-xs">

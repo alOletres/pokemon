@@ -1,0 +1,76 @@
+<mat-toolbar class="page-header text-gray-400" role="heading">
+	<h1>Reports</h1>
+</mat-toolbar>
+
+<div class="ml-6 mr-6">
+	<div class="flex justify-between">
+			<mat-form-field appearance="outline" class="text-xs">
+				<mat-label>Enter a date range</mat-label>
+				<mat-date-range-input [rangePicker]="picker">
+					<input matStartDate  placeholder="Start date">
+					<input matEndDate  placeholder="End date">
+				</mat-date-range-input>
+				<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+				<mat-date-range-picker #picker></mat-date-range-picker>
+			</mat-form-field>
+
+			<div>
+				<button
+					mat-raised-button
+					class="bg-yellow-400 text-white"
+					>
+					Print
+				</button>
+			</div>
+	</div>
+
+	<table class="border-2 w-full">
+		<thead class="text-xs uppercase text-left bg-slate-400">
+			<tr>
+				<th class="p-2">no.</th>
+				<th class="p-2">customer name</th>
+				<th class="p-2">customer type</th>
+				<th class="p-2">cottage type</th>
+				<th class="p-2">cottage #.</th>
+				<th class="p-2">start date reserved</th>
+				<th class="p-2">end date reserved</th>
+				<th class="p-2">number of days</th>
+				<th class="p-2">date created</th>
+				<th class="p-2">status</th>
+				<th class="p-2">amount</th>
+			</tr>
+		</thead>
+		<tbody class="text-xs">
+			<tr class=" hover:bg-yellow-100  cursor-pointer">
+				<td class="p-2">1.</td>
+				<td class="p-2">Marjorie</td>
+				<td class="p-2">Guest</td>
+				<td class="p-2">Floating cottage</td>
+				<td class="p-2">COT-0001</td>
+				<td class="p-2">09/20/2022</td>
+				<td class="p-2">09/20/2022</td>
+				<td class="p-2">1day</td>
+				<td class="p-2">09/01/2022</td>
+				<td class="p-2">Occupied</td>
+				<td class="p-2">{{1000 | currency : "&#8369;"}}</td>
+			</tr>
+			<tr class=" hover:bg-yellow-100  cursor-pointer">
+				<td class="p-2">1.</td>
+				<td class="p-2">Princess</td>
+				<td class="p-2">Customer</td>
+				<td class="p-2">Floating cottage</td>
+				<td class="p-2">COT-0001</td>
+				<td class="p-2">09/24/2022</td>
+				<td class="p-2">09/24/2022</td>
+				<td class="p-2">1day</td>
+				<td class="p-2">09/01/2022</td>
+				<td class="p-2">Occupied</td>
+				<td class="p-2">{{1000 | currency : "&#8369;"}}</td>
+			</tr>
+			<tr>
+				<td colspan="10" class="p-2">Total</td>
+				<td class="p-2 font-semibold">{{2000 | currency : "&#8369;"}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

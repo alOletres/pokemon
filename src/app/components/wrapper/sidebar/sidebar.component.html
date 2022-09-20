@@ -28,7 +28,7 @@
 		  	<div class="circle"></div>Cottage Master
 		</mat-list-item>
 	</div>
-	<mat-list-item>
+	<mat-list-item [routerLink]="['/reports']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
 		<mat-icon>list</mat-icon> <span>Reports</span>
 	</mat-list-item>
 </mat-list>

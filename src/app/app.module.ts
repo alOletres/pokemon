@@ -55,6 +55,7 @@ import { AboutComponent } from './components/routes/landing-page/about/about.com
 import { ReservationDateComponent } from './globals/dialog/reservation-date/reservation-date.component';
 import { SignInComponent } from './globals/dialog/sign-in/sign-in.component';
 import { SignUpComponent } from './globals/dialog/sign-up/sign-up.component';
+import { ReportsComponent } from './components/routes/reports/reports.component';
 
 const materialModules = [
   MatBadgeModule,
@@ -96,7 +97,8 @@ const materialModules = [
     AboutComponent,
     ReservationDateComponent,
     SignInComponent,
-    SignUpComponent
+    SignUpComponent,
+    ReportsComponent
   ],
   imports: [
     CommonModule,
