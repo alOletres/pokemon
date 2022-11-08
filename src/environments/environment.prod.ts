@@ -1,3 +1,5 @@
+
 export const environment = {
-  production: true
+  production: true,
+  // ENDPOINT_DEV: process.env["API_DEV"] as string
 };

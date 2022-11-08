@@ -1,80 +1,81 @@
 
-<div class="p-2">
-	<div class="p-2">
-		<h3 class="font-semibold text-lg uppercase text-blue-900">User master Form</h3>
-		<div class="flex justify-start pb-2">
-			<button 
-				mat-raised-button 
-				class="bg-blue-600 text-white"
-				(click)="saveUser()"
-				>
-				Save
-			</button>&nbsp;
-			<div class="w-1 h-10 bg-slate-400 rounded"></div>&nbsp;
-			<button mat-raised-button >Clear</button>
-		</div>
-		<div class="bg-gray-500 h-5 mb-2"></div>
-
-		<div class="w-1/2">
-			<form [formGroup]="userForm"> 
-				<mat-form-field appearance="outline" class="text-xs w-1/2 pr-1">
+<div class="mt-10">
+	<div class="ml-2"> <h3 class=" pr-2 font-semibold text-lg uppercase text-blue-900">User master Form</h3></div>
+	<div class="p-2 flex">
+		
+		<div class="w-1/4 bg-white mat-elevation-z8 p-2 mt-2 mr-2">
+			<h4 class="text-xs font-semibold text-gray-500">Fill out user information!</h4>
+			<form [formGroup]="userForm" (ngSubmit)="saveUser()"> 
+				<mat-form-field appearance="outline" class="text-xs w-full">
 					<mat-label>Firstname</mat-label>
 					<input type="text" formControlName="firstname" matInput autocomplete="off">
 					<mat-error *ngIf="firstname?.touched && firstname?.errors?.['required']">Firstname is required</mat-error>
 				</mat-form-field>
 
-				<mat-form-field appearance="outline" class="text-xs w-1/2">
+				<mat-form-field appearance="outline" class="text-xs w-full">
 					<mat-label>Lastname</mat-label>
 					<input type="text" formControlName="lastname" matInput autocomplete="off">
 					<mat-error *ngIf="lastname?.touched && lastname?.errors?.['required']">Lastname is required</mat-error>
 				</mat-form-field>
 
-				<mat-form-field appearance="outline" class="text-xs w-1/2 pr-1">
+				<mat-form-field appearance="outline" class="text-xs w-full">
 					<mat-label>Contact</mat-label>
 					<span matPrefix>+63 &nbsp;</span>
 					<input type="text" formControlName="contact" matInput autocomplete="off">
 					<mat-error *ngIf="contact?.touched && contact?.errors?.['required']">Contact is required</mat-error>
 				</mat-form-field>
 
-				<mat-form-field appearance="outline" class="text-xs w-1/2">
+				<mat-form-field appearance="outline" class="text-xs w-full">
 					<mat-label>User type</mat-label>
-					<mat-select formControlName="type">
-						<mat-option *ngFor="let user of userType" [value]="user">{{user}}</mat-option>
+					<mat-select formControlName="role">
+						<mat-option *ngFor="let user of userRole" [value]="user">{{user}}</mat-option>
 					</mat-select>
 					<mat-error *ngIf="type?.touched && type?.errors?.['required']">Type is required</mat-error>
 				</mat-form-field>
+
+				<div class="flex justify-end pb-1">
+					<button 
+						mat-raised-button 
+						class="w-full bg-blue-600 text-white"
+						>
+						Save User
+					</button>
+				</div>
 			</form>
 		</div>
-		<div class="bg-gray-500 h-5 mb-2">
-			<a class="text-white hover:underline text-xs p-1">User list</a>
-		</div>
 
-		<table class="w-full mt-2 border">
-			<thead class="text-xs uppercase text-left bg-slate-400">
-				<tr>
-					<th class="p-1">No.</th>
-					<th class="p-1">Complete name</th>
-					<th class="p-1">Contact</th>
-					<th class="p-1">Type</th>
-					<th class="p-1">Date added</th>
-					<th class="p-1">Status</th>
-					<th class="p-1">Action</th>
-				</tr>
-			</thead>
-			<tbody class="text-xs text-left">
-				<tr class="hover:bg-yellow-50 cursor-pointer">
-					<td class="p-1">1.</td>
-					<td class="p-1 w-36 max-w-xs break-words capitalize">marjorie bulay</td>
-					<td class="p-1">+63938 383 9373</td>
-					<td class="p-1">Admin</td>
-					<td class="p-1">09/15/2022</td>
-					<td class="p-1">Active</td>
-					<td class="p-1">
-						<a class="italic text-slate-600 hover:underline cursor-pointer">Edit</a> |
-						<a class="capitalize italic text-red-700 hover:underline cursor-pointer">deActivate</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+
+		<div class="bg-white mat-elevation-z8 w-3/4 mt-2 h-fit">
+			<div class="p-2">
+					<h4 class="text-xs font-semibold text-gray-500">User list!</h4>
+			</div>
+			<table class="w-full mt-2 border">
+				<thead class="text-xs uppercase text-left bg-gray-200">
+					<tr>
+						<th class="p-1">No.</th>
+						<th class="p-1">Complete name</th>
+						<th class="p-1">Contact</th>
+						<th class="p-1">Type</th>
+						<th class="p-1">Date added</th>
+						<th class="p-1">Status</th>
+						<th class="p-1">Action</th>
+					</tr>
+				</thead>
+				<tbody class="text-xs text-left">
+					<tr class="hover:bg-yellow-50 cursor-pointer">
+						<td class="p-1">1.</td>
+						<td class="p-1 w-36 max-w-xs break-words capitalize">marjorie bulay</td>
+						<td class="p-1">+63938 383 9373</td>
+						<td class="p-1">Admin</td>
+						<td class="p-1">09/15/2022</td>
+						<td class="p-1">Active</td>
+						<td class="p-1">
+							<a class="italic text-slate-600 hover:underline cursor-pointer">Edit</a> |
+							<a class="capitalize italic text-red-700 hover:underline cursor-pointer">deActivate</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>

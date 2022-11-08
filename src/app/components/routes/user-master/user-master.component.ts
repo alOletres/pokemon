@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UserMasterService } from './user-master.service';
 
 @Component({
   selector: 'app-user-master',
@@ -7,14 +8,14 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./user-master.component.css']
 })
 export class UserMasterComponent implements OnInit {
-	userType: string[] = ['Admin', 'Cashier'];
+	userRole: string[] = ['Admin', 'Cashier'];
 	userForm!: FormGroup;
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private http_user: UserMasterService,) {
 		this.userForm = this.fb.group({
 			firstname: [null, Validators.required],
 			lastname: [null, Validators.required],
 			contact: [null, Validators.required],
-			type: [null, Validators.required]
+			role: [null, Validators.required]
 		});
 	}
 
@@ -36,10 +37,11 @@ export class UserMasterComponent implements OnInit {
   ngOnInit(): void {
   }
 
-	saveUser () {
+	async saveUser () {
 		if (this.userForm.invalid) {
 			this.userForm.markAllAsTouched();
 		} else {
+			const response = await this.http_user.saveUser(this.userForm.value);
 
 		}
 	}

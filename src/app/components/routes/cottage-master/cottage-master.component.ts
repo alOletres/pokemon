@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { CottageMasterService } from './cottage-master.service';
 
 @Component({
   selector: 'app-cottage-master',
@@ -9,12 +10,16 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class CottageMasterComponent implements OnInit {
 	cottageForm!: FormGroup;
 	type: string[] = ['Floating cottage', 'Non-Floating cottage'];
-  constructor(private fb: FormBuilder) {
+	fileName!: string;
+	file!: File
+  constructor(private fb: FormBuilder, private http_cottage: CottageMasterService,) {
 		this.cottageForm = this.fb.group({
 			cottageType: [null, Validators.required],
 			cottageNumber: [null, Validators.required],
 			capacity: [null, Validators.required],
-			cottagePrice: [null, Validators.required]
+			cottagePrice: [null, Validators.required],
+			description: [null, Validators.required],
+			image: [null, Validators.required],
 		});
 	}
 
@@ -34,19 +39,34 @@ export class CottageMasterComponent implements OnInit {
 		return this.cottageForm.get('cottagePrice');
 	}
 
+	get description () {
+		return this.cottageForm.get('description');
+	}
+
   ngOnInit(): void {
   }
 
-	saveCottage () {
-		try {
-			if (this.cottageForm.invalid) {
-				this.cottageForm.markAllAsTouched();
-			} else {
+	changeImage(event: any) {
+    this.file = event.target.files[0];
+		if(this.file) {
+			this.fileName = this.file.name;
+		}
+		
+	}
 
+	async saveCottage () {
+		if (this.cottageForm.invalid) {
+			this.cottageForm.markAllAsTouched();
+		} else {
+			try {
+				const formData = new FormData();
+				formData.append("thumbnail", this.file);
+				
+				const response = await this.http_cottage.saveCottage(this.cottageForm.value);
+				
+			} catch (err) {
+				throw err;
 			}
-		} catch (err) {
-			console.log(err);
-			
 		}
 	}
 
