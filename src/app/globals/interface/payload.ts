@@ -1,18 +1,18 @@
 
-export interface IUserDetails {
-	id: number;
-	firstname: string;
-	lastname: string;
-	contact: string;
-	role: string;
-} 
-
-export interface ICottage {
-	id: number;
-	cottageType: string;
-	cottageNumber: string;
-	capacity: string;
-	cottagePrice: string;
-	description: string;
-	cottagePhoto: Blob;
+export interface IUser {
+  id?: number;
+  roles: string;
+  firstname: string;
+  lastname: string;
+  address: string;
+  mobile_number: string;
+  email: string;
+  password: string;
+  refresh_token?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
+
+
+
+

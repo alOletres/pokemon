@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from './auth.service';
+import { SnackBarService } from '../../../shared/services/snack-bar.service';
+import { ErrorResponse } from './../../../utils';
+import Method from '../../../utils/method';
 
 @Component({
   selector: 'app-auth',
@@ -10,15 +13,21 @@ import { AuthService } from './auth.service';
 })
 export class AuthComponent implements OnInit {
 	loginForm!: FormGroup;
-  constructor(private route: Router, private fb: FormBuilder, private http_auth: AuthService) {
+  constructor(
+		private route: Router, 
+		private fb: FormBuilder, 
+		private http_auth: AuthService,
+		private snackBar: SnackBarService,
+		private method: Method,
+		) {
 		this.loginForm = this.fb.group({
-			username: [null, Validators.required],
+			email: [null, Validators.required],
 			password: [null, Validators.required]
 		});
 	}
 
-	get username () {
-		return this.loginForm.get('username');
+	get email () {
+		return this.loginForm.get('email');
 	}
 	get password () {
 		return this.loginForm.get('password');
@@ -28,10 +37,19 @@ export class AuthComponent implements OnInit {
 
 	async LoginUser() {
 		try {
-			const response = await this.http_auth.login();
-			this.route.navigate(['/dash-board']);
+			const response = await this.http_auth.login(this.loginForm.value);
+			this.snackBar._showSnack(response.message, "success");
+			const accessToken = response.data?.accessToken as string
+			const userDetails = this.method.cookieDecode("accessToken", accessToken);
+
+			this.method.setCookie("accessToken", accessToken);
+			this.method.setCookie("refreshToken", response.data?.refreshToken as string);
+
+			this.route.navigate(['/dash-board']).then(() => (location.reload()));
+
 		} catch (err) {
-			throw err
+			const error = ErrorResponse(err);
+			this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
 		}
 	}
 

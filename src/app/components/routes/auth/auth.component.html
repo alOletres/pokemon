@@ -36,8 +36,8 @@
 				<form [formGroup]="loginForm" class="text-xs">
 					<mat-form-field appearance="outline" class="w-full ">
 						<mat-label>Username</mat-label>
-						<input type="text" matInput formControlName="username" autocomplete="off">
-						<mat-error *ngIf="username?.touched && username?.errors?.['required']">Username is required</mat-error>
+						<input type="text" matInput formControlName="email" autocomplete="off">
+						<mat-error *ngIf="email?.touched && email?.errors?.['required']">Username is required</mat-error>
 					</mat-form-field>
 
 					<mat-form-field appearance="outline" class="w-full">

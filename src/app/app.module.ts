@@ -56,7 +56,16 @@ import { ReservationDateComponent } from './globals/dialog/reservation-date/rese
 import { SignInComponent } from './globals/dialog/sign-in/sign-in.component';
 import { SignUpComponent } from './globals/dialog/sign-up/sign-up.component';
 import { ReportsComponent } from './components/routes/reports/reports.component';
+import { SnackBarComponent } from './shared/components/snack-bar/snack-bar.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTableModule} from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
+/**
+ * directive
+ */
+import { ImageDirective } from './globals/directive/image.directive';
 const materialModules = [
   MatBadgeModule,
   MatStepperModule,
@@ -73,7 +82,11 @@ const materialModules = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatDialogModule,
-  MatTabsModule
+  MatTabsModule,
+  MatSnackBarModule,
+  MatTableModule,
+  MatSortModule,
+  MatPaginatorModule,
 ]
 @NgModule({
   declarations: [
@@ -98,7 +111,9 @@ const materialModules = [
     ReservationDateComponent,
     SignInComponent,
     SignUpComponent,
-    ReportsComponent
+    ReportsComponent,
+    SnackBarComponent,
+    ImageDirective,
   ],
   imports: [
     CommonModule,
@@ -118,7 +133,7 @@ const materialModules = [
     })
   ],
   exports: [
-    ...materialModules
+    ...materialModules,
   ],
   providers: [],
   bootstrap: [AppComponent],

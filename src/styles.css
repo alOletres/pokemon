@@ -7,3 +7,50 @@
 @tailwind utilities;
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.success-snackbar {
+	background: rgb(29, 192, 86);
+	color: white;
+	border-color: rgb(43, 186, 43);
+
+}
+
+.mat-icon {
+	vertical-align: middle;
+	margin-right: 6px;
+}
+
+.error-snackbar {
+	background: rgb(241, 96, 96);
+	color: white;
+}
+
+.mat-icon {
+	vertical-align: middle;
+	margin-right: 6px;
+}
+
+.cs-backdrop {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 20000;
+	pointer-events: auto;
+	-webkit-tap-highlight-color: transparent;
+	transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+	background: rgba(0, 0, 0, 0.32);
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+	-moz-appearance: textfield;
+}

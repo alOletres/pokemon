@@ -3,127 +3,138 @@
 			<div class="pl-1">
 				<h3 class="font-semibold text-lg uppercase text-blue-900">Cottage master Form</h3>
 			</div>
-			<!-- <div class="bg-gray-500 h-5 mb-2"></div> -->
-
-		<div fxLayout="row">
-			<div class="w-1/3 bg-white mat-elevation-z8 p-2 h-fit mr-2">
-				<h4 class="text-xs font-semibold text-gray-500">Fill out cottage information!</h4>
-				<form [formGroup]="cottageForm" class="pt-2 text-xs" (ngSubmit)="saveCottage()">
-					<mat-form-field appearance="outline" class="text-xs w-full">
-						<mat-label>Cottage type</mat-label>
-						<mat-select formControlName="cottageType">
-							<mat-option *ngFor="let cot of type" [value]="cot">{{cot}}</mat-option>
-						</mat-select>
-						<mat-error *ngIf="cottageType?.touched && cottageType?.errors?.['required']">Type is required</mat-error>
-					</mat-form-field>
-
-					<mat-form-field appearance="outline" class="text-xs w-full">
-						<mat-label>Cottage #</mat-label>
-						<input 
-							type="text" 
-							formControlName="cottageNumber" 
-							matInput 
-							autocomplete="off"
-							>
-						<mat-error 
-							*ngIf="cottageNumber?.touched && cottageNumber?.errors?.['required']"
-							>
-							Cottage number is required
-						</mat-error>
-					</mat-form-field>
-
-					<mat-form-field appearance="outline" class="text-xs w-full">
-						<mat-label>Capacity</mat-label>
-						<input 
-							type="text" 
-							formControlName="capacity" 
-							matInput 
-							autocomplete="off"
-							>
-						<mat-error 
-							*ngIf="capacity?.touched && capacity?.errors?.['required']"
-							>
-							Capacity is required
-						</mat-error>
-					</mat-form-field>
-
-					<mat-form-field appearance="outline" class="text-xs w-full">
-						<mat-label>Cottage price</mat-label>
-						<input 
-							type="text" 
-							formControlName="cottagePrice" 
-							matInput 
-							autocomplete="off"
-						/>
-						<mat-error 
-							*ngIf="cottagePrice?.touched && cottagePrice?.errors?.['required']"
-							>
-							Cottage price is required
-						</mat-error>
-					</mat-form-field>
-
-					<mat-form-field appearance="outline" class="text-xs w-full">
-						<mat-label>Description</mat-label>
-						<textarea class="text-xs" formControlName="description" matInput ></textarea>
-						<mat-error *ngIf="description?.touched && description?.errors?.['required']">Description is required</mat-error>
-					</mat-form-field>
-
-					<input 
-						type="file" 
-						formControlName="image" 
-						(change)="changeImage($event)" 
-						autocomplete="off" 
-						#fileUpload 
-						hidden
-					/>
-					<div class="file-upload w-full flex justify-around">
+		<div >
+			<div class="w-full bg-white mat-elevation-z8 p-2 h-fit mr-2">
+				<div class="flex">
+					<div>
+						<h4 class="text-xs font-semibold text-gray-500">Fill out cottage information!</h4>
+						<form [formGroup]="cottageForm" class="pt-2 text-xs w-full pr-2">
 					
-						<div class="whitespace-nowrap pt-3 text-ellipsis overflow-hidden">
-							<span class="">{{ fileName || "No file uploaded yet."}}</span>
-						</div>
+							<mat-form-field appearance="outline" class="text-xs w-1/2 pr-1">
+								<mat-label>Cottage type</mat-label>
+								<mat-select formControlName="type" class="capitalize">
+									<mat-option *ngFor="let cot of typeList" class="capitalize" [value]="cot">
+										{{cot}}
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="type?.touched && type?.errors?.['required']">
+									Type is required
+								</mat-error>
+							</mat-form-field>
 					
-						<button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
-							<mat-icon>attach_file</mat-icon>
-						</button>
+							<mat-form-field appearance="outline" class="text-xs w-1/2">
+								<mat-label>Cottage #</mat-label>
+								<input type="text" formControlName="cottageNumber" matInput autocomplete="off" />
+								<mat-error *ngIf="cottageNumber?.touched && cottageNumber?.errors?.['required']">
+									Cottage number is required
+								</mat-error>
+							</mat-form-field>
+					
+							<mat-form-field appearance="outline" class="text-xs w-1/2 pr-1">
+								<mat-label>Capacity</mat-label>
+								<input type="text" formControlName="capacity" matInput autocomplete="off">
+								<mat-error *ngIf="capacity?.touched && capacity?.errors?.['required']">
+									Capacity is required
+								</mat-error>
+							</mat-form-field>
+					
+							<mat-form-field appearance="outline" class="text-xs w-1/2">
+								<mat-label>Cottage price</mat-label>
+								<input type="number" min="1" formControlName="price" matInput autocomplete="off" />
+								<mat-error *ngIf="price?.touched && price?.errors?.['required']">
+									Cottage price is required
+								</mat-error>
+							</mat-form-field>
+					
+							<mat-form-field appearance="outline" class="text-xs w-full">
+								<mat-label>Description</mat-label>
+								<textarea class="text-xs" formControlName="description" matInput></textarea>
+								<mat-error *ngIf="description?.touched && description?.errors?.['required']">Description is required</mat-error>
+							</mat-form-field>
+					
+							<input 
+								type="file" 
+								accept=".jpg"
+								(change)="changeImage($event)" 
+								autocomplete="off" 
+								#fileUpload 
+								hidden 
+							/>
+				
+						</form>
 					</div>
-					<div class="flex justify-end pt-2">
-						<button 
-							mat-raised-button 
-							class="bg-blue-600 text-white"
-							>
-							Save Cottage
-						</button>
+					
+					<div class="2/5">
+						<img 
+							[src]="url" 
+							width="420" 
+							height="415"
+							class="h-60 w-96 cursor-pointer border-2" 
+							alt=""
+							(click)="fileUpload.click()"
+							/>
 					</div>
-				</form>
+				</div>
+
+				<div class="flex justify-end">
+					<button 
+						mat-raised-button 
+						class="bg-blue-600 text-white"
+						(click)="saveCottage()"
+						>
+						Save Cottage
+					</button>
+				</div>
+				
 			</div>
-			<div class="bg-white mat-elevation-z8 w-2/3 h-fit">
+
+			<div class="bg-white mat-elevation-z8 w-full mt-4 h-fit">
 				<div class="pt-2 pb-1 pl-2">
 					<h4 class="text-xs font-semibold text-gray-500">Cottage list!</h4>
 				</div>
-				<table class="w-full mt-2 border">
-					<thead class="text-xs uppercase text-left bg-gray-200">
-						<tr>
-							<th class="p-1">No.</th>
-							<th class="p-1">Cottage type</th>
-							<th class="p-1">Cottage number</th>
-							<th class="p-1">Price</th>
-							<th class="p-1">Date added</th>
-							<th class="p-1">Action</th>
-						</tr>
-					</thead>
-					<tbody class="text-xs text-left">
-						<tr class="hover:bg-yellow-50 cursor-pointer">
-							<td class="p-1">1.</td>
-							<td class="p-1 w-36 max-w-xs break-words">Floating cottage</td>
-							<td class="p-1">#12</td>
-							<td class="p-1">200.00</td>
-							<td class="p-1">09/15/2022</td>
-							<td class="p-1">
-								<a class="italic text-slate-600 hover:underline cursor-pointer">Edit</a>
+
+				<div class="w-full overflow-x-auto">
+					<table [dataSource]="dataCottage" mat-table matSort #cottageSort="matSort" class="w-full">
+						<ng-container [matColumnDef]="col.key" *ngFor="let col of column_schema">
+							<th 
+								mat-header-cell 
+								*matHeaderCellDef 
+								class="uppercase bg-gray-100 w-36 max-w-xs break-words"
+								>
+								{{col.label}}
+							</th>
+					
+							<td mat-cell *matCellDef="let element">
+					
+								<div [ngSwitch]="col.type">
+									
+									<div *ngSwitchCase="'images'">
+										<img [src]="element[col.key]" height="50" width="50" alt="">
+										<!-- <span [appImage]="element[col.key]"></span> -->
+										<!-- <div [appImage]="element[col.key]"></div> -->
+									</div>
+					
+									<div *ngSwitchDefault>
+										{{element[col.key]}}
+									</div>
+
+								</div>
 							</td>
-						</tr>
-					</tbody>
-				</table>
+						</ng-container>
+						<tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+						<tr mat-row *matRowDef="let row; columns: displayColumns"></tr>
+					</table>
+				</div>
+
+				<div>
+					<mat-paginator 
+						#cottagePaginator 
+						[length]="100" 
+						[pageSize]="20" 
+						[pageSizeOptions]="[5, 10, 25, 100]"
+						aria-label="Select page">
+					</mat-paginator>
+				</div>
 			</div>
 		</div>
 

@@ -8,29 +8,81 @@
 			<form [formGroup]="userForm" (ngSubmit)="saveUser()"> 
 				<mat-form-field appearance="outline" class="text-xs w-full">
 					<mat-label>Firstname</mat-label>
-					<input type="text" formControlName="firstname" matInput autocomplete="off">
-					<mat-error *ngIf="firstname?.touched && firstname?.errors?.['required']">Firstname is required</mat-error>
+					<input 
+						type="text" 
+						formControlName="firstname" 
+						matInput 
+						autocomplete="off"
+					/>
+					<mat-error 
+						*ngIf="firstname?.touched && firstname?.errors?.['required']"
+						>
+						Firstname is required
+					</mat-error>
 				</mat-form-field>
 
 				<mat-form-field appearance="outline" class="text-xs w-full">
 					<mat-label>Lastname</mat-label>
-					<input type="text" formControlName="lastname" matInput autocomplete="off">
-					<mat-error *ngIf="lastname?.touched && lastname?.errors?.['required']">Lastname is required</mat-error>
+						<input 
+							type="text" 
+							formControlName="lastname" 
+							matInput 
+							autocomplete="off"
+						/>
+					<mat-error 
+						*ngIf="lastname?.touched && lastname?.errors?.['required']"
+						>
+						Lastname is required
+					</mat-error>
+				</mat-form-field>
+
+				<mat-form-field appearance="outline" class="text-xs w-full">
+					<mat-label>Email</mat-label>
+						<input 
+							type="text" 
+							formControlName="email" 
+							matInput 
+							autocomplete="off"
+						/>
+					<mat-error 
+						*ngIf="email?.touched && email?.errors?.['required']"
+						>
+						Email is required
+					</mat-error>
 				</mat-form-field>
 
 				<mat-form-field appearance="outline" class="text-xs w-full">
 					<mat-label>Contact</mat-label>
 					<span matPrefix>+63 &nbsp;</span>
-					<input type="text" formControlName="contact" matInput autocomplete="off">
-					<mat-error *ngIf="contact?.touched && contact?.errors?.['required']">Contact is required</mat-error>
+					<input 
+						type="text" 
+						formControlName="mobile_number" 
+						matInput 
+						autocomplete="off"
+					/>
+					<mat-error 
+						*ngIf="mobile_number?.touched && mobile_number?.errors?.['required']"
+						>
+						Contact is required
+					</mat-error>
 				</mat-form-field>
 
 				<mat-form-field appearance="outline" class="text-xs w-full">
 					<mat-label>User type</mat-label>
-					<mat-select formControlName="role">
-						<mat-option *ngFor="let user of userRole" [value]="user">{{user}}</mat-option>
+					<mat-select formControlName="roles" class="capitalize">
+						<mat-option 
+							*ngFor="let user of userRole" 
+							class="capitalize" 
+							[value]="user"
+							>
+							{{user}}
+						</mat-option>
 					</mat-select>
-					<mat-error *ngIf="type?.touched && type?.errors?.['required']">Type is required</mat-error>
+					<mat-error 
+						*ngIf="roles?.touched && roles?.errors?.['required']"
+						>
+						Role is required
+					</mat-error>
 				</mat-form-field>
 
 				<div class="flex justify-end pb-1">
@@ -38,7 +90,7 @@
 						mat-raised-button 
 						class="w-full bg-blue-600 text-white"
 						>
-						Save User
+						{{btnName}}
 					</button>
 				</div>
 			</form>
@@ -49,33 +101,62 @@
 			<div class="p-2">
 					<h4 class="text-xs font-semibold text-gray-500">User list!</h4>
 			</div>
-			<table class="w-full mt-2 border">
-				<thead class="text-xs uppercase text-left bg-gray-200">
-					<tr>
-						<th class="p-1">No.</th>
-						<th class="p-1">Complete name</th>
-						<th class="p-1">Contact</th>
-						<th class="p-1">Type</th>
-						<th class="p-1">Date added</th>
-						<th class="p-1">Status</th>
-						<th class="p-1">Action</th>
-					</tr>
-				</thead>
-				<tbody class="text-xs text-left">
-					<tr class="hover:bg-yellow-50 cursor-pointer">
-						<td class="p-1">1.</td>
-						<td class="p-1 w-36 max-w-xs break-words capitalize">marjorie bulay</td>
-						<td class="p-1">+63938 383 9373</td>
-						<td class="p-1">Admin</td>
-						<td class="p-1">09/15/2022</td>
-						<td class="p-1">Active</td>
-						<td class="p-1">
-							<a class="italic text-slate-600 hover:underline cursor-pointer">Edit</a> |
-							<a class="capitalize italic text-red-700 hover:underline cursor-pointer">deActivate</a>
-						</td>
-					</tr>
-				</tbody>
+			<table 
+				[dataSource]="dataUser" 
+				matSort 
+				#userSort="matSort" 
+				mat-table 
+				class="w-full mt-2 border"
+				>
+				<ng-container [matColumnDef]="col.key" *ngFor="let col of columnSchema">
+					<th 
+						mat-header-cell 
+						*matHeaderCellDef 
+						mat-sort-header
+						class="uppercase bg-gray-100 w-36 break-words max-w-xs"
+						>
+						{{col.label}}
+					</th>
+
+					<td 
+						mat-cell 
+						*matCellDef="let element" 
+						class="text-xs w-36 break-words max-w-xs"
+						>
+
+						<div [ngSwitch]="col.type">
+
+							<div *ngSwitchCase="'isEdit'">
+								<button
+									mat-raised-button
+									class="bg-yellow-500 text-white"
+									(click)="passValue(element)"
+									>
+									Edit
+								</button>
+							</div>
+
+							<div *ngSwitchDefault>
+								{{element[col.key]}}
+							</div>
+						</div>
+
+					</td>
+				</ng-container>
+				<tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+				<tr mat-row *matRowDef="let row; columns: displayColumns"></tr>
 			</table>
+
+			<div>
+				<mat-paginator 
+					#userPaginator 
+					[length]="100" 
+					[pageSize]="20" 
+					[pageSizeOptions]="[5, 10, 25, 100]"
+					aria-label="Select page">
+				</mat-paginator>
+			</div>
+			
 		</div>
 	</div>
 </div>
