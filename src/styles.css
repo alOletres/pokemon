@@ -54,3 +54,8 @@ input::-webkit-inner-spin-button {
 input[type=number] {
 	-moz-appearance: textfield;
 }
+
+.myClass .mat-dialog-container {
+	background-color: transparent !important;
+	box-shadow: none;
+}

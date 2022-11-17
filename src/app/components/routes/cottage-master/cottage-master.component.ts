@@ -29,8 +29,8 @@ export class CottageMasterComponent implements OnInit {
 	@ViewChild('cottageSort') cottageSort!: MatSort;
 
 	base64: string = EMage.BASE64_INITIAL; 
-
-	// url!: string;
+	fileChanges!: string | ArrayBuffer;
+	btnName: string = "Save";
 
 	column_schema: IColumnSchema[] = [
 		{
@@ -118,6 +118,10 @@ export class CottageMasterComponent implements OnInit {
 		this.dataCottage.sort = this.cottageSort;
 	}
 
+	clickFileChanges(): void {
+		this.btnName = "Save Changes"
+	}
+
 	changeImage(event: any) {
 
 		this.file = event.target.files[0];
@@ -126,9 +130,12 @@ export class CottageMasterComponent implements OnInit {
 		
 		reader.readAsDataURL(this.file);
 
-		reader.onload = (event: any) => { this.url = event.target.result}
+		reader.onload = (event: any) => {
+			(this.btnName === "Save") ? this.url = event.target.result : this.fileChanges = event.target.result;
+		}
 
 		this.cottageForm.get('images')?.patchValue(this.file);
+
 	}
 
 	async saveCottage () {
@@ -171,7 +178,7 @@ export class CottageMasterComponent implements OnInit {
 	}
 
 	passImage(element: ICottage): void {
-		this.url = `${this.base64}, ${element.images?.[0]}`
+		this.fileChanges = `${this.base64}, ${element.images?.[0]}`
 	}
 
 	async updateCottage(element: ICottage): Promise<void> {
@@ -206,6 +213,10 @@ export class CottageMasterComponent implements OnInit {
 			const error = ErrorResponse(err);
 			this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
 		}
+	}
+
+	viewCottage(element: ICottage): void {
+		this.dialog.open(CottageDialogComponent, {width: '800px', data: element, panelClass: 'myClass'});
 	}
 
 }

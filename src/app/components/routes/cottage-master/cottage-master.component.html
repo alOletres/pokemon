@@ -106,8 +106,8 @@
 					<h4 class="text-xs font-semibold text-gray-500">Cottage list!</h4>
 				</div>
 
-				<div class="w-full overflow-x-auto">
-					<table [dataSource]="dataCottage" mat-table matSort #cottageSort="matSort" class="w-full">
+				<div class="w-full overflow-x-auto overflow-y-hidden">
+					<table [dataSource]="dataCottage" mat-table matSort #cottageSort="matSort" class="w-full text-xs">
 						<ng-container [matColumnDef]="col.key" *ngFor="let col of column_schema">
 							<th 
 								mat-header-cell 
@@ -124,9 +124,10 @@
 									
 									<div *ngSwitchCase="'images'">
 										<img 
-											class="border-2 h-20 w-20"
-											[src]="base64+','+element[col.key]" 
+											class="border-2 h-18 w-20 cursor-pointer"
+											[src]="base64+','+element[col.key][0]" 
 											alt=""
+											(click)="viewCottage(element)"
 										/>
 									</div>
 
@@ -169,10 +170,10 @@
 												hidden 
 											/>
 											<img 
-												class="border-2 h-20 w-20"
-												[src]="url" 
+												class="border-2 h-18 w-20"
+												[src]="fileChanges" 
 												alt=""
-												(click)="fileUploadChanges.click()"
+												(click)="fileUploadChanges.click();clickFileChanges()"
 											/>
 										</div>
 
@@ -223,6 +224,10 @@
 						<tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
 						<tr mat-row *matRowDef="let row; columns: displayColumns"></tr>
 					</table>
+				</div>
+
+				<div *ngIf="dataCottage.data.length === 0" class="text-center p-4">
+					<h4>NO RECORD FOUND</h4>
 				</div>
 
 				<div>
