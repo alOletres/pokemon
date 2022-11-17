@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { IUser } from './../../../globals/interface/payload';
 import { ENDPOINT } from 'src/app/globals/models/endpoint';
 import Method from '../../../utils/method';
@@ -24,7 +24,7 @@ export class UserMasterService {
 
 	async getUser(): Promise<IResponse<IUser[]>> {
 		try {
-			const response = this.http.get<IResponse<IUser[]>>(`${ENDPOINT.RESORT}/user/getUser`, this.method.authorization());
+			const response = this.http.get<IResponse<IUser[]>>(`${ENDPOINT.RESORT}/user/list`, this.method.authorization());
 			return await lastValueFrom(response);
 		} catch(err) {
 			throw err;
@@ -33,8 +33,9 @@ export class UserMasterService {
 
 	async updateUser(payload: IUser): Promise<IResponse<string>> {
 		try {
-			const response = this.http.post<IResponse<string>>(`${ENDPOINT.RESORT}/user/updateUser`, payload, this.method.authorization());
-			return await firstValueFrom(response);
+			const url = this.http.put<IResponse<string>>(`${ENDPOINT.RESORT}/user/edit?id=${payload.id}`, payload, this.method.authorization());
+			const response = await firstValueFrom(url);
+			return response;
 		} catch (err) {
 			throw err;
 		}

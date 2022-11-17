@@ -208,8 +208,6 @@ export class CottageMasterComponent implements OnInit {
 			// const response = await this.http_cottage.updateCottage(element);
 
 		} catch (err) {
-			console.log(err);
-			
 			const error = ErrorResponse(err);
 			this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
 		}

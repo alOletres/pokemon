@@ -8,6 +8,7 @@ import { IUser } from '../../../globals/interface/payload';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { IColumnSchema } from '../../../globals/interface/default';
+import { CommonServiceService } from '../../../globals/services/common-service.service';
 
 @Component({
   selector: 'app-user-master',
@@ -38,8 +39,8 @@ export class UserMasterComponent implements OnInit {
 			label: "mobile number"
 		},
 		{
-			key: "roles",
-			type: "text",
+			key: "role",
+			type: "roles",
 			label: "role"
 		},
 		{
@@ -60,7 +61,11 @@ export class UserMasterComponent implements OnInit {
 	@ViewChild('userPaginator') userPaginator !: MatPaginator;
 	@ViewChild("userSort") userSort!: MatSort;
 
-  constructor(private fb: FormBuilder, private http_user: UserMasterService, private snackBar: SnackBarService,) {
+  constructor(
+		private fb: FormBuilder, 
+		private http_user: UserMasterService, 
+		private snackBar: SnackBarService,
+		private common: CommonServiceService,) {
 		this.userForm = this.fb.group({
 			id: null,
 			firstname: [null, Validators.required],
@@ -103,14 +108,15 @@ export class UserMasterComponent implements OnInit {
 	}
 
 	passValue(element: IUser) {
-		
+		const roles = element.role as string[];
+
 		this.userForm.patchValue({
 			id: element.id,
 			firstname: element.firstname,
 			lastname: element.lastname,
 			email: element.email,
 			mobile_number: element.mobile_number,
-			roles: element.roles,
+			roles: roles.map((x) => (x)),
 		});
 
 		this.btnName = "Update User";
@@ -128,6 +134,7 @@ export class UserMasterComponent implements OnInit {
 
 					const response = await this.http_user.saveUser(this.userForm.value);
 					this.snackBar._showSnack(response.message, "success");
+					this.common.reset(this.userForm);
 					this.ngOnInit();
 
 				} else {
@@ -135,9 +142,8 @@ export class UserMasterComponent implements OnInit {
 					const response = await this.http_user.updateUser(this.userForm.value);
 					this.ngOnInit();
 					this.snackBar._showSnack(response.message, "success");
-					
-
-					
+					this.common.reset(this.userForm);
+			
 				}
 				
 			}
@@ -151,7 +157,18 @@ export class UserMasterComponent implements OnInit {
 	async getUser() {
 		try {
 			const response = await this.http_user.getUser();
-			this.dataUser.data = response.data as IUser[];
+			
+			const data = response.data as IUser[];
+			const result = data.map((x) => {
+
+				const roles = JSON.parse(x.role as string);
+				x.role = roles;
+				return x;
+
+			});
+
+			this.dataUser.data = result;
+		
 		} catch (err) {
 			const error = ErrorResponse(err);
 			this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");

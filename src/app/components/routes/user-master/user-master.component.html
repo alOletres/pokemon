@@ -69,7 +69,7 @@
 
 				<mat-form-field appearance="outline" class="text-xs w-full">
 					<mat-label>User type</mat-label>
-					<mat-select formControlName="roles" class="capitalize">
+					<mat-select formControlName="roles" class="capitalize" multiple>
 						<mat-option 
 							*ngFor="let user of userRole" 
 							class="capitalize" 
@@ -125,6 +125,10 @@
 						>
 
 						<div [ngSwitch]="col.type">
+
+							<div *ngSwitchCase="'roles'">
+								<span class="capitalize">{{element[col.key]}}</span>
+							</div>
 
 							<div *ngSwitchCase="'isEdit'">
 								<button
