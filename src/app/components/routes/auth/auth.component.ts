@@ -37,7 +37,7 @@ export class AuthComponent implements OnInit {
 
 	async LoginUser() {
 		try {
-			const response = await this.http_auth.login(this.loginForm.value);
+			const response = await this.http_auth.login(this.loginForm.value);			
 			this.snackBar._showSnack(response.message, "success");
 			const accessToken = response.data?.accessToken as string
 			const userDetails = this.method.cookieDecode("accessToken", accessToken);
@@ -48,6 +48,7 @@ export class AuthComponent implements OnInit {
 			this.route.navigate(['/dash-board']).then(() => (location.reload()));
 
 		} catch (err) {
+			
 			const error = ErrorResponse(err);
 			this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
 		}

@@ -8,6 +8,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { IColumnSchema, ICottage } from '../../../globals/interface';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { EMage } from '../../../globals/enums/image';
+import { MatDialog } from '@angular/material/dialog';
+import { CottageDialogComponent } from '../../dialog/cottage-dialog/cottage-dialog.component';
 
 @Component({
   selector: 'app-cottage-master',
@@ -15,6 +18,8 @@ import { MatSort } from '@angular/material/sort';
   styleUrls: ['./cottage-master.component.css']
 })
 export class CottageMasterComponent implements OnInit {
+	
+
 	cottageForm!: FormGroup;
 	typeList: string[] = ['floating', 'non-floating'];
 	file!: File;
@@ -22,6 +27,10 @@ export class CottageMasterComponent implements OnInit {
 	dataCottage = new MatTableDataSource<ICottage>([]);
 	@ViewChild('cottagePaginator') cottagePaginator!: MatPaginator ;
 	@ViewChild('cottageSort') cottageSort!: MatSort;
+
+	base64: string = EMage.BASE64_INITIAL; 
+
+	// url!: string;
 
 	column_schema: IColumnSchema[] = [
 		{
@@ -31,11 +40,11 @@ export class CottageMasterComponent implements OnInit {
 		},
 		{
 			key: "type",
-			type: "text",
+			type: "type",
 			label: "cottage type"
 		},
 		{
-			key: "cottageNumber",
+			key: "cottage_number",
 			type: "text",
 			label: "cottage number"
 		},
@@ -51,7 +60,7 @@ export class CottageMasterComponent implements OnInit {
 		},
 		{
 			key: "price",
-			type: "number",
+			type: "price",
 			label: "price"
 		},
 		{
@@ -67,7 +76,8 @@ export class CottageMasterComponent implements OnInit {
 		private fb: FormBuilder, 
 		private http_cottage: CottageMasterService, 
 		private snackBar: SnackBarService,
-		private common: CommonServiceService,) {
+		private common: CommonServiceService,
+		private dialog: MatDialog,) {
 		this.cottageForm = this.fb.group({
 			type: [null, Validators.required],
 			cottageNumber: [null, Validators.required],
@@ -130,7 +140,10 @@ export class CottageMasterComponent implements OnInit {
 				const formData = new FormData();
 
 				formData.append("images", this.file);
-				formData.append('payload', JSON.stringify(this.cottageForm.value));
+
+				for (let item of Object.keys(this.cottageForm.value)) {
+					formData.append(item, this.cottageForm.value[item])
+				}
 
 				const response = await this.http_cottage.saveCottage(formData);
 				this.snackBar._showSnack(response.message, "success");
@@ -150,12 +163,57 @@ export class CottageMasterComponent implements OnInit {
 			const response = await this.http_cottage.getCottage();
 			this.snackBar._showSnack(response.message, "success");
 			this.dataCottage.data = response.data as ICottage[];
-
-			console.log(this.dataCottage.data);
 			
 		} catch (err) {
 			const error = ErrorResponse(err);
 			this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
 		}
 	}
+
+	passImage(element: ICottage): void {
+		this.url = `${this.base64}, ${element.images?.[0]}`
+	}
+
+	async updateCottage(element: ICottage): Promise<void> {
+		try {
+			/**
+			 * this.file not selected value is undefined
+			 */
+			
+
+			// const formData = new FormData();
+
+			// console.log(element, this.file);
+
+			// const result = await convertBlobToBase64(element.images as unknown as Blob);
+			
+			// console.log(result);
+			
+
+			// const blob = new Blob(element.images);
+
+			// formData.append("images", element.images as string);
+
+			// for (let item of Object.keys(element)) {
+			// 	formData.append(item, element[item])
+			// }
+
+			// const response = await this.http_cottage.updateCottage(element);
+
+		} catch (err) {
+			console.log(err);
+			
+			const error = ErrorResponse(err);
+			this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
+		}
+	}
+
 }
+const convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
+    const reader = new FileReader;
+    reader.onerror = reject;
+    reader.onload = () => {
+        resolve(reader.result);
+    };
+    reader.readAsDataURL(blob);
+});

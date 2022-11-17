@@ -66,6 +66,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
  * directive
  */
 import { ImageDirective } from './globals/directive/image.directive';
+import { CottageDialogComponent } from './components/dialog/cottage-dialog/cottage-dialog.component';
 const materialModules = [
   MatBadgeModule,
   MatStepperModule,
@@ -114,6 +115,7 @@ const materialModules = [
     ReportsComponent,
     SnackBarComponent,
     ImageDirective,
+    CottageDialogComponent,
   ],
   imports: [
     CommonModule,

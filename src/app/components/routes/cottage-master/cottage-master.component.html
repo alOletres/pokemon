@@ -12,8 +12,15 @@
 					
 							<mat-form-field appearance="outline" class="text-xs w-1/2 pr-1">
 								<mat-label>Cottage type</mat-label>
-								<mat-select formControlName="type" class="capitalize">
-									<mat-option *ngFor="let cot of typeList" class="capitalize" [value]="cot">
+								<mat-select 
+									formControlName="type" 
+									class="capitalize"
+									>
+									<mat-option 
+										*ngFor="let cot of typeList" 
+										class="capitalize" 
+										[value]="cot"
+										>
 										{{cot}}
 									</mat-option>
 								</mat-select>
@@ -24,8 +31,14 @@
 					
 							<mat-form-field appearance="outline" class="text-xs w-1/2">
 								<mat-label>Cottage #</mat-label>
-								<input type="text" formControlName="cottageNumber" matInput autocomplete="off" />
-								<mat-error *ngIf="cottageNumber?.touched && cottageNumber?.errors?.['required']">
+								<input 
+									type="text" 
+									formControlName="cottageNumber" 
+									matInput 
+									autocomplete="off" 
+								/>
+								<mat-error 
+									*ngIf="cottageNumber?.touched && cottageNumber?.errors?.['required']">
 									Cottage number is required
 								</mat-error>
 							</mat-form-field>
@@ -99,6 +112,7 @@
 							<th 
 								mat-header-cell 
 								*matHeaderCellDef 
+								mat-sort-header
 								class="uppercase bg-gray-100 w-36 max-w-xs break-words"
 								>
 								{{col.label}}
@@ -106,16 +120,103 @@
 					
 							<td mat-cell *matCellDef="let element">
 					
-								<div [ngSwitch]="col.type">
+								<div [ngSwitch]="col.type" *ngIf="!element.isEdit">
 									
 									<div *ngSwitchCase="'images'">
-										<img [src]="element[col.key]" height="50" width="50" alt="">
+										<img 
+											class="border-2 h-20 w-20"
+											[src]="base64+','+element[col.key]" 
+											alt=""
+										/>
+									</div>
+
+									<div *ngSwitchCase="'type'">
+										<span class="capitalize">{{element[col.key]}}</span>
+									</div>
+
+									<div *ngSwitchCase="'price'">
+										<span>{{element[col.key] | currency : "&#8369;"}}</span>
+									</div>
+
+									<div *ngSwitchCase="'isEdit'" class="space-x-2 flex ">
+										<button
+											mat-raised-button
+											class="bg-orange-600 text-white"
+											(click)="element.isEdit = !element.isEdit; passImage(element)"
+											>
+											Edit
+										</button>
 									</div>
 					
-									<div *ngSwitchDefault>
+									<div 
+										*ngSwitchDefault
+										>
 										{{element[col.key]}}
 									</div>
 
+								</div>
+
+								<!-- edit division -->
+								<div [ngSwitch]="col.type" *ngIf="element.isEdit">
+									<form (ngSubmit)="element.isEdit = !element.isEdit; updateCottage(element)">
+										<div *ngSwitchCase="'images'">
+											<input 
+												type="file" 
+												accept=".jpg"
+												(change)="changeImage($event)" 
+												autocomplete="off" 
+												#fileUploadChanges 
+												hidden 
+											/>
+											<img 
+												class="border-2 h-20 w-20"
+												[src]="url" 
+												alt=""
+												(click)="fileUploadChanges.click()"
+											/>
+										</div>
+
+										<div *ngSwitchCase="'type'">
+											<mat-form-field class="pr-2">
+												<mat-select 
+													class="capitalize"
+													[(ngModel)]="element[col.key]" 
+													[ngModelOptions]="{standalone: true}"
+													>
+													<mat-option
+														class="capitalize" 
+														*ngFor="let cot of typeList" 
+														[value]="element[col.key]"
+														>
+														{{cot}}
+													</mat-option>
+												</mat-select>
+											</mat-form-field>
+										</div>
+
+
+										<div *ngSwitchCase="'isEdit'">
+											<button
+												mat-raised-button
+												class="bg-blue-600 text-white"
+												type="submit"
+												>
+												Done
+											</button>
+										</div>
+
+										<div *ngSwitchDefault>
+											<mat-form-field class="pr-2">
+												<input
+													[type]="col.type"
+													matInput
+													[(ngModel)]="element[col.key]"
+													[ngModelOptions]="{standalone: true}"
+													class="capitalize"
+												/>
+											</mat-form-field>
+										</div>
+									</form>
 								</div>
 							</td>
 						</ng-container>

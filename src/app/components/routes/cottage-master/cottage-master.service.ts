@@ -29,4 +29,13 @@ export class CottageMasterService {
 			throw err;
 		}
 	}
+
+	async updateCottage(payload: ICottage): Promise<any> {
+		try {
+			const response = this.http.post(`${ENDPOINT.RESORT}/cottage/edit/${payload.id}`, payload, this.method.authorization());
+			return await firstValueFrom(response);
+		} catch (err) {
+			throw err;
+		}
+	}
 }
