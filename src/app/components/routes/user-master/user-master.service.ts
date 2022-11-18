@@ -32,8 +32,11 @@ export class UserMasterService {
 	}
 
 	async updateUser(payload: IUser): Promise<IResponse<string>> {
+		const id = payload.id;
+		delete payload["id"];
+		
 		try {
-			const url = this.http.put<IResponse<string>>(`${ENDPOINT.RESORT}/user/edit?id=${payload.id}`, payload, this.method.authorization());
+			const url = this.http.put<IResponse<string>>(`${ENDPOINT.RESORT}/user/edit?id=${id}`, payload, this.method.authorization());
 			const response = await firstValueFrom(url);
 			return response;
 		} catch (err) {

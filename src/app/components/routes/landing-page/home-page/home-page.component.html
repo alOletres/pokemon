@@ -1,135 +1,54 @@
 <div class="p-4">
 	<div class="flex justify-between w-full" >
 		<div class="p-2 w-full">
-			<mat-form-field class="text-xs w-full" appearance="outline">
-				<mat-label>Filter</mat-label>
-				<mat-select>
-					<mat-option></mat-option>
-				</mat-select>
-			</mat-form-field>
-		</div>
-
-		<div class="p-2 w-full">
 				<mat-form-field appearance="outline" class="text-xs w-full">
 					<mat-label>Search</mat-label>
 					<mat-icon matPrefix>search</mat-icon>
-					<input type="text" matInput autocomplete="off">
+					<input type="text" (keypress)="applyFilter($event)" matInput autocomplete="off">
 				</mat-form-field>
 		</div>
 	</div>
 
-	<div class="flex flex-row">
-		<div class="w-full pl-2 pb-2  justify-center">
-			<mat-card style="max-width: 400px;">
+	<div class="">
+		<div class="grid grid-cols-3 gap-3" >
+			<mat-card *ngFor="let list of data | async">
 				<mat-card-header class="p-0">
-					<mat-card-title>Floating Cottage</mat-card-title>
-					<mat-card-subtitle>Capacity: 11 persons</mat-card-subtitle>
+					<mat-card-title class="capitalize">{{list.type}}</mat-card-title>
+					<mat-card-subtitle>Capacity: {{list.capacity}}</mat-card-subtitle>
 				</mat-card-header>
+
 				<img 
 					mat-card-image 
-					src="assets/p2.jpg" 
+					[src]="base64 +', '+ list.images?.[0]" 
 					alt="Photo of a Shiba Inu"
-					class="w-full max-w-fit"
+					class="w-full max-w-fit h-3/6"
 				/>
+
 				<mat-card-content>
 					<div class="flex flex-col">
 						<!-- Description section -->
 						<div class="flex flex-col mt-1">
 							<p class="font-semibold leading-tight">Description: </p>
-							<p class="leading-tight font-thin text-xs pt-0.5 text-gray-500">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia illo obcaecati sequi ipsum repellat labore accusamus neque, deserunt totam veniam facilis consequatur similique facere voluptatum ipsam dolores perspiciatis possimus libero.</p>
+							<p class="leading-tight font-thin text-xs pt-0.5 text-gray-500">{{list.description}}</p>
 						</div>
 
 						<!-- Price section -->
 						<div class="flex flex-col mt-3">
 							<p class="font-bold leading-tight">Price: </p>
-							<p class="leading-tight font-thin text-sm pt-0.5 text-gray-600">{{900 | currency : "&#8369; " }} </p>
-						</div>
+							<p class="leading-tight font-thin text-sm pt-0.5 text-gray-600">{{list.price | currency : "&#8369; " }} </p>
+						</div> 
 					</div>
-				</mat-card-content>
-				<mat-card-actions>																	
-					<button
-						(click)="openDialog()"  
-						mat-raised-button class="w-full bg-blue-700 capitalize text-white hover:bg-blue-800"
-						>
-						reserve cottage
-				</button>
-				</mat-card-actions>
-			</mat-card>
-		</div>
-		<div class="w-full pl-2 pr-2 pb-2">
-			<mat-card style="max-width: 400px;">
-				<mat-card-header class="p-0">
-					<mat-card-title>Floating Cottage</mat-card-title>
-					<mat-card-subtitle>Capacity: 11 persons</mat-card-subtitle>
-				</mat-card-header>
-				<img 
-					mat-card-image 
-					src="assets/p2.jpg" 
-					alt="Photo of a Shiba Inu"
-					class="w-full max-w-fit"
-				/>
-				<mat-card-content>
-					<div class="flex flex-col">
-						<!-- Description section -->
-						<div class="flex flex-col mt-1">
-							<p class="font-semibold leading-tight">Description: </p>
-							<p class="leading-tight font-thin text-xs pt-0.5 text-gray-500">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia illo obcaecati sequi ipsum repellat labore accusamus neque, deserunt totam veniam facilis consequatur similique facere voluptatum ipsam dolores perspiciatis possimus libero.</p>
-						</div>
 
-						<!-- Price section -->
-						<div class="flex flex-col mt-3">
-							<p class="font-bold leading-tight">Price: </p>
-							<p class="leading-tight font-thin text-sm pt-0.5 text-gray-600">{{900 | currency : "&#8369; " }} </p>
-						</div>
-					</div>
-				</mat-card-content>
-				<mat-card-actions>																	
 					<button
-						(click)="openDialog()"  
-						mat-raised-button class="w-full bg-blue-700 capitalize text-white hover:bg-blue-800"
-						>
-						reserve cottage
-				</button>
-				</mat-card-actions>
-			</mat-card>
-		</div>
-		<div class="w-full pl-2 pr-2 pb-2">
-			<mat-card style="max-width: 400px;">
-				<mat-card-header>
-					<mat-card-title>Floating Cottage</mat-card-title>
-					<mat-card-subtitle>Capacity: 11 persons</mat-card-subtitle>
-				</mat-card-header>
-				<img 
-					mat-card-image 
-					src="assets/pic1.jpg" 
-					alt="Photo of a Shiba Inu"
-					class="w-full max-w-fit"
-				/>
-				<mat-card-content>
-					<div class="flex flex-col">
-						<!-- Description section -->
-						<div class="flex flex-col mt-1">
-							<p class="font-semibold leading-tight">Description: </p>
-							<p class="leading-tight font-thin text-xs pt-0.5 text-gray-500">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia illo obcaecati sequi ipsum repellat labore accusamus neque, deserunt totam veniam facilis consequatur similique facere voluptatum ipsam dolores perspiciatis possimus libero.</p>
-						</div>
-
-						<!-- Price section -->
-						<div class="flex flex-col mt-3">
-							<p class="font-bold leading-tight">Price: </p>
-							<p class="leading-tight font-thin text-sm pt-0.5 text-gray-600">{{900 | currency : "&#8369; " }} </p>
-						</div>
-					</div>
-				</mat-card-content>
-				<mat-card-actions>
-					<button
-						(click)="openDialog()" 
-						mat-raised-button 
-						class="w-full bg-blue-700 capitalize text-white hover:bg-blue-800"
-						>
-						reserve cottage
+							(click)="openDialog()"  
+							mat-raised-button 
+							class="w-full pb-20 bg-blue-700 capitalize text-white hover:bg-blue-800"
+							>
+							reserve cottage
 					</button>
-				</mat-card-actions>
+				</mat-card-content>
 			</mat-card>
 		</div>
+		
 	</div>
 </div>

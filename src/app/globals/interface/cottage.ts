@@ -14,7 +14,7 @@ export interface ICottage {
   type: TCottageType;
   description: string;
   cottageNumber: string;
-  cappacity: string;
+  capacity: string;
   price: number;
   is_available?: boolean | number | string;   
   images?: string | string[];

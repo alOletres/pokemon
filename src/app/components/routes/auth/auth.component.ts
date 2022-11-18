@@ -48,6 +48,9 @@ export class AuthComponent implements OnInit {
 			this.route.navigate(['/dash-board']).then(() => (location.reload()));
 
 		} catch (err) {
+
+			console.log(err);
+			
 			
 			const error = ErrorResponse(err);
 			this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");

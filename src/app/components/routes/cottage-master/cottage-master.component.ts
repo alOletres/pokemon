@@ -146,7 +146,7 @@ export class CottageMasterComponent implements OnInit {
 				
 				const formData = new FormData();
 
-				formData.append("images", this.file);
+				// formData.append("images", this.file);
 
 				for (let item of Object.keys(this.cottageForm.value)) {
 					formData.append(item, this.cottageForm.value[item])
@@ -170,6 +170,9 @@ export class CottageMasterComponent implements OnInit {
 			const response = await this.http_cottage.getCottage();
 			this.snackBar._showSnack(response.message, "success");
 			this.dataCottage.data = response.data as ICottage[];
+
+			console.log(response);
+			
 			
 		} catch (err) {
 			const error = ErrorResponse(err);

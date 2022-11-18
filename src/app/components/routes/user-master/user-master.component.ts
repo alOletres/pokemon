@@ -74,6 +74,7 @@ export class UserMasterComponent implements OnInit {
 			mobile_number: [null, Validators.required],
 			roles: [null, Validators.required],
 			password: null,
+			address: 'address',
 		});
 	}
 
@@ -127,19 +128,26 @@ export class UserMasterComponent implements OnInit {
 			if (this.userForm.invalid) {
 				this.userForm.markAllAsTouched();
 			} else {
+				this.userForm.patchValue({password: 'test'});
+
+				const data = [this.userForm.value];
+
+				const element = data.map((x) => {
+					x.roles = JSON.stringify(x.roles);
+					return x;
+				});
 
 				if(this.btnName === "Save User") {
 					
-					this.userForm.patchValue({password: 'test'}); //default password 'test'
-
-					const response = await this.http_user.saveUser(this.userForm.value);
+					const response = await this.http_user.saveUser(element[0]);
 					this.snackBar._showSnack(response.message, "success");
+
 					this.common.reset(this.userForm);
 					this.ngOnInit();
 
 				} else {
 
-					const response = await this.http_user.updateUser(this.userForm.value);
+					const response = await this.http_user.updateUser(element[0]);
 					this.ngOnInit();
 					this.snackBar._showSnack(response.message, "success");
 					this.common.reset(this.userForm);
@@ -147,7 +155,7 @@ export class UserMasterComponent implements OnInit {
 				}
 				
 			}
-		} catch (err) {
+		} catch (err) {			
 			const error = ErrorResponse(err);
 			this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
 		}	
