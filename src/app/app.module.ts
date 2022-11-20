@@ -67,6 +67,9 @@ import {MatPaginatorModule} from '@angular/material/paginator';
  */
 import { ImageDirective } from './globals/directive/image.directive';
 import { CottageDialogComponent } from './components/dialog/cottage-dialog/cottage-dialog.component';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from './../environments/environment';
+
 const materialModules = [
   MatBadgeModule,
   MatStepperModule,
@@ -132,7 +135,8 @@ const materialModules = [
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
-    })
+    }),
+    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
   ],
   exports: [
     ...materialModules,
