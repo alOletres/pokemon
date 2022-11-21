@@ -19,3 +19,6 @@ export interface IColumnSchema {
 	type: string;
 	label: string;
 }
+
+
+

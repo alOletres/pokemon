@@ -49,6 +49,7 @@ export class SignUpComponent implements OnInit {
 			this.sign_upForm.markAllAsTouched();
 		} else {
 			this.dialogRef.close();
+			
 		}
 	}
 

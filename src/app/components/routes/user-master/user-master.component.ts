@@ -52,9 +52,8 @@ export class UserMasterComponent implements OnInit {
 
 	displayColumns: string[] = this.columnSchema.map((x) => (x.key));
 
-	userRole: string[] = ['admin', 'customer', 'staff'];
+	userRole: string[] = ['admin', 'staff'];
 	userForm!: FormGroup;
-
 	btnName: string = "Save User";
 
 	public dataUser = new MatTableDataSource<IUser>([]);
@@ -77,8 +76,6 @@ export class UserMasterComponent implements OnInit {
 			address: 'address',
 		});
 	}
-
-
 
 	get firstname () {
 		return this.userForm.get('firstname');

@@ -1,7 +1,7 @@
 <div fxLayout="row" fxLayoutAlign="center center">
 	<mat-stepper linear #stepper >
 		<mat-step [stepControl]="bookForm" [editable]="isEditable">
-
+			<ng-template matStepLabel>Fill out your information</ng-template>
 			<div class="flex flex-row">
 				<!-- cottage book -->
 				<div class="w-1/2 pr-4">
@@ -15,12 +15,24 @@
 									<br>
 									<mat-form-field class="text-xs w-full" floatLabel="always">
 										<mat-label>Cottage type</mat-label>
-										<input type="text" matInput value="Floating" readonly="true" autocomplete="off">
+										<input 
+											type="text" 
+											matInput 
+											value="Floating" 
+											readonly="true" 
+											autocomplete="off"
+										/>
 									</mat-form-field>
 
 									<mat-form-field class="text-xs w-full" floatLabel="always">
 										<mat-label>Available Cottage</mat-label>
-										<input type="text" matInput value="COT-0001"  readonly="true" autocomplete="off">
+										<input 
+											type="text" 
+											matInput 
+											value="COT-0001"  
+											readonly="true" 
+											autocomplete="off"
+										/>
 									</mat-form-field>
 
 									<div class="pt-2">
@@ -108,35 +120,77 @@
 						</mat-card-title>
 						<mat-card-content>
 							<form class="text-xs mt-4" [formGroup]="bookForm" >
-								<ng-template matStepLabel>Fill out your information</ng-template>
+								
 								<mat-form-field appearance="outline" class="pr-2 lg:w-1/2 sm:w-full">
 									<mat-label>Firstname</mat-label>
-									<input type="text" formControlName="firstname" matInput autocomplete="off">
-									<mat-error *ngIf="firstname?.touched && firstname?.errors?.['required']">firstname is required</mat-error>
+									<input 
+										type="text" 
+										formControlName="firstname" 
+										matInput 
+										autocomplete="off"
+									/>
+									<mat-error 
+										*ngIf="firstname?.touched && firstname?.errors?.['required']"
+										>
+										firstname is required
+									</mat-error>
 								</mat-form-field>
 
 								<mat-form-field appearance="outline" class="w-1/2">
 									<mat-label>Lastname</mat-label>
-									<input type="text" formControlName="lastname" matInput autocomplete="off">
-									<mat-error *ngIf="lastname?.touched && lastname?.errors?.['required']">lastname is required</mat-error>
+									<input 
+										type="text" 
+										formControlName="lastname" 
+										matInput 
+										autocomplete="off"
+									/>
+									<mat-error 
+										*ngIf="lastname?.touched && lastname?.errors?.['required']"
+										>
+										lastname is required
+									</mat-error>
 								</mat-form-field>
 
 								<mat-form-field appearance="outline" class="w-1/2 pr-2">
 									<mat-label>Event name</mat-label>
-									<input type="text" matInput autocomplete="off" formControlName="event">
-									<mat-error *ngIf="event?.touched && event?.errors?.['required']">event is required</mat-error>
+									<input 
+										type="text" 
+										matInput 
+										autocomplete="off" 
+										formControlName="event"
+									/>
+									<mat-error 
+										*ngIf="event?.touched && event?.errors?.['required']"
+										>
+										event is required
+									</mat-error>
 								</mat-form-field>
 
 								<mat-form-field appearance="outline" class="w-1/2">
 									<mat-label>Contact</mat-label>
 									<span matPrefix>+63 &nbsp;</span>
-									<input type="text" maxlength="10" matInput formControlName="contact" autocomplete="off">
-									<mat-error *ngIf="contact?.touched && contact?.errors?.['required']">contact is required</mat-error>
+									<input 
+										type="text" 
+										maxlength="10" 
+										matInput 
+										formControlName="contact" 
+										autocomplete="off"
+									/>
+									<mat-error 
+										*ngIf="contact?.touched && contact?.errors?.['required']"
+										>
+										contact is required
+									</mat-error>
 								</mat-form-field>
 
 								<mat-form-field appearance="outline" class=" w-full">
 									<mat-label>Address</mat-label>
-									<textarea matInput autocomplete="off" formControlName="address"></textarea>
+									<textarea 
+										matInput 
+										autocomplete="off" 
+										formControlName="address"
+										>
+									</textarea>
 									<mat-error *ngIf="address?.touched && address?.errors?.['required']">address is required</mat-error>
 								</mat-form-field>
 
@@ -183,26 +237,46 @@
 						<p class="text-sm font-medium text-gray-500 dark:text-white">Sender Info!</p>
 						<mat-form-field appearance="outline" class="w-1/2 pr-2">
 							<mat-label>Account name</mat-label>
-							<input type="text" formControlName="accountName" matInput autocomplete="off">
+							<input 
+								type="text" 
+								formControlName="accountName" 
+								matInput 
+								autocomplete="off"
+							/>
 							<mat-error *ngIf="accountName?.touched && accountName?.errors?.['required']">Account name is required</mat-error>
 						</mat-form-field>
 
 						<mat-form-field appearance="outline" class="w-1/2">
 							<mat-label>Account number</mat-label>
 							<span matPrefix>+63 &nbsp;</span>
-							<input type="text" formControlName="accountNumber" matInput autocomplete="off">
+							<input 
+								type="text" 
+								formControlName="accountNumber" 
+								matInput 
+								autocomplete="off"
+							/>
 							<mat-error *ngIf="accountNumber?.touched && accountNumber?.errors?.['required']">Account number is required</mat-error>
 						</mat-form-field>
 
 						<mat-form-field appearance="outline" class="w-3/4 pr-2">
 							<mat-label>Reference number</mat-label>
-							<input type="text" formControlName="reference" matInput autocomplete="off">
+							<input 
+								type="text" 
+								formControlName="reference" 
+								matInput 
+								autocomplete="off"
+							/>
 							<mat-error *ngIf="reference?.touched && reference?.errors?.['required']">Reference is required</mat-error>
 						</mat-form-field>
 
 						<mat-form-field appearance="outline" class="w-1/4 pr-2">
 							<mat-label>Amount</mat-label>
-							<input type="text" formControlName="amount" matInput autocomplete="off">
+							<input 
+								type="text" 
+								formControlName="amount" 
+								matInput 
+								autocomplete="off"
+							/>
 							<mat-error *ngIf="amount?.touched && amount?.errors?.['required']">Amount is required</mat-error>
 						</mat-form-field>
 

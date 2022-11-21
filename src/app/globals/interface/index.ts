@@ -6,11 +6,14 @@ import {
 	IColumnSchema 
 } from './default';
 import { ICottage } from './cottage';
+import { IBook, IBookingPaymentType } from './book';
 export {
 	IUser, 
 	IResponse, 
 	ILogin, 
 	ISecret, 
 	ICottage, 
-	IColumnSchema
+	IColumnSchema,
+	IBook,
+	IBookingPaymentType
 };

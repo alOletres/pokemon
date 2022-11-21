@@ -1,34 +1,64 @@
 <mat-list>
-	<mat-list-item [routerLink]="['/dash-board']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-		<mat-icon>home</mat-icon> <span>Dashboard</span>
+	<mat-list-item 
+		[routerLink]="['/dash-board']" 
+		routerLinkActive="active" 
+		[routerLinkActiveOptions]="{exact: true}"
+		>
+		<mat-icon>home</mat-icon> 
+		<span>Dashboard</span>
 	</mat-list-item>
 	<hr>
-	<mat-list-item [routerLink]="['/reservation']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-		<mat-icon>assignment</mat-icon> <span>Walkin Reservation</span>
+	<mat-list-item 
+		[routerLink]="['/walkin']" 
+		routerLinkActive="active" 
+		[routerLinkActiveOptions]="{exact: true}"
+		>
+		<mat-icon>assignment</mat-icon> <span>Walkin</span>
 	</mat-list-item>
 
-	<mat-list-item [routerLink]="['/online-reservation']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-		<mat-icon>assignment</mat-icon> <span matBadge="1" matBadgeOverlap="false">Online Reservation</span>
+	<mat-list-item 
+		[routerLink]="['/reservation']" 
+		routerLinkActive="active" 
+		[routerLinkActiveOptions]="{exact: true}"
+		>
+		<mat-icon>assignment</mat-icon> <span>Reservation</span>
 	</mat-list-item>
 	
-	<mat-list-item [routerLink]="['/calendar-events']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+	<mat-list-item 
+		[routerLink]="['/calendar-events']" 
+		routerLinkActive="active" 
+		[routerLinkActiveOptions]="{exact: true}">
 		<mat-icon>calendar_today</mat-icon> <span>Calendar events</span>
 	</mat-list-item>
 
 		<mat-list-item (click)="openUiElements()">
 		<mat-icon>settings</mat-icon> <span>Settings</span>
-		<mat-icon class="menu-button" [ngClass]="{'rotated' : isOpenSubMenu}" *ngIf="isExpanded || isShowing">expand_more</mat-icon>
+		<mat-icon 
+			class="menu-button" 
+			[ngClass]="{'rotated' : isOpenSubMenu}" 
+			*ngIf="isExpanded || isShowing">expand_more</mat-icon>
 	</mat-list-item>
 
 	<div *ngIf="isOpenSubMenu">
-		<mat-list-item class="ui-element" [routerLink]="['/user-master']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+		<mat-list-item 
+			class="ui-element" 
+			[routerLink]="['/user-master']" 
+			routerLinkActive="active" 
+			[routerLinkActiveOptions]="{exact: true}">
 		  	<div class="circle"></div>User Master
 		</mat-list-item>
-		<mat-list-item class="ui-element" [routerLink]="['/cottage-master']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+		<mat-list-item 
+			class="ui-element" 
+			[routerLink]="['/cottage-master']" 
+			routerLinkActive="active" 
+			[routerLinkActiveOptions]="{exact: true}">
 		  	<div class="circle"></div>Cottage Master
 		</mat-list-item>
 	</div>
-	<mat-list-item [routerLink]="['/reports']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+	<mat-list-item 
+		[routerLink]="['/reports']" 
+		routerLinkActive="active" 
+		[routerLinkActiveOptions]="{exact: true}">
 		<mat-icon>list</mat-icon> <span>Reports</span>
 	</mat-list-item>
 </mat-list>

@@ -69,6 +69,11 @@ import { ImageDirective } from './globals/directive/image.directive';
 import { CottageDialogComponent } from './components/dialog/cottage-dialog/cottage-dialog.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from './../environments/environment';
+import { WalkinComponent } from './components/routes/walkin/walkin.component';
+import { Store, StoreConfig, StoreModule } from '@ngrx/store';
+import { UserReducer } from './store/reducer/user.reducer';
+import { CottageReducer } from './store/reducer/cottage.reducer';
+import { StoreFeature } from '@ngrx/store/src/models';
 
 const materialModules = [
   MatBadgeModule,
@@ -119,6 +124,7 @@ const materialModules = [
     SnackBarComponent,
     ImageDirective,
     CottageDialogComponent,
+    WalkinComponent,
   ],
   imports: [
     CommonModule,
@@ -136,7 +142,12 @@ const materialModules = [
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
+    StoreModule.forRoot({
+      user: UserReducer,
+      cottage: CottageReducer
+    } as any ),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
+
   ],
   exports: [
     ...materialModules,

@@ -26,3 +26,10 @@ export type TParamFilter = TCottageType & "all"
 export interface IFilterBy {
   status?: boolean | string;
 }
+
+export interface IDate {
+	start: Date;
+	end: Date;
+}
+
+export type IBookPayload = ICottage & IDate; 

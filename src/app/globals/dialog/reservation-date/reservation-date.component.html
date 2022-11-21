@@ -22,7 +22,7 @@
 			<mat-error *ngIf="start?.touched && start?.errors?.['required'] || end?.touched && end?.errors?.['required']">Date is required</mat-error>
 		</mat-form-field>
 	</form>
-	<table class="w-full text-xs">
+	<!-- <table class="w-full text-xs">
 		<thead >
 			<tr class="uppercase text-gray-500 text-left">
 				<th class="p-2">cottage type</th>
@@ -42,7 +42,7 @@
 				<td class="p-2">10/27/2022 - 10/30/2022</td>
 			</tr>
 		</tbody>
-	</table>
+	</table> -->
 </mat-dialog-content>
 <mat-dialog-actions align="end">
 	<button mat-dialog-close mat-button> Close </button>
@@ -53,11 +53,11 @@
 		>
 		Reserve Cottage
 	</button>
-	<button
+	<!-- <button
 		(click)="fillOutInfo()" 
 		mat-raised-button 
 		class="bg-blue-700 text-white"
 		>
 		Fill out information
-	</button>
+	</button> -->
 </mat-dialog-actions>

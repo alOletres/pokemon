@@ -2,6 +2,9 @@ import { Component, OnInit,Inject, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ICottage } from '../../interface/cottage';
+import { StoreService } from '../../../store/service/store.service';
+import { IBook } from '../../interface/book';
 import { SignInComponent } from '../sign-in/sign-in.component';
 
 @Component({
@@ -14,11 +17,13 @@ export class ReservationDateComponent implements OnInit {
 	minDate = new Date();
   constructor(
 		public dialogRef: MatDialogRef<ReservationDateComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: ICottage,
 		private fb: FormBuilder,
 		private router: Router,
-		private dialog: MatDialog
+		private dialog: MatDialog,
+		private store_method: StoreService,
 	) {
+		
 		this.dateForm = this.fb.group({
 			start: [null, Validators.required],
 			end: [null, Validators.required]
@@ -51,7 +56,8 @@ export class ReservationDateComponent implements OnInit {
 			this.dateForm.markAllAsTouched();
 		} else {
 			this.dialogRef.close();
-			this.dialog.open(SignInComponent, { width: '400px', disableClose: true })
+			this.dialog.open(SignInComponent, { width: '400px', disableClose: true, data: {...this.dateForm.value, ...this.data} })
+			
 		}
 	}
 

@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ICottage } from '../../../../globals/interface/cottage';
 import { Observable } from 'rxjs';
 import { EMage } from '../../../../globals/enums/image';
+import { HomePageService } from './home-page.service';
 
 @Component({
   selector: 'app-home-page',
@@ -29,7 +30,8 @@ export class HomePageComponent implements OnInit {
     private dialog: MatDialog, 
     private http_cottage: CottageMasterService,
     private snackBar: SnackBarService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private http_home: HomePageService,
     ) { }
 
   ngOnInit(): void {
@@ -49,17 +51,19 @@ export class HomePageComponent implements OnInit {
     try {
       this.changeDetectorRef.detectChanges();
 
-      const response = await this.http_cottage.getCottage();
+      const response = await this.http_home.getCottage();
       this.dataCottage.data = response.data as ICottage[];
-      
+
       this.data = this.dataCottage.connect();
     } catch (err) {
+      console.log(err);
+      
       const error = ErrorResponse(err);
       this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
     }
   }
 
-	openDialog() : void {
-		this.dialog.open(ReservationDateComponent, { width: '500px' })
+	openDialog(element: ICottage) : void {
+		this.dialog.open(ReservationDateComponent, { width: '500px', data: element })
 	}
 }

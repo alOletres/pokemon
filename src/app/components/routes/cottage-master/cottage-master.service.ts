@@ -23,7 +23,7 @@ export class CottageMasterService {
 
 	async getCottage(): Promise<IResponse<ICottage[]>> {
 		try {
-			const response = this.http.get<IResponse<ICottage[]>>(`${ENDPOINT.RESORT}/cottage/list/${'all'}`, this.method.authorization());
+			const response = this.http.get<IResponse<ICottage[]>>(`${ENDPOINT.RESORT}/cottage/list?${'all'}`, this.method.authorization());
 			return await lastValueFrom(response);
 		} catch (err) {
 			throw err;

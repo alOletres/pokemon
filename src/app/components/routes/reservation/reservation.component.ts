@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonServiceService } from '../../../globals/services/common-service.service';
+import { ECOTTAGE_TYPE } from '../../../globals/enums/default';
 
 @Component({
   selector: 'app-reservation',
@@ -9,9 +10,10 @@ import { CommonServiceService } from '../../../globals/services/common-service.s
 })
 export class ReservationComponent implements OnInit {
 
+	isEditable = false;
   reservationForm!: FormGroup;
-	cottageList: string[] = ['#01', '#02', '#03', '#04', '#05'];
-	cottageType: string[] = ['Floating cottage', 'Non-floating cottage'];
+	cottageType: string[] = [ECOTTAGE_TYPE.FLOATING, ECOTTAGE_TYPE.NON_FLOATING];
+
   constructor(private fb: FormBuilder, private http_common: CommonServiceService) {
 		this.reservationForm = this.fb.group({
 			firstname: [null, Validators.required],

@@ -14,6 +14,7 @@ import { BookComponent } from './components/routes/landing-page/book/book.compon
 import { OnlineReservationComponent } from './components/routes/online-reservation/online-reservation.component';
 import { AboutComponent } from './components/routes/landing-page/about/about.component';
 import { ReportsComponent } from './components/routes/reports/reports.component';
+import { WalkinComponent } from './components/routes/walkin/walkin.component';
 const routes: Routes = [
 	{
 		path: '',
@@ -82,6 +83,10 @@ const routes: Routes = [
 			{
 				path: 'reports',
 				component: ReportsComponent
+			},
+			{
+				path: 'walkin',
+				component: WalkinComponent
 			}
 		]
 	}
