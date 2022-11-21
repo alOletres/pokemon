@@ -13,7 +13,7 @@ export interface ICottage {
   id?: number;
   type: TCottageType;
   description: string;
-  cottageNumber: string;
+  cottage_number: string;
   capacity: string;
   price: number;
   is_available?: boolean | number | string;   

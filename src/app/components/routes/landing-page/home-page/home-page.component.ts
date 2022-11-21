@@ -10,6 +10,9 @@ import { ICottage } from '../../../../globals/interface/cottage';
 import { Observable } from 'rxjs';
 import { EMage } from '../../../../globals/enums/image';
 import { HomePageService } from './home-page.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../store/model/appState.model';
+import { IBookAndCottagePayload } from '../../../../globals/interface/book';
 
 @Component({
   selector: 'app-home-page',
@@ -20,6 +23,8 @@ export class HomePageComponent implements OnInit {
   hideFloating: boolean = false;
   hideShoreCots: boolean = false;
   hideView: boolean = true; 
+
+  dataCottageBook!: IBookAndCottagePayload[];
 
   dataCottage: MatTableDataSource<ICottage> = new MatTableDataSource<ICottage>([]);
   data!: Observable<ICottage[]>;
@@ -32,7 +37,16 @@ export class HomePageComponent implements OnInit {
     private snackBar: SnackBarService,
     private changeDetectorRef: ChangeDetectorRef,
     private http_home: HomePageService,
-    ) { }
+    private store: Store<AppState>,
+    ) {
+      store.select("cottage").subscribe((data): void => {
+        try {
+          this.dataCottageBook = data;
+        } catch (err) {
+          return undefined
+        }
+      });
+    }
 
   ngOnInit(): void {
     this.getCottage();
@@ -64,6 +78,6 @@ export class HomePageComponent implements OnInit {
   }
 
 	openDialog(element: ICottage) : void {
-		this.dialog.open(ReservationDateComponent, { width: '500px', data: element })
+    this.dialog.open(ReservationDateComponent, { width: '500px', data: element })
 	}
 }

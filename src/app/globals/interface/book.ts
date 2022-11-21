@@ -1,3 +1,4 @@
+import { IBookPayload } from './cottage';
 export interface IBook {
 	id: number;
 	date_booked: Date;
@@ -11,4 +12,6 @@ export interface IBook {
 	updateAt: Date;
 }
 
-export type IBookingPaymentType = "gcash" | "cash"
+export type IBookingPaymentType = "gcash" | "cash";
+
+export type IBookAndCottagePayload = IBookPayload &  IBook;

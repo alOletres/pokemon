@@ -4,11 +4,13 @@
 			<ng-template matStepLabel>Fill out your information</ng-template>
 			<div class="flex flex-row">
 				<!-- cottage book -->
-				<div class="w-1/2 pr-4">
-					<mat-tab-group class="border-2 text-xs rounded">
-						<mat-tab label="Floating cottage: COT-0001">
+				<div class="w-1/2 pr-4" *ngIf="dataCottageBook.length !== 0">
+					<mat-tab-group class="border-2 text-xs rounded"  >
+						<mat-tab [label]="book.cottage_number" *ngFor="let book of dataCottageBook">
 							<div class="flex flex-row p-2">
-								<div class="bg-gray-500 rounded h-auto w-1/2 text-white font-semibold" fxLayoutAlign="center center">COTTAGE PHOTO</div>
+								<div class="rounded h-auto w-1/2 " fxLayoutAlign="center center">
+									<img [src]="base64+', '+ book.images?.[0]" alt="">
+								</div>
 								
 								<div class="w-1/2 pl-4">
 									<p class="text-sm font-medium text-gray-500 dark:text-white">Cottage Breakdown!</p>
@@ -16,9 +18,10 @@
 									<mat-form-field class="text-xs w-full" floatLabel="always">
 										<mat-label>Cottage type</mat-label>
 										<input 
+											class="capitalize"
 											type="text" 
 											matInput 
-											value="Floating" 
+											[value]="book.type" 
 											readonly="true" 
 											autocomplete="off"
 										/>
@@ -29,7 +32,7 @@
 										<input 
 											type="text" 
 											matInput 
-											value="COT-0001"  
+											[value]="book.cottage_number"  
 											readonly="true" 
 											autocomplete="off"
 										/>
@@ -37,19 +40,17 @@
 
 									<div class="pt-2">
 										<p class="text-xs font-medium text-gray-700 dark:text-white">Description</p>
-										<p class="text-xs font-medium text-gray-500 dark:text-white">
-											Lorem, ipsum dolor sit amet consectetur adipisicing elit. consectetur accusamus? Autem quis ipsum tempora corporis?
-										</p>
+										<p class="text-xs font-medium text-gray-500 dark:text-white">{{book.description}}</p>
 									</div>
 
 									<div class="pt-2">
 										<p class="text-xs font-medium text-gray-700 dark:text-white">Capacity</p>
-										<p class="text-xs font-medium text-gray-500 dark:text-white">11 persons</p>
+										<p class="text-xs font-medium text-gray-500 dark:text-white">{{book.capacity}}</p>
 									</div>
 
 									<div class="pt-2">
 										<p class="text-xs font-medium text-gray-700 dark:text-white">Cottage price</p>
-										<p class="text-xs font-medium text-gray-500 dark:text-white">{{500 | currency : "&#8369;"}}</p>
+										<p class="text-xs font-medium text-gray-500 dark:text-white">{{book.price| currency : "&#8369;"}}</p>
 									</div>
 
 									<div>
@@ -63,54 +64,18 @@
 								</div>
 							</div>
 						</mat-tab>
-						<mat-tab label="Floating cottage: COT-0002">
-							<div class="flex flex-row p-2">
-								<div class="bg-gray-500 rounded h-auto w-1/2 text-white font-semibold" fxLayoutAlign="center center">COTTAGE PHOTO</div>
-								
-								<div class="w-1/2 pl-4">
-									<p class="text-sm font-medium text-gray-500 dark:text-white">Cottage Breakdown!</p>
-									<br>
-									<mat-form-field class="text-xs w-full" floatLabel="always">
-										<mat-label>Cottage type</mat-label>
-										<input type="text" matInput value="Floating" readonly="true" autocomplete="off">
-									</mat-form-field>
-
-									<mat-form-field class="text-xs w-full" floatLabel="always">
-										<mat-label>Available Cottage</mat-label>
-										<input type="text" matInput value="COT-0001"  readonly="true" autocomplete="off">
-									</mat-form-field>
-
-									<div class="pt-2">
-										<p class="text-xs font-medium text-gray-700 dark:text-white">Description</p>
-										<p class="text-xs font-medium text-gray-500 dark:text-white">
-											Lorem, ipsum dolor sit amet consectetur adipisicing elit. consectetur accusamus? Autem quis ipsum tempora corporis?
-										</p>
-									</div>
-
-									<div class="pt-2">
-										<p class="text-xs font-medium text-gray-700 dark:text-white">Capacity</p>
-										<p class="text-xs font-medium text-gray-500 dark:text-white">11 persons</p>
-									</div>
-
-									<div class="pt-2">
-										<p class="text-xs font-medium text-gray-700 dark:text-white">Cottage price</p>
-										<p class="text-xs font-medium text-gray-500 dark:text-white">{{500 | currency : "&#8369;"}}</p>
-									</div>
-
-									<div>
-										<button 
-											class="bg-red-500 text-white w-full"
-											mat-raised-button
-											>
-											Cancel Cottage
-										</button>
-									</div>
-								</div>
-							</div>
-						</mat-tab>
+					
 					</mat-tab-group>
 				</div>
-
+				<!-- no book cottage found -->
+				<div 
+					*ngIf="dataCottageBook.length === 0" 
+					fxLayout="row" 
+					fxLayoutAlign="center center" 
+					class="w-1/2 pr-4 text-center "
+					>
+					<h4 class="text-gray-600">*NO BOOK COTTAGE FOUND*</h4>
+				</div>
 
 				<div class="w-1/2">
 					<!-- customer information -->
@@ -202,15 +167,15 @@
 								<div class="flex justify-between">
 									<div class="">
 										<p class="text-xs font-semibold text-gray-700 dark:text-white">Reserved date</p>
-										<p class="text-xs font-medium text-gray-500 dark:text-white">09/17/2022 - 09/18/2022</p>
+										<p class="text-xs font-medium text-gray-500 dark:text-white">{{startDate +'-' + endDate}}</p>
 									</div>
 									<div class="">
 										<p class="text-xs font-semibold text-gray-700 dark:text-white">Number of Days</p>
-										<p class="text-xs font-medium text-gray-500 dark:text-white">2 days</p>
+										<p class="text-xs font-medium text-gray-500 dark:text-white">{{numberOfDays}} days</p>
 									</div>
 									<div class="">
 										<p class="text-xs font-semibold text-gray-700 dark:text-white">Total amount</p>
-										<p class="text-xs font-medium text-gray-500 dark:text-white">{{1000 | currency : "&#8369;"}}</p>
+										<p class="text-xs font-medium text-gray-500 dark:text-white">{{totalAmount | currency : "&#8369;"}}</p>
 									</div>
 									<button 
 										class="text-white bg-blue-600"

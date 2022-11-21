@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ICottage } from './../../globals/interface';
 import { IUser } from '../../globals/interface/payload';
 import { AddUserAction, DeleteUserAction, UpdateUserAction } from '../action/user.actions';
 import { AddCottageAction, DeleteCottageAction } from '../action/book.actions';
-import { IBook } from '../../globals/interface/book';
+import { IBook, IBookAndCottagePayload } from '../../globals/interface/book';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +28,7 @@ export class StoreService {
 	 * cottage store config
 	 */
 
-	addToCottage (payload: IBook) {
+	addToCottage (payload: IBookAndCottagePayload) {
 		this.store.dispatch(new AddCottageAction(payload));
 	}
 

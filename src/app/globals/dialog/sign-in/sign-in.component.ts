@@ -5,6 +5,9 @@ import { SignUpComponent } from '../sign-up/sign-up.component';
 import { StoreService } from '../../../store/service/store.service';
 import { IBook } from '../../interface';
 import { IBookPayload } from '../../interface/cottage';
+import { SnackBarService } from '../../../shared/services/snack-bar.service';
+import { Router } from '@angular/router';
+import { IBookAndCottagePayload } from '../../interface/book';
 
 @Component({
   selector: 'app-sign-in',
@@ -15,10 +18,12 @@ export class SignInComponent implements OnInit {
 	sign_inForm!: FormGroup;
   constructor(
 		public dialogRef: MatDialogRef<SignInComponent>,
-		@Optional() @Inject(MAT_DIALOG_DATA) public data: IBookPayload,
+		@Optional() @Inject(MAT_DIALOG_DATA) public data: IBookAndCottagePayload,
 		private fb: FormBuilder,
 		private dialog: MatDialog,
-		private store_method: StoreService,) {
+		private store_method: StoreService,
+		private snackBar: SnackBarService,
+		private router: Router,) {
 			this.sign_inForm = this.fb.group({
 				username: [null, Validators.required],
 				password: [null, Validators.required]
@@ -48,16 +53,21 @@ export class SignInComponent implements OnInit {
 		this.dialog.open(SignUpComponent, {width: '400px', disableClose: true});
 	}
 
-	guest() {
-		const book = {
-			id: this.data.id,
-			cottage: this.data.id,
-			selected_date_from: this.data.start,
-			selected_date_to: this.data.end,
-			payment_type: "gcash",
-		} as IBook;
-		this.store_method.addToCottage(book);
+	// guest() {
+
+	// 	const data = [this.data];
+
+	// 	const newArr = data.map((x) => {
+	// 		const type = x.payment_type = "gcash";
+	// 		x.payment_type = type;
+	// 		return x;
+	// 	});
 		
-	}
+	// 	this.store_method.addToCottage(newArr[0]);
+
+	// 	this.snackBar._showSnack("Cottage was temporary booked, see in book page!", "success");
+	// 	this.dialogRef.close();
+	// 	this.router.navigate(['/book'])
+	// }
 
 }

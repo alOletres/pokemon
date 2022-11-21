@@ -11,15 +11,38 @@
 
 <mat-dialog-content>
 	<form [formGroup]="dateForm">
-		<mat-form-field appearance="outline" class="w-full pr-2 text-xs ">
+		<mat-form-field appearance="outline" floatAlways="true" class="w-full pr-2 text-xs ">
 			<mat-label>Select Available Date</mat-label>
 			<mat-date-range-input [rangePicker]="picker" >
-				<input matInput formControlName="start" readonly="true" [min]="minDate" matStartDate placeholder="Start date">
-				<input matInput formControlName="end" readonly="true" [min]="minDate" matEndDate placeholder="End date">
+				<input 
+					matInput 
+					formControlName="start" 
+					readonly="true" 
+					[min]="minDate" 
+					matStartDate 
+					placeholder="Start date"
+				/>
+				<input 
+					matInput 
+					formControlName="end" 
+					readonly="true" 
+					[min]="minDate" 
+					matEndDate 
+					placeholder="End date"
+				/>
 			</mat-date-range-input>
-			<mat-datepicker-toggle class="text-lg" matSuffix [for]="picker"></mat-datepicker-toggle>
+			<mat-datepicker-toggle 
+				class="text-lg" 
+				matSuffix 
+				[for]="picker"
+				>
+			</mat-datepicker-toggle>
 			<mat-date-range-picker #picker ></mat-date-range-picker>
-			<mat-error *ngIf="start?.touched && start?.errors?.['required'] || end?.touched && end?.errors?.['required']">Date is required</mat-error>
+			<mat-error 
+				*ngIf="start?.touched && start?.errors?.['required'] || end?.touched && end?.errors?.['required']"
+				>
+				Date is required
+			</mat-error>
 		</mat-form-field>
 	</form>
 	<!-- <table class="w-full text-xs">

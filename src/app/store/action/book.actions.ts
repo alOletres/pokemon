@@ -1,11 +1,11 @@
 import {Action} from "@ngrx/store";
 import { EBookActionTypes } from "../model/book.model";
-import { IBook } from '../../globals/interface/book';
+import { IBookAndCottagePayload } from '../../globals/interface/book';
 
 export class AddCottageAction implements Action {
 	readonly type = EBookActionTypes.ADD_COTTAGE;
 
-	constructor(public payload: IBook) {}
+	constructor(public payload: IBookAndCottagePayload) {}
 }
 
 export class DeleteCottageAction implements Action {
