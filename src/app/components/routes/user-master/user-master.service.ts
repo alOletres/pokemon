@@ -36,7 +36,7 @@ export class UserMasterService {
 		delete payload["id"];
 		
 		try {
-			const url = this.http.put<IResponse<string>>(`${ENDPOINT.RESORT}/user/edit?id=${id}`, payload, this.method.authorization());
+			const url = this.http.put<IResponse<string>>(`${ENDPOINT.RESORT}/user/edit/${id}`, payload, this.method.authorization());
 			const response = await firstValueFrom(url);
 			return response;
 		} catch (err) {
