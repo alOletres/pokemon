@@ -15,7 +15,7 @@ export class UserMasterService {
 
 	async saveUser(payload: IUser): Promise<IResponse<string>> {
 		try {
-			const response = this.http.post<IResponse<string>>(`${ENDPOINT.RESORT}/user`, payload, this.method.authorization());
+			const response = this.http.post<IResponse<string>>(`${ENDPOINT.RESORT}/user`, payload, this.method.landingHeader());
 			return await firstValueFrom(response);
 		} catch (err) {
 			throw err;

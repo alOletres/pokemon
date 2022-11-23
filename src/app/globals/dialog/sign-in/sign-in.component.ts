@@ -3,11 +3,14 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dial
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SignUpComponent } from '../sign-up/sign-up.component';
 import { StoreService } from '../../../store/service/store.service';
-import { IBook } from '../../interface';
+import { IBook, IUser } from '../../interface';
 import { IBookPayload } from '../../interface/cottage';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { Router } from '@angular/router';
 import { IBookAndCottagePayload } from '../../interface/book';
+import { AuthService } from '../../../components/routes/auth/auth.service';
+import { ErrorResponse } from '../../../utils/server-response';
+import Method from '../../../utils/method';
 
 @Component({
   selector: 'app-sign-in',
@@ -23,16 +26,18 @@ export class SignInComponent implements OnInit {
 		private dialog: MatDialog,
 		private store_method: StoreService,
 		private snackBar: SnackBarService,
-		private router: Router,) {
+		private router: Router,
+		private http_auth: AuthService,
+		private method: Method,) {
 			this.sign_inForm = this.fb.group({
-				username: [null, Validators.required],
+				email: [null, Validators.required],
 				password: [null, Validators.required]
 			});
 
 		}
 	
-	get username () {
-		return this.sign_inForm.get('username');
+	get email () {
+		return this.sign_inForm.get('email');
 	}
 
 	get password () {
@@ -42,9 +47,35 @@ export class SignInComponent implements OnInit {
   ngOnInit(): void {
   }
 
-	signIn(): void {
+	async signIn() {
 		if(this.sign_inForm.invalid) {
 			this.sign_inForm.markAllAsTouched();
+		} else {
+
+			try {
+				const response = await this.http_auth.login(this.sign_inForm.value);
+
+				console.log(response);
+				
+				this.snackBar._showSnack(response.message, "success");
+				// save here the user details;
+				const accessToken = response.data?.accessToken as string
+				const userDetails = this.method.cookieDecode("accessToken", accessToken) as IUser;
+
+				// save in cookie services;
+
+				this.method.setCookie("accessToken", accessToken);
+				this.method.setCookie("refreshToken", response.data?.refreshToken as string);
+			
+				// save in store management 
+				this.store_method.addToUser(userDetails);
+
+
+			} catch (err) {
+				const error = ErrorResponse(err);
+				this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
+			}
+
 		}
 	}
 
@@ -52,22 +83,5 @@ export class SignInComponent implements OnInit {
 		this.dialogRef.close();
 		this.dialog.open(SignUpComponent, {width: '400px', disableClose: true});
 	}
-
-	// guest() {
-
-	// 	const data = [this.data];
-
-	// 	const newArr = data.map((x) => {
-	// 		const type = x.payment_type = "gcash";
-	// 		x.payment_type = type;
-	// 		return x;
-	// 	});
-		
-	// 	this.store_method.addToCottage(newArr[0]);
-
-	// 	this.snackBar._showSnack("Cottage was temporary booked, see in book page!", "success");
-	// 	this.dialogRef.close();
-	// 	this.router.navigate(['/book'])
-	// }
 
 }

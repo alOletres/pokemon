@@ -33,7 +33,8 @@
               "core-js/modules/web.dom-collections.iterator.js",
               "raf",
               "pdfmake/build/pdfmake",
-              "exceljs"
+              "exceljs",
+              "moment"
            ],
             "outputPath": "dist/resservation",
             "index": "src/index.html",

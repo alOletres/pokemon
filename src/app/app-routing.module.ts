@@ -15,6 +15,7 @@ import { OnlineReservationComponent } from './components/routes/online-reservati
 import { AboutComponent } from './components/routes/landing-page/about/about.component';
 import { ReportsComponent } from './components/routes/reports/reports.component';
 import { WalkinComponent } from './components/routes/walkin/walkin.component';
+import { ProfileComponent } from './shared/components/profile/profile.component';
 const routes: Routes = [
 	{
 		path: '',
@@ -44,6 +45,10 @@ const routes: Routes = [
 			{
 				path: 'about',
 				component: AboutComponent
+			},
+			{
+				path: 'profile',
+				component: ProfileComponent
 			}
 		]
 	},

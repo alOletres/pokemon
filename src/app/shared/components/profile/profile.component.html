@@ -1,0 +1,173 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="mt-1" >
+	<mat-card class=" example-card w-1/2">
+		<mat-card-header>
+			<div mat-card-avatar>
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+					class="w-10 h-10 text-slate-400">
+					<path stroke-linecap="round" stroke-linejoin="round"
+						d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+				</svg>
+			</div>
+			<mat-card-title class="capitalize">{{user.firstname}} {{user.lastname}}</mat-card-title>
+			<mat-card-subtitle class="capitalize">{{role}}</mat-card-subtitle>
+		</mat-card-header>
+	
+		<mat-tab-group>
+			<mat-tab class="text-left" label="Profile Settings">
+				<div class="flex justify-center">
+					<div class="w-1/2 pt-4">
+						<form [formGroup]="profileForm" class="text-xs">
+							<mat-form-field 
+								appearance="outline" 
+								class="w-full" 
+								floatLabel="always">
+								<mat-label>Firstname</mat-label>
+								<input 
+									type="text" 
+									matInput 
+									formControlName="firstname"
+									autocomplete="off"
+								/>
+							</mat-form-field>
+
+							<mat-form-field 
+								appearance="outline"
+								class="w-full"
+								floatLabel="always">
+								
+								<mat-label>Lastname</mat-label>
+
+								<input 
+									type="text"
+									matInput
+									formControlName="lastname"
+									autocomplete="off"
+								/>
+							</mat-form-field>
+
+							<mat-form-field 
+								appearance="outline" 
+								class="w-full" 
+								floatLabel="always">
+								<mat-label>Email</mat-label>
+								<input 
+									type="email" 
+									matInput 
+									formControlName="email"
+									autocomplete="off"
+								/>
+							</mat-form-field>
+
+							<mat-form-field 
+								appearance="outline" 
+								class="w-full" 
+								floatLabel="always">
+								<mat-label>Contact</mat-label>
+
+								<input 
+									type="number"
+									matInput
+									formControlName="mobile_number"
+									autocomplete="off"
+								/>
+							</mat-form-field>
+
+							<div>
+								<button
+									mat-raised-button
+									class="bg-blue-600 text-white w-full"
+									>
+									{{btnName}}
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</mat-tab>
+	
+			<mat-tab class="text-left" label="Security Login">
+				<div class="flex justify-center">
+					<div class="w-1/2 mt-1">
+						<form [formGroup]="securityForm" class="text-xs">
+							<mat-form-field appearance="outline" class="w-full">
+								<mat-label>Current Password</mat-label>
+								<mat-icon matPrefix>lock</mat-icon>
+								<input 
+									type="password" 
+									matInput 
+									autocomplete="off" 
+									formControlName="currentPassword" 
+								/>
+							</mat-form-field>
+
+							<mat-form-field appearance="outline" class="w-full">
+								<mat-label>New Password</mat-label>
+								<mat-icon matPrefix>lock</mat-icon>
+								<input 
+									[type]="hide ? 'password' : 'text'" 
+									matInput 
+									autocomplete="off" 
+									formControlName="currentPassword" 
+								/>
+								<button 
+									mat-icon-button 
+									matSuffix 
+									(click)="hide = !hide" 
+									[attr.aria-label]="'Hide password'"
+									[attr.aria-pressed]="hide">
+									<mat-icon>
+										{{hide
+										? 'visibility_off'
+										: 'visibility'
+										}}
+									</mat-icon>
+								</button>
+							</mat-form-field>
+
+							<mat-form-field appearance="outline" class="w-full">
+								<mat-label>Confirm Password</mat-label>
+								<mat-icon matPrefix>lock</mat-icon>
+								<input 
+									[type]="hide1 ? 'password' : 'text'" 
+									matInput 
+									autocomplete="off" 
+									formControlName="confirmPassword"
+								/>
+								<button 
+									mat-icon-button 
+									matSuffix 
+									(click)="hide1 = !hide1" 
+									[attr.aria-label]="'Hide password'"
+									[attr.aria-pressed]="hide1">
+									<mat-icon>
+										{{hide1
+										? 'visibility_off'
+										: 'visibility'
+										}}
+									</mat-icon>
+								</button>
+							</mat-form-field>
+							<div *ngIf="securityForm?.errors !== null">
+								<span class="text-xs text-red-600 m-0 p-0">
+									Password not match
+								</span>
+							</div>
+
+							<div>
+								<button
+									mat-raised-button
+									class="bg-blue-600 text-white w-full"
+									>
+									Save Changes
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</mat-tab>
+			<mat-tab class="text-left" label="History">
+			</mat-tab>
+		</mat-tab-group>
+	
+	</mat-card>
+</div>

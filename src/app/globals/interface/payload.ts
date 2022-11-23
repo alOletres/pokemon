@@ -2,6 +2,7 @@
 export interface IUser {
   id?: number;
   role: string | string[];
+  displayRole: string[];
   firstname: string;
   lastname: string;
   address: string;

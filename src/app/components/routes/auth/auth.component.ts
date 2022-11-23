@@ -5,6 +5,9 @@ import { AuthService } from './auth.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { ErrorResponse } from './../../../utils';
 import Method from '../../../utils/method';
+import { StoreService } from '../../../store/service/store.service';
+import { IUser } from '../../../globals/interface/payload';
+import { ESystemUser } from '../../../globals/enums/default';
 
 @Component({
   selector: 'app-auth',
@@ -19,6 +22,7 @@ export class AuthComponent implements OnInit {
 		private http_auth: AuthService,
 		private snackBar: SnackBarService,
 		private method: Method,
+		private store_method: StoreService,
 		) {
 		this.loginForm = this.fb.group({
 			email: [null, Validators.required],
@@ -38,19 +42,33 @@ export class AuthComponent implements OnInit {
 	async LoginUser() {
 		try {
 			const response = await this.http_auth.login(this.loginForm.value);			
+			console.log(response);
+			
 			this.snackBar._showSnack(response.message, "success");
 			const accessToken = response.data?.accessToken as string
-			const userDetails = this.method.cookieDecode("accessToken", accessToken);
+			const userDetails = this.method.cookieDecode("accessToken", accessToken) as IUser;
+
+			// save in cookie services;
 
 			this.method.setCookie("accessToken", accessToken);
 			this.method.setCookie("refreshToken", response.data?.refreshToken as string);
+		
+			// save in store management 
+			this.store_method.addToUser(userDetails);
+			const roles: string[] = JSON.parse(userDetails.role as string).map((x: string) => (x));
 
-			this.route.navigate(['/dash-board']).then(() => (location.reload()));
+			const checkRoles = roles.filter((x) => (x === ESystemUser.CUSTOMER));
+			
+			if(checkRoles.length > 0) {
+				// customer rani diri
+				this.route.navigate(['/home']);
+				// location.reload();
+			} else {
+				// admin or staff 
+				this.route.navigate(['/dash-board'])
+			}
 
 		} catch (err) {
-
-			console.log(err);
-			
 			
 			const error = ErrorResponse(err);
 			this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");

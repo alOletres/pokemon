@@ -16,13 +16,23 @@
 		<form [formGroup]="sign_inForm" class="text-xs">
 			<mat-form-field appearance="outline" class="w-full">
 				<mat-label>Username</mat-label>
-				<input type="text" formControlName="username" matInput autocomplete="off">
-				<mat-error *ngIf="username?.touched && username?.errors?.['required']">Username is required</mat-error>
+				<input 
+					type="text" 
+					formControlName="emal" 
+					matInput 
+					autocomplete="off"
+				/>
+				<mat-error *ngIf="email?.touched && email?.errors?.['required']">Username is required</mat-error>
 			</mat-form-field>
 
 			<mat-form-field appearance="outline" class="w-full">
 				<mat-label>Password</mat-label>
-				<input type="password" formControlName="password" matInput autocomplete="off">
+				<input 
+					type="password" 
+					formControlName="password" 
+					matInput 
+					autocomplete="off"
+				/>
 				<mat-error *ngIf="password?.touched && password?.errors?.['required']">Password is required</mat-error>
 			</mat-form-field>
 			
@@ -31,13 +41,6 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
 	<button mat-button mat-dialog-close>Close</button>
-	<!-- <button 
-		class="bg-yellow-400 text-white"
-		mat-raised-button
-		(click)="guest()"
-		>
-		Are you a Guest?
-	</button> -->
 	<button
 		(click)="signIn()"
 		class="bg-blue-600 text-white" 

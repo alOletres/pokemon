@@ -1,6 +1,6 @@
 <div fxLayout="row" fxLayoutAlign="center center">
 	<mat-stepper linear #stepper >
-		<mat-step [stepControl]="bookForm" [editable]="isEditable">
+		<mat-step [stepControl]="bookForm"  [editable]="isEditable">
 			<ng-template matStepLabel>Fill out your information</ng-template>
 			<div class="flex flex-row">
 				<!-- cottage book -->
@@ -8,11 +8,11 @@
 					<mat-tab-group class="border-2 text-xs rounded"  >
 						<mat-tab [label]="book.cottage_number" *ngFor="let book of dataCottageBook">
 							<div class="flex flex-row p-2">
-								<div class="rounded h-auto w-1/2 " fxLayoutAlign="center center">
-									<img [src]="base64+', '+ book.images?.[0]" alt="">
+								<div  class="w-1/2" fxLayoutAlign="center center">
+									<img class="rounded h-full" [src]="base64+', '+ book.images?.[0]" alt="">
 								</div>
 								
-								<div class="w-1/2 pl-4">
+								<div class="w-1/2 pl-2">
 									<p class="text-sm font-medium text-gray-500 dark:text-white">Cottage Breakdown!</p>
 									<br>
 									<mat-form-field class="text-xs w-full" floatLabel="always">
@@ -57,6 +57,7 @@
 										<button 
 											class="bg-red-500 text-white w-full"
 											mat-raised-button
+											(click)="cancelCottage(book)"
 											>
 											Cancel Cottage
 										</button>
@@ -197,8 +198,22 @@
 			<form class="text-xs" [formGroup]="paymentForm">
 				<ng-template matStepLabel>Payment method</ng-template>
 				<div fxLayout="row">
-					<div class="bg-gray-400 rounded h-80 w-1/4 text-white font-semibold" fxLayoutAlign="center center">RECEIPT PHOTO</div>
-					<div class="w-3/4 pl-4 ">
+					<!-- receipt photo here -->
+					<input 
+						type="file" 
+						accept=".jpg"
+						(change)="changeImage($event)" 
+						autocomplete="off" 
+						#fileUpload
+						hidden 
+					/>
+					<img 
+							class="max-h-96 w-1/4 cursor-pointer rounded mr-2"
+							[src]="receiptPhoto" 	
+							alt=""
+							(click)="fileUpload.click()"
+						/>
+					<div class="w-3/4">
 						<p class="text-sm font-medium text-gray-500 dark:text-white">Sender Info!</p>
 						<mat-form-field appearance="outline" class="w-1/2 pr-2">
 							<mat-label>Account name</mat-label>
@@ -215,7 +230,7 @@
 							<mat-label>Account number</mat-label>
 							<span matPrefix>+63 &nbsp;</span>
 							<input 
-								type="text" 
+								type="number" 
 								formControlName="accountNumber" 
 								matInput 
 								autocomplete="off"
@@ -226,7 +241,7 @@
 						<mat-form-field appearance="outline" class="w-3/4 pr-2">
 							<mat-label>Reference number</mat-label>
 							<input 
-								type="text" 
+								type="number" 
 								formControlName="reference" 
 								matInput 
 								autocomplete="off"
@@ -234,10 +249,10 @@
 							<mat-error *ngIf="reference?.touched && reference?.errors?.['required']">Reference is required</mat-error>
 						</mat-form-field>
 
-						<mat-form-field appearance="outline" class="w-1/4 pr-2">
+						<mat-form-field appearance="outline" class="w-1/4">
 							<mat-label>Amount</mat-label>
 							<input 
-								type="text" 
+								type="number" 
 								formControlName="amount" 
 								matInput 
 								autocomplete="off"
@@ -249,7 +264,7 @@
 							<mat-label>Remarks (Optional)</mat-label>
 							<input type="text" formControlName="remarks" matInput autocomplete="off"> 
 						</mat-form-field>
-						<div class="pt-4">
+						<div class="pt-4 flex justify-between">
 							<div >
 								<div class="">
 									<p>Send Via Gcash!  </p> 
@@ -261,29 +276,28 @@
 								</div>
 								
 							</div>
+
+							<div class="space-x-4">
+								<button 
+									mat-raised-button
+									matStepperPrevious 
+									class="bg-yellow-400 text-white"
+									>
+									Back
+								</button> 
+
+								<button 
+									class="bg-blue-600 text-white"
+									mat-raised-button 
+									matStepperNext
+									(click)="submit()"
+									>
+									Submit
+								</button>
+							</div>
+							
 						</div>
 					</div>
-				</div>
-
-
-				<div class="flex justify-end">
-					<div class="pr-2">
-						<button 
-							mat-raised-button
-							matStepperPrevious 
-							class="bg-yellow-400 text-white"
-							>
-							Back
-						</button> 
-					</div>
-					<button 
-						class="bg-blue-600 text-white"
-						mat-raised-button 
-						matStepperNext
-						(click)="onPaid()"
-						>
-						Submit
-					</button>
 				</div>
 			</form>
 		</mat-step>

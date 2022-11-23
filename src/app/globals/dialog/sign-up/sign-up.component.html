@@ -28,16 +28,28 @@
 		</mat-form-field>
 
 		<mat-form-field appearance="outline" class="w-full text-xs">
+			<mat-label>Email</mat-label>
+			<input 
+				type="email"
+				matInput
+				formControlName="email"
+				autocomplete="off"
+			/>
+			<mat-error *ngIf="email?.touched && email?.errors?.['required']">email is required</mat-error>
+
+		</mat-form-field>
+
+		<mat-form-field appearance="outline" class="w-full text-xs">
 			<mat-label>Contact</mat-label>
 			<span matPrefix>+63 &nbsp;</span>
 			<input 
 				type="text" 
-				formControlName="contact" 
+				formControlName="mobile_number" 
 				maxlength="10" 
 				matInput 
 				autocomplete="off"
 			/>
-			<mat-error *ngIf="contact?.touched && contact?.errors?.['required']">Contact is required</mat-error>
+			<mat-error *ngIf="mobile_number?.touched && mobile_number?.errors?.['required']">Contact is required</mat-error>
 		</mat-form-field>
 
 		<mat-form-field appearance="outline" class="w-full text-xs">
@@ -71,6 +83,15 @@
 			/>
 			<mat-error *ngIf="re_typePassword?.touched && re_typePassword?.errors?.['required']">Re-type Password is required</mat-error>
 		</mat-form-field>
+
+		<div *ngIf="sign_upForm?.errors !== null">
+			<span 
+				class="text-xs text-red-600 m-0 p-0" 	
+				>
+				Password not match
+			</span>
+		</div>
+		
 		
 	</form>
 </mat-dialog-content>

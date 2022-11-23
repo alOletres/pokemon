@@ -52,14 +52,18 @@ export class HomePageComponent implements OnInit {
     this.getCottage();
   }
 
-  applyFilter(event: Event) {
+  async applyFilter(event: Event) {
+
+    // await this.getCottage()
+
     this.changeDetectorRef.detectChanges();
 		
     const filterValue = (event.target as HTMLInputElement).value;
 		this.dataCottage.filter = filterValue.trim().toLowerCase();
-
-    this.data = this.dataCottage.connect();
-	}
+     this.data = this.dataCottage.connect();
+   
+	
+  }
 
   async getCottage(): Promise<void> {
     try {
@@ -69,8 +73,8 @@ export class HomePageComponent implements OnInit {
       this.dataCottage.data = response.data as ICottage[];
 
       this.data = this.dataCottage.connect();
+
     } catch (err) {
-      console.log(err);
       
       const error = ErrorResponse(err);
       this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");

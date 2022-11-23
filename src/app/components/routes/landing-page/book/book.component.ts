@@ -6,6 +6,9 @@ import { IBookAndCottagePayload } from '../../../../globals/interface/book';
 import { EMage } from '../../../../globals/enums/image';
 import * as moment from 'moment';
 import { SnackBarService } from '../../../../shared/services/snack-bar.service';
+import { StoreService } from '../../../../store/service/store.service';
+import { BookService } from './book.service';
+import { IUser } from '../../../../globals/interface/payload';
 
 @Component({
   selector: 'app-book',
@@ -18,9 +21,8 @@ export class BookComponent implements OnInit {
 	cottageForm!: FormGroup;
 	paymentForm!: FormGroup;
 	base64 = EMage.BASE64_INITIAL;
-
-	availableCottage: string[] = ['COT-0001', 'COT-0002', 'COT-0003'];
-	typeCottage: string[] = ['Floating cottage', 'Non-Float cottage'];
+	file!: File;
+	receiptPhoto: string = "assets/receipt.jpg";
 
 	dataCottageBook!: IBookAndCottagePayload[];
 
@@ -29,29 +31,37 @@ export class BookComponent implements OnInit {
 	numberOfDays: number = 0;
 	totalAmount: number = 0;
 
+	user!: IUser;
+
   constructor(
 		private fb: FormBuilder, 
 		private store: Store<AppState>, 
 		private snackBar: SnackBarService,
+		private store_method: StoreService,
+		private http_book: BookService,
 		) {
-		this.bookForm = this.fb.group({
-			firstname: [null, Validators.required],
-			lastname: [null, Validators.required],
-			contact: [null, Validators.required],
-			event: [null, Validators.required],
-			address:[null, Validators.required],
-			comment: null,
-			
-			isCottage: [null, Validators.required]
 
+		store.select("user").subscribe((data): void => {
+			try {
+				this.user = data[0];
+			} catch (Err) {
+				return undefined
+			}
 		});
+
+		
+		
+
+
 
 		this.paymentForm = this.fb.group({
 			accountName: [null, Validators.required],
 			accountNumber: [null, Validators.required],
 			reference: [null, Validators.required],
 			amount: [null, Validators.required],
-			remarks: null
+			images: [null, Validators.required],
+			remarks: null,
+
 		});
 
 		this.cottageForm = this.fb.group({
@@ -137,6 +147,19 @@ export class BookComponent implements OnInit {
 	}
 
   ngOnInit(): void {
+		
+		this.bookForm = this.fb.group({
+			firstname: [(!this.user)? null: this.user.firstname, Validators.required],
+			lastname: [(!this.user)? null: this.user.lastname, Validators.required],
+			contact: [(!this.user)? null: this.user.mobile_number, Validators.required],
+			event: [null, Validators.required],
+			address:[(!this.user)? null: this.user.address, Validators.required],
+			
+			isCottage: [null, Validators.required],
+			comment: null,
+
+		});
+
 		this.bookForm.patchValue({isCottage: this.dataCottageBook.length > 0 ? 1 : null});
   }
 
@@ -149,12 +172,48 @@ export class BookComponent implements OnInit {
 		}
 	}
 
-	onPaid (): void {
+	changeImage(event: any) {
+
+		this.file = event.target.files[0];
+
+		const reader = new FileReader();
+		
+		reader.readAsDataURL(this.file);
+
+		reader.onload = (event: any) => {
+			this.receiptPhoto = event.target.result
+		}
+
+		this.paymentForm.get('images')?.patchValue(this.file);
+
+	}
+
+	async submit () {
 		if (this.paymentForm.invalid) {
 			this.paymentForm.markAllAsTouched();
+		} else {
+			const formData = new FormData();
+			const data = {...this.dataCottageBook, ...this.bookForm.value, ...this.paymentForm.value};
+
+			for (let item of Object.keys(data)) {
+				formData.append(item, data[item])
+			}
+
+			const response = await this.http_book.bookCottage(formData);
+
+			this.snackBar._showSnack(response.message, "success");	
 		}
 	}
+
+	cancelCottage(element: IBookAndCottagePayload) {
+		this.store_method.deleteCottage(element.id);
+		this.snackBar._showSnack("Cottage Successfully cancelled!", "success");
+	}
+
+	
 }
+
+
 
 const diff_minutes = (dayTwo: Date, dayOne: Date) => {
 	let diff =(dayTwo.getTime() - dayOne.getTime()) / 1000;

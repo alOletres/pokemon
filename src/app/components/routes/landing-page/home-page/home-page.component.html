@@ -4,7 +4,7 @@
 				<mat-form-field appearance="outline" class="text-xs w-full">
 					<mat-label>Search</mat-label>
 					<mat-icon matPrefix>search</mat-icon>
-					<input type="text" (keypress)="applyFilter($event)" matInput autocomplete="off">
+					<input type="text" (keyup)="applyFilter($event)" matInput autocomplete="off">
 				</mat-form-field>
 		</div>
 	</div>

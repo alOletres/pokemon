@@ -74,6 +74,7 @@ import { Store, StoreConfig, StoreModule } from '@ngrx/store';
 import { UserReducer } from './store/reducer/user.reducer';
 import { CottageReducer } from './store/reducer/cottage.reducer';
 import { StoreFeature } from '@ngrx/store/src/models';
+import { ProfileComponent } from './shared/components/profile/profile.component';
 
 const materialModules = [
   MatBadgeModule,
@@ -125,6 +126,7 @@ const materialModules = [
     ImageDirective,
     CottageDialogComponent,
     WalkinComponent,
+    ProfileComponent,
   ],
   imports: [
     CommonModule,

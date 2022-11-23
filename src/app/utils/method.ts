@@ -25,7 +25,9 @@ export default class Method {
 		return { headers: { Authorization: `Bearer ${this.getCookie("accessToken")}`}}
 	}
 
-
+	landingHeader() {
+		return { headers: { landing: 'true'}}
+	}
 
 	cookieDecode(key: 'accessToken' | 'refreshToken', value: string) {
 		return key === "accessToken" ? jwt_decode(value) : jwt_decode(value) as IUser;

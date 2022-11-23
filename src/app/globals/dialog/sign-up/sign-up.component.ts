@@ -1,6 +1,11 @@
 import { Component, OnInit, Optional, Inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormGroup, FormBuilder, Validators, ValidatorFn } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { UserMasterService } from '../../../components/routes/user-master/user-master.service';
+import { SnackBarService } from '../../../shared/services/snack-bar.service';
+import { ErrorResponse } from '../../../utils/server-response';
+import { SignInComponent } from '../sign-in/sign-in.component';
+import { IUser } from '../../interface/payload';
 
 @Component({
   selector: 'app-sign-up',
@@ -12,16 +17,39 @@ export class SignUpComponent implements OnInit {
   constructor(
 		public dialogRef: MatDialogRef<SignUpComponent>,
 		@Optional() @Inject(MAT_DIALOG_DATA) public data: any,
-		private fb: FormBuilder) {
+		private fb: FormBuilder,
+		private http_user: UserMasterService,
+		private snackBar: SnackBarService,
+		private dialog: MatDialog,) {
+
 		this.sign_upForm = this.fb.group({
 			firstname: [null, Validators.required],
 			lastname: [null, Validators.required],
-			contact: [null, Validators.required],
+			email: [null, Validators.required, Validators.email],
+			mobile_number: [null, Validators.required],
 			address: [null, Validators.required],
 			password: [null, Validators.required],
-			re_typePassword: [null, Validators.required]
+			re_typePassword: [null, Validators.required],
+			roles: ['customer'], //default
+			
 		});
+
+		this.sign_upForm.addValidators(
+      this.mustMatch(this.sign_upForm.get('password'), this.sign_upForm.get('re_typePassword'))
+    )
 	}
+
+	mustMatch(
+    control: any,
+    controlTwo: any
+    ): ValidatorFn {
+  
+    return () => {
+      if (control.value !== controlTwo.value)
+        return { match_error: 'Password does not match' };
+      return null;
+    };
+  }
 
 	get firstname () {
 		return this.sign_upForm.get('firstname');
@@ -29,8 +57,12 @@ export class SignUpComponent implements OnInit {
 	get lastname () {
 		return this.sign_upForm.get('lastname');
 	}
-	get contact () {
-		return this.sign_upForm.get('contact');
+
+	get email() {
+		return this.sign_upForm.get('email');
+	}
+	get mobile_number () {
+		return this.sign_upForm.get('mobile_number');
 	}
 	get address () {
 		return this.sign_upForm.get('address');
@@ -41,15 +73,38 @@ export class SignUpComponent implements OnInit {
 	get re_typePassword () {
 		return this.sign_upForm.get('re_typePassword');
 	}
+
+
+
   ngOnInit(): void {
   }
 
-	signUp (): void {
+	async signUp (): Promise<void> {
 		if(this.sign_upForm.invalid) {
 			this.sign_upForm.markAllAsTouched();
 		} else {
-			this.dialogRef.close();
-			
+			try {
+
+				const data = [this.sign_upForm.value] as any[];
+
+				const newArr = data.map((x) => {
+					x.roles = JSON.stringify(["customer"]);
+					return x;
+				});
+
+
+				
+				const response = await this.http_user.saveUser(newArr[0]);
+
+				this.snackBar._showSnack(response.message, "success");
+				this.dialogRef.close();
+				// open sigin modal
+				this.dialog.open(SignInComponent, {width: '500px', disableClose: true});
+
+			} catch (err) {
+				const error = ErrorResponse(err);
+				this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
+			}
 		}
 	}
 
