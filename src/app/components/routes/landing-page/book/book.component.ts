@@ -49,11 +49,6 @@ export class BookComponent implements OnInit {
 			}
 		});
 
-		
-		
-
-
-
 		this.paymentForm = this.fb.group({
 			accountName: [null, Validators.required],
 			accountNumber: [null, Validators.required],
@@ -158,6 +153,8 @@ export class BookComponent implements OnInit {
 			isCottage: [null, Validators.required],
 			comment: null,
 
+			roles: [(!this.user)? JSON.stringify(["guest"]) : this.user.role]
+
 		});
 
 		this.bookForm.patchValue({isCottage: this.dataCottageBook.length > 0 ? 1 : null});
@@ -202,6 +199,7 @@ export class BookComponent implements OnInit {
 			const response = await this.http_book.bookCottage(formData);
 
 			this.snackBar._showSnack(response.message, "success");	
+			
 		}
 	}
 
