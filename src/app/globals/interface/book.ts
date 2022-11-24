@@ -10,6 +10,7 @@ export interface IBook {
 	receipt: string;
 	createdAt: Date;
 	updateAt: Date;
+	isCottage: boolean;
 }
 
 export type IBookingPaymentType = "gcash" | "cash";

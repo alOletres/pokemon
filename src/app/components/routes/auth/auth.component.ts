@@ -65,7 +65,7 @@ export class AuthComponent implements OnInit {
 				// location.reload();
 			} else {
 				// admin or staff 
-				this.route.navigate(['/dash-board'])
+				this.route.navigate(['/dash-board']);
 			}
 
 		} catch (err) {

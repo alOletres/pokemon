@@ -1,12 +1,13 @@
-import { ICottage } from '../../globals/interface/cottage';
+
 import { EBookActionTypes } from '../model/book.model';
 import { CottageAction } from '../action/book.actions';
+import { IBookAndCottagePayload } from '../../globals/interface/book';
 
 
-const initialState: Array<ICottage> = [];
+const initialState: Array<IBookAndCottagePayload> = [];
 
 export const CottageReducer = (
-	state: Array<ICottage> = initialState,
+	state: Array<IBookAndCottagePayload> = initialState,
 	action: CottageAction,
 	) => {
 		switch(action.type) {

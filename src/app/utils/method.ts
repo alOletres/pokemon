@@ -21,6 +21,10 @@ export default class Method {
 					: this.cookieService.get(key); 
 	}
 
+	deleteAllCookie() {
+		 this.cookieService.deleteAll();
+	}
+
 	authorization() {
 		return { headers: { Authorization: `Bearer ${this.getCookie("accessToken")}`}}
 	}

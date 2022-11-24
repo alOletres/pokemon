@@ -44,12 +44,12 @@ export class ReservationDateComponent implements OnInit {
 
 	}
 
-	get start () {
-		return this.dateForm.get('start');
+	get selected_date_from () {
+		return this.dateForm.get('selected_date_from');
 	}
 
-	get end () {
-		return this.dateForm.get('end');
+	get selected_date_to () {
+		return this.dateForm.get('selected_date_to');
 	}
 
   ngOnInit(): void {
@@ -58,24 +58,26 @@ export class ReservationDateComponent implements OnInit {
 		
 
 		if(this.dataBook.length > 0) {
+			selected_date_from: Date;
+			selected_date_to: Date;
 			this.dateForm = this.fb.group({
-				start: [
+				selected_date_from: [
 					{
 						disabled: true, 
-						value: new Date(this.dataBook[0].start)
+						value: new Date(this.dataBook[0].selected_date_from)
 					}, Validators.required
 				],
-				end: [
+				selected_date_to: [
 					{
 						disabled: true, 
-						value: new Date(this.dataBook[0].end)
+						value: new Date(this.dataBook[0].selected_date_to)
 					}, Validators.required
 				]
 			});
 		} else {
 			this.dateForm = this.fb.group({
-				start: [null, Validators.required],
-				end: [null, Validators.required]
+				selected_date_from: [null, Validators.required],
+				selected_date_to: [null, Validators.required]
 			});
 		}
 
@@ -107,8 +109,8 @@ export class ReservationDateComponent implements OnInit {
 				const newArr = data.map((x) => {
 					const type = x.payment_type = "gcash";
 					x.payment_type = type;
-					x.start = this.start?.value,
-					x.end = this.end?.value
+					x.selected_date_from = this.selected_date_from?.value,
+					x.selected_date_to = this.selected_date_to?.value
 					return x;
 				});
 				

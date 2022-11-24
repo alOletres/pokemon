@@ -63,7 +63,13 @@
 						<mat-icon class="user-menu-icon">person</mat-icon>Profile
 					</button>
 					<div class="sign-button-wrapper">
-						<button class="sign-button" mat-flat-button>Sign out</button>
+						<button 
+							class="sign-button" 
+							mat-flat-button
+							(click)="signOut()"
+							>
+							Sign out
+						</button>
 					</div>
 				</mat-menu>
 

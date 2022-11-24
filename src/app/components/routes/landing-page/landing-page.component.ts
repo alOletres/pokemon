@@ -6,6 +6,7 @@ import { StoreService } from '../../../store/service/store.service';
 import { IUser } from '../../../globals/interface/payload';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/model/appState.model';
+import { UserService } from '../../wrapper/user/user.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -20,6 +21,7 @@ export class LandingPageComponent implements OnInit {
     private method: Method, 
     private store_method: StoreService,
     private store: Store<AppState>,
+    private http_user: UserService
     ) {
       store.select("user").subscribe((data): void => {
         try {
@@ -28,8 +30,6 @@ export class LandingPageComponent implements OnInit {
           return undefined
         }
       });
-
-      // console.log(this.user);
       
     }
 
@@ -44,6 +44,10 @@ export class LandingPageComponent implements OnInit {
     const accessToken = this.method.getCookie("accessToken");
     const user = this.method.cookieDecode("accessToken", accessToken) as IUser;
     this.store_method.addToUser(user);
+  }
+
+  signOut(): void {
+    this.http_user.signOut();
   }
 
 }
