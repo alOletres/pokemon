@@ -74,14 +74,14 @@
 		</mat-form-field>
 
 		<mat-form-field appearance="outline" class="w-full text-xs">
-			<mat-label>Re-type Password</mat-label>
+			<mat-label>Confirm Password</mat-label>
 			<input 
 				type="password" 
-				formControlName="re_typePassword" 
+				formControlName="confirmPassword" 
 				matInput 
 				autocomplete="off"
 			/>
-			<mat-error *ngIf="re_typePassword?.touched && re_typePassword?.errors?.['required']">Re-type Password is required</mat-error>
+			<mat-error *ngIf="confirmPassword?.touched && confirmPassword?.errors?.['required']">Confirm password is required</mat-error>
 		</mat-form-field>
 
 		<div *ngIf="sign_upForm?.errors !== null">

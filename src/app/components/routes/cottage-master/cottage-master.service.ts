@@ -30,9 +30,10 @@ export class CottageMasterService {
 		}
 	}
 
-	async updateCottage(payload: ICottage): Promise<any> {
+	async updateCottage(payload: FormData): Promise<any> {
+		
 		try {
-			const response = this.http.post(`${ENDPOINT.RESORT}/cottage/edit/${payload.id}`, payload, this.method.authorization());
+			const response = this.http.post(`${ENDPOINT.RESORT}/cottage/edit/${payload.get("id")}`, payload, this.method.authorization());
 			return await firstValueFrom(response);
 		} catch (err) {
 			throw err;

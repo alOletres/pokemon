@@ -90,7 +90,7 @@ export class WalkinComponent implements OnInit {
         this.selected_date_from?.disable();
         this.selected_date_to?.disable();
 
-        this.totalDays = diff_minutes(new Date(data[0].selected_date_to), new Date(data[0].selected_date_from));
+        this.totalDays = this.common.diff_minutes(new Date(data[0].selected_date_to), new Date(data[0].selected_date_from));
 
         
       } catch (err) {
@@ -203,19 +203,19 @@ export class WalkinComponent implements OnInit {
 
 }
 
-const diff_minutes = (dayTwo: Date, dayOne: Date) => {
-	let diff =(dayTwo.getTime() - dayOne.getTime()) / 1000;
-	diff /= 60;
-	const minutes = Math.abs(Math.round(diff));
-	const days = (minutes === 1440) ? minutes / 60 / 24 
-						 : (minutes !== 1440 && minutes > 1440) ? minutes / 60 / 24 : 0;
+// const diff_minutes = (dayTwo: Date, dayOne: Date) => {
+// 	let diff =(dayTwo.getTime() - dayOne.getTime()) / 1000;
+// 	diff /= 60;
+// 	const minutes = Math.abs(Math.round(diff));
+// 	const days = (minutes === 1440) ? minutes / 60 / 24 
+// 						 : (minutes !== 1440 && minutes > 1440) ? minutes / 60 / 24 : 0;
 
-  const total = Math.abs(Math.round(days));
+//   const total = Math.abs(Math.round(days));
 
-  const x = total === 0 ? 1 : total;
+//   const x = total === 0 ? 1 : total;
   
-  return  x;
-}
+//   return  x;
+// }
 
 const totalAmount = (data: IBookAndCottagePayload[]): number => {
 	let total = 0;

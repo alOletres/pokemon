@@ -125,7 +125,7 @@
 									<div *ngSwitchCase="'images'">
 										<img 
 											class="border-2 h-18 w-20 cursor-pointer"
-											[src]="base64+','+element[col.key][0]" 
+											[src]="element[col.key]" 
 											alt=""
 											(click)="viewCottage(element)"
 										/>

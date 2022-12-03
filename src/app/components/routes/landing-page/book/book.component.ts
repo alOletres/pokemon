@@ -9,6 +9,7 @@ import { SnackBarService } from '../../../../shared/services/snack-bar.service';
 import { StoreService } from '../../../../store/service/store.service';
 import { BookService } from './book.service';
 import { IUser } from '../../../../globals/interface/payload';
+import { CommonServiceService } from '../../../../globals/services/common-service.service';
 
 @Component({
   selector: 'app-book',
@@ -39,6 +40,7 @@ export class BookComponent implements OnInit {
 		private snackBar: SnackBarService,
 		private store_method: StoreService,
 		private http_book: BookService,
+		private common: CommonServiceService,
 		) {
 
 		store.select("user").subscribe((data): void => {
@@ -73,10 +75,10 @@ export class BookComponent implements OnInit {
 			try {
 				this.dataCottageBook = data;
 
-				this.startDate = moment(data[0].start).format("MM-DD-YYYY");
-				this.endDate = moment(data[0].end).format("MM-DD-YYYY");
+				this.startDate = moment(data[0].selected_date_from).format("MM-DD-YYYY");
+				this.endDate = moment(data[0].selected_date_to).format("MM-DD-YYYY");
 
-				const totalDays = diff_minutes(new Date(data[0].end), new Date(data[0].start));
+				const totalDays = this.common.diff_minutes(new Date(data[0].selected_date_to), new Date(data[0].selected_date_from));
 
 				this.numberOfDays = totalDays;
 
@@ -117,17 +119,9 @@ export class BookComponent implements OnInit {
 		return this.bookForm.get('contact');
 	}
 
-	get event () {
-		return this.bookForm.get('event');
-	}
-
 	get address () {
 		return this.bookForm.get('address');
 	}
-
-	// get type () {
-	// 	return this.bookForm.get('type');
-	// }
 
 	get start () {
 		return this.bookForm.get('start');
@@ -147,7 +141,7 @@ export class BookComponent implements OnInit {
 			firstname: [(!this.user)? null: this.user.firstname, Validators.required],
 			lastname: [(!this.user)? null: this.user.lastname, Validators.required],
 			contact: [(!this.user)? null: this.user.mobile_number, Validators.required],
-			event: [null, Validators.required],
+			email: null,
 			address:[(!this.user)? null: this.user.address, Validators.required],
 			
 			isCottage: [null, Validators.required],
@@ -213,14 +207,15 @@ export class BookComponent implements OnInit {
 
 
 
-const diff_minutes = (dayTwo: Date, dayOne: Date) => {
-	let diff =(dayTwo.getTime() - dayOne.getTime()) / 1000;
-	diff /= 60;
-	const minutes = Math.abs(Math.round(diff));
-	const days = (minutes === 1440) ? minutes / 60 / 24 
-						 : (minutes !== 1440 && minutes > 1440) ? minutes / 60 / 24 : 0
-  return  Math.abs(Math.round(days))
-}
+// const diff_minutes = (dayTwo: Date, dayOne: Date) => {
+// 	let diff =(dayTwo.getTime() - dayOne.getTime()) / 1000;
+// 	diff /= 60;
+// 	const minutes = Math.abs(Math.round(diff));
+// 	const days = (minutes === 1440) ? minutes / 60 / 24 
+// 						 : (minutes !== 1440 && minutes > 1440) ? minutes / 60 / 24 : 0
+	
+//   return  Math.abs(Math.round(days))
+// }
 
 const totalAmount = (data: IBookAndCottagePayload[]): number => {
 	let total = 0;

@@ -27,9 +27,9 @@ export interface IFilterBy {
   status?: boolean | string;
 }
 
-export interface IDate {
-	start: Date;
-	end: Date;
-}
+// export interface IDate {
+// 	start: Date;
+// 	end: Date;
+// }
 
-export type IBookPayload = ICottage & IDate; 
+export type IBookPayload = ICottage; 

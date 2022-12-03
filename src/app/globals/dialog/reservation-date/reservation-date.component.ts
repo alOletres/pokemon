@@ -9,6 +9,7 @@ import { SignInComponent } from '../sign-in/sign-in.component';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/model/appState.model';
+import { IUser } from '../../interface/payload';
 
 @Component({
   selector: 'app-reservation-date',
@@ -20,6 +21,8 @@ export class ReservationDateComponent implements OnInit {
 	minDate = new Date();
 
 	dataBook!: IBookAndCottagePayload[];
+
+	user!: IUser;
 
   constructor(
 		public dialogRef: MatDialogRef<ReservationDateComponent>,
@@ -35,8 +38,15 @@ export class ReservationDateComponent implements OnInit {
 		store.select("cottage").subscribe((data): void => {
 			try {
 				this.dataBook = data;
-				console.log(data);
 				
+			} catch (err) {
+				return undefined;
+			}
+		});
+
+		store.select("user").subscribe((data): void => {
+			try {
+				this.user = data[0];
 			} catch (err) {
 				return undefined;
 			}
@@ -58,8 +68,7 @@ export class ReservationDateComponent implements OnInit {
 		
 
 		if(this.dataBook.length > 0) {
-			selected_date_from: Date;
-			selected_date_to: Date;
+
 			this.dateForm = this.fb.group({
 				selected_date_from: [
 					{
@@ -98,17 +107,14 @@ export class ReservationDateComponent implements OnInit {
 		} else {
 			this.dialogRef.close();
 
-			const isOK = confirm("Are you a Guest?");
-
-			if(!isOK) {
-				this.dialog.open(SignInComponent, { width: '400px', disableClose: true, data: {...this.dateForm.value, ...this.data} })
-			} else {
+			// if(!this.user) {
+			// 	this.dialog.open(SignInComponent, { width: '400px', disableClose: true, data: {...this.dateForm.value, ...this.data} })
+			// } else {
 
 				const data = [this.data];
 
 				const newArr = data.map((x) => {
-					const type = x.payment_type = "gcash";
-					x.payment_type = type;
+					x.payment_type = "gcash";
 					x.selected_date_from = this.selected_date_from?.value,
 					x.selected_date_to = this.selected_date_to?.value
 					return x;
@@ -118,7 +124,7 @@ export class ReservationDateComponent implements OnInit {
 
 				this.snackBar._showSnack("Cottage Successfully Added temporarily!", "success");
 				this.router.navigate(['/book'])
-			}
+			// }
 		
 		}
 	}

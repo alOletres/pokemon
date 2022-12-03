@@ -14,7 +14,7 @@ export class CottageDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<CottageDialogComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: ICottage) {
       console.log(data);
-      this.url = `${EMage.BASE64_INITIAL}, ${data.images?.[0]}`; 
+      this.url = data.images as string; 
     }
 
   ngOnInit(): void {

@@ -41,4 +41,20 @@ export class CommonServiceService {
         console.log(currentUrl);
     });
   }
+
+	
+ 	diff_minutes (dayTwo: Date, dayOne: Date) {
+		let diff =(dayTwo.getTime() - dayOne.getTime()) / 1000;
+		diff /= 60;
+		const minutes = Math.abs(Math.round(diff));
+		const days = (minutes === 1440) ? minutes / 60 / 24 
+							: (minutes !== 1440 && minutes > 1440) ? minutes / 60 / 24 : 0;
+
+		const total = Math.abs(Math.round(days));
+
+		const x = total === 0 ? 1 : total;
+		console.log(x, total);
+		
+		return  x;
+	}
 }

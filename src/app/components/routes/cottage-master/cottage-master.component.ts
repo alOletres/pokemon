@@ -11,6 +11,7 @@ import { MatSort } from '@angular/material/sort';
 import { EMage } from '../../../globals/enums/image';
 import { MatDialog } from '@angular/material/dialog';
 import { CottageDialogComponent } from '../../dialog/cottage-dialog/cottage-dialog.component';
+import Method from '../../../utils/method';
 
 @Component({
   selector: 'app-cottage-master',
@@ -77,7 +78,8 @@ export class CottageMasterComponent implements OnInit {
 		private http_cottage: CottageMasterService, 
 		private snackBar: SnackBarService,
 		private common: CommonServiceService,
-		private dialog: MatDialog,) {
+		private dialog: MatDialog,
+		private method: Method,) {
 		this.cottageForm = this.fb.group({
 			type: [null, Validators.required],
 			cottageNumber: [null, Validators.required],
@@ -169,7 +171,15 @@ export class CottageMasterComponent implements OnInit {
 		try {
 			const response = await this.http_cottage.getCottage();
 			// this.snackBar._showSnack(response.message, "success");
-			this.dataCottage.data = response.data as ICottage[];
+			const data = response.data as ICottage[];
+			const result = data.map((x) => {
+				const base64 =`${this.base64},${x.images?.[0]}`;
+				x.images = base64;
+				return x;
+
+			});
+
+			this.dataCottage.data = result;
 
 		} catch (err) {
 			const error = ErrorResponse(err);
@@ -178,7 +188,7 @@ export class CottageMasterComponent implements OnInit {
 	}
 
 	passImage(element: ICottage): void {
-		this.fileChanges = `${this.base64}, ${element.images?.[0]}`
+		this.fileChanges = element.images as string;
 	}
 
 	async updateCottage(element: ICottage): Promise<void> {
@@ -188,26 +198,35 @@ export class CottageMasterComponent implements OnInit {
 			 */
 			
 
-			// const formData = new FormData();
+			const formData = new FormData();
 
-			// console.log(element, this.file);
+			const data = [element];
 
-			// const result = await convertBlobToBase64(element.images as unknown as Blob);
+			const payload = data.map((x) => {
+				const blob = this.method.dataURItoBlob(x.images);
+
+				const image = new File([blob], 
+					"fileName.jpeg", {
+					type: "'image/jpeg'"
+				});			
+				
+				x.images = image as any;
+
+				return x;
+			});
+
+			for (let item of Object.keys(payload)) {
+				formData.append(item, item);
+			}
+
+			const response = await this.http_cottage.updateCottage(formData);
+
+			console.log(response);
 			
-			// console.log(result);
-			
-
-			// const blob = new Blob(element.images);
-
-			// formData.append("images", element.images as string);
-
-			// for (let item of Object.keys(element)) {
-			// 	formData.append(item, element[item])
-			// }
-
-			// const response = await this.http_cottage.updateCottage(element);
 
 		} catch (err) {
+			console.log(err);
+			
 			const error = ErrorResponse(err);
 			this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
 		}
@@ -218,11 +237,5 @@ export class CottageMasterComponent implements OnInit {
 	}
 
 }
-const convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
-    const reader = new FileReader;
-    reader.onerror = reject;
-    reader.onload = () => {
-        resolve(reader.result);
-    };
-    reader.readAsDataURL(blob);
-});
+
+

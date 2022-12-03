@@ -29,13 +29,13 @@ export class SignUpComponent implements OnInit {
 			mobile_number: [null, Validators.required],
 			address: [null, Validators.required],
 			password: [null, Validators.required],
-			re_typePassword: [null, Validators.required],
+			confirmPassword: [null, Validators.required],
 			roles: ['customer'], //default
 			
 		});
 
 		this.sign_upForm.addValidators(
-      this.mustMatch(this.sign_upForm.get('password'), this.sign_upForm.get('re_typePassword'))
+      this.mustMatch(this.sign_upForm.get('password'), this.sign_upForm.get('confirmPassword'))
     )
 	}
 
@@ -70,8 +70,8 @@ export class SignUpComponent implements OnInit {
 	get password () {
 		return this.sign_upForm.get('password');
 	}
-	get re_typePassword () {
-		return this.sign_upForm.get('re_typePassword');
+	get confirmPassword () {
+		return this.sign_upForm.get('confirmPassword');
 	}
 
 
