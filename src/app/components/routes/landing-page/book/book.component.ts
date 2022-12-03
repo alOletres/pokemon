@@ -184,11 +184,103 @@ export class BookComponent implements OnInit {
 			this.paymentForm.markAllAsTouched();
 		} else {
 			const formData = new FormData();
-			const data = {...this.dataCottageBook, ...this.bookForm.value, ...this.paymentForm.value};
 
-			for (let item of Object.keys(data)) {
-				formData.append(item, data[item])
+			/**
+			 * 
+			 * Flatten the object and get only the cottage id,
+			 * As it will automatically associate all cottage data using the id
+			 */
+			const selectedCottages: [id: number] = [...this.dataCottageBook].map((item: IBookAndCottagePayload) => item.id) as [id: number]
+
+			// Getting the selected dates
+			const selectedDates: {from: Date; to: Date} = [...this.dataCottageBook].filter((item: IBookAndCottagePayload) => {
+				return ("selected_date_from" in item && item["selected_date_from"]) && ("selected_date_to" in item && item["selected_date_to"])
+			}).map((item: IBookAndCottagePayload) => {
+				return {
+					from: item.selected_date_from,
+					to: item.selected_date_to
+				}
+			})[0]
+
+			// User details
+			const userDetails = { ...this.bookForm.value }
+
+			// Payment details
+			const paymentDetails = { ...this.paymentForm.value, images: undefined }
+
+			// Extracting payment method from previous object then adding it to paymentDetails object
+			paymentDetails["payment_type"] = [...this.dataCottageBook].find((item: IBookAndCottagePayload) => "payment_type" in item && item["payment_type"])?.payment_type
+
+			// Other details, comment, etc.
+			const otherDetails = "comment" in userDetails && userDetails["comment"]
+				? { comment: userDetails.comment }
+				: {}
+
+			// Receipt attachment
+			const receipt: File = this.paymentForm.value && this.paymentForm.value["images"]
+				? this.paymentForm.value["images"]
+				: null
+
+			// Final cleanup
+			if ("comment" in userDetails) {
+				delete userDetails["comment"]
 			}
+
+			if ("images" in paymentDetails) {
+				delete paymentDetails["images"]
+			}
+
+			// Types
+			interface IDates { 
+				from: Date; 
+				to: Date; 
+			}
+
+			interface IUser {
+				firstname: string;
+				lastname: string;
+				contact: string;
+				address: string;
+				email: string;
+				roles: string;
+			}
+
+			interface IPayment {
+				accountName: string;
+				accountNumber: number;
+				amount: number;
+				payment_type: string;
+				reference: string;
+				remarks: string;
+			}
+
+			interface IBookingPayload {
+				cottages: number[];
+				dates: IDates;
+				user?: IUser;
+				payment: IPayment;
+				other?: object;
+			}
+
+			const payload: IBookingPayload = {
+				cottages: [...selectedCottages],
+				dates: {...selectedDates},
+				user: {...userDetails},
+				payment: {...paymentDetails},
+				other: {...otherDetails}
+			}
+
+			type TProps = "cottages" | "dates" | "user" | "payment" | "other"
+
+			for (let item of Object.keys(payload)) {
+				let props: TProps = item as TProps
+
+				const value: string = payload[props] as unknown as string
+				
+				formData.append(props, JSON.stringify(value))
+			}
+
+			formData.append("images", receipt)
 
 			const response = await this.http_book.bookCottage(formData);
 
