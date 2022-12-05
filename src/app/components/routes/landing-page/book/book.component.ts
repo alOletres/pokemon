@@ -8,7 +8,7 @@ import * as moment from 'moment';
 import { SnackBarService } from '../../../../shared/services/snack-bar.service';
 import { StoreService } from '../../../../store/service/store.service';
 import { BookService } from './book.service';
-import { IUser } from '../../../../globals/interface/payload';
+import { IBookingPayload, IUser, TProps } from '../../../../globals/interface/payload';
 import { CommonServiceService } from '../../../../globals/services/common-service.service';
 
 @Component({
@@ -200,7 +200,7 @@ export class BookComponent implements OnInit {
 					from: item.selected_date_from,
 					to: item.selected_date_to
 				}
-			})[0]
+			})[0];
 
 			// User details
 			const userDetails = { ...this.bookForm.value }
@@ -214,12 +214,12 @@ export class BookComponent implements OnInit {
 			// Other details, comment, etc.
 			const otherDetails = "comment" in userDetails && userDetails["comment"]
 				? { comment: userDetails.comment }
-				: {}
+				: {};
 
 			// Receipt attachment
 			const receipt: File = this.paymentForm.value && this.paymentForm.value["images"]
 				? this.paymentForm.value["images"]
-				: null
+				: null;
 
 			// Final cleanup
 			if ("comment" in userDetails) {
@@ -230,38 +230,6 @@ export class BookComponent implements OnInit {
 				delete paymentDetails["images"]
 			}
 
-			// Types
-			interface IDates { 
-				from: Date; 
-				to: Date; 
-			}
-
-			interface IUser {
-				firstname: string;
-				lastname: string;
-				contact: string;
-				address: string;
-				email: string;
-				roles: string;
-			}
-
-			interface IPayment {
-				accountName: string;
-				accountNumber: number;
-				amount: number;
-				payment_type: string;
-				reference: string;
-				remarks: string;
-			}
-
-			interface IBookingPayload {
-				cottages: number[];
-				dates: IDates;
-				user?: IUser;
-				payment: IPayment;
-				other?: object;
-			}
-
 			const payload: IBookingPayload = {
 				cottages: [...selectedCottages],
 				dates: {...selectedDates},
@@ -270,7 +238,7 @@ export class BookComponent implements OnInit {
 				other: {...otherDetails}
 			}
 
-			type TProps = "cottages" | "dates" | "user" | "payment" | "other"
+			
 
 			for (let item of Object.keys(payload)) {
 				let props: TProps = item as TProps
@@ -280,7 +248,7 @@ export class BookComponent implements OnInit {
 				formData.append(props, JSON.stringify(value))
 			}
 
-			formData.append("images", receipt)
+			formData.append("images", receipt);
 
 			const response = await this.http_book.bookCottage(formData);
 
@@ -296,18 +264,6 @@ export class BookComponent implements OnInit {
 
 	
 }
-
-
-
-// const diff_minutes = (dayTwo: Date, dayOne: Date) => {
-// 	let diff =(dayTwo.getTime() - dayOne.getTime()) / 1000;
-// 	diff /= 60;
-// 	const minutes = Math.abs(Math.round(diff));
-// 	const days = (minutes === 1440) ? minutes / 60 / 24 
-// 						 : (minutes !== 1440 && minutes > 1440) ? minutes / 60 / 24 : 0
-	
-//   return  Math.abs(Math.round(days))
-// }
 
 const totalAmount = (data: IBookAndCottagePayload[]): number => {
 	let total = 0;
