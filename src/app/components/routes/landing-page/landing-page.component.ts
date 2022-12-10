@@ -7,6 +7,7 @@ import { IUser } from '../../../globals/interface/payload';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/model/appState.model';
 import { UserService } from '../../wrapper/user/user.service';
+import { ProgressBarService } from '../../../shared/services/progress-bar.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -21,7 +22,8 @@ export class LandingPageComponent implements OnInit {
     private method: Method, 
     private store_method: StoreService,
     private store: Store<AppState>,
-    private http_user: UserService
+    private http_user: UserService,
+    public progressBarService: ProgressBarService,
     ) {
       store.select("user").subscribe((data): void => {
         try {

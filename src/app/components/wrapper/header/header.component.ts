@@ -4,6 +4,7 @@ import { StoreService } from '../../../store/service/store.service';
 import { IUser } from './../../../globals/interface';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/model/appState.model';
+import { ProgressBarService } from '../../../shared/services/progress-bar.service';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +15,10 @@ export class HeaderComponent implements OnInit {
   @Input() isMenuOpened: boolean | undefined;
 	@Output() isShowSidebar = new EventEmitter<boolean>();
   user!: IUser;
-  constructor(private method: Method, private store_method: StoreService) { }
+  constructor(
+    private method: Method, 
+    private store_method: StoreService,
+    public progressBarService: ProgressBarService,) { }
 
   ngOnInit(): void {
     this.getUser();

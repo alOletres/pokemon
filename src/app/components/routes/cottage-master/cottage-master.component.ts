@@ -133,7 +133,9 @@ export class CottageMasterComponent implements OnInit {
 		reader.readAsDataURL(this.file);
 
 		reader.onload = (event: any) => {
-			(this.btnName === "Save") ? this.url = event.target.result : this.fileChanges = event.target.result;
+			(this.btnName === "Save") 
+			? this.url = event.target.result 
+			: this.fileChanges = event.target.result;
 		}
 
 		this.cottageForm.get('images')?.patchValue(this.file);
@@ -170,10 +172,9 @@ export class CottageMasterComponent implements OnInit {
 	async getCottage() {
 		try {
 			const response = await this.http_cottage.getCottage();
-			// this.snackBar._showSnack(response.message, "success");
 			const data = response.data as ICottage[];
 			const result = data.map((x) => {
-				const base64 =`${this.base64},${x.images?.[0]}`;
+				const base64 =`${this.base64}, ${x.images?.[0]}`;
 				x.images = base64;
 				return x;
 
@@ -197,35 +198,42 @@ export class CottageMasterComponent implements OnInit {
 			 * this.file not selected value is undefined
 			 */
 			
-
 			const formData = new FormData();
 
 			const data = [element];
 
 			const payload = data.map((x) => {
-				const blob = this.method.dataURItoBlob(x.images);
 
-				const image = new File([blob], 
-					"fileName.jpeg", {
-					type: "'image/jpeg'"
-				});			
+				if(!this.file) {
+
+					const blob = this.method.dataURItoBlob(x.images);
+
+					const image = new File([blob], 
+						"fileName.jpeg", {
+						type: "'image/jpeg'"
+					});			
+					
+					x.images = image as any;
+
+				} else {
+					x.images = this.file as any;
+				}
 				
-				x.images = image as any;
-
 				return x;
 			});
 
-			for (let item of Object.keys(payload)) {
-				formData.append(item, item);
+
+			for (let item of Object.keys([...payload][0])) {
+				const dt = [...payload][0] as any;
+				formData.append(item, dt[item]);
 			}
 
 			const response = await this.http_cottage.updateCottage(formData);
 
-			console.log(response);
-			
+			this.snackBar._showSnack(response.message, "success");
+			this.ngOnInit();
 
 		} catch (err) {
-			console.log(err);
 			
 			const error = ErrorResponse(err);
 			this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");

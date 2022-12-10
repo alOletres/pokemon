@@ -159,7 +159,11 @@
 
 								<!-- edit division -->
 								<div [ngSwitch]="col.type" *ngIf="element.isEdit">
-									<form (ngSubmit)="element.isEdit = !element.isEdit; updateCottage(element)">
+									<form 
+										(ngSubmit)="element.isEdit = !element.isEdit; 
+										updateCottage(element)"
+										>
+										
 										<div *ngSwitchCase="'images'">
 											<input 
 												type="file" 

@@ -53,7 +53,7 @@ export class WalkinComponent implements OnInit {
       selected_date_from: [null, Validators.required],
       selected_date_to: [null, Validators.required],
       type: [null, Validators.required],
-      cottage_number: [null, Validators.required],
+      cottageNumber: [null, Validators.required],
       isCottage: [null, Validators.required],
       id: null,
       images: null,
@@ -83,7 +83,7 @@ export class WalkinComponent implements OnInit {
           selected_date_from: data[0].selected_date_from,
           selected_date_to: data[0].selected_date_to,
           type: data[0].type,
-          cottage_number: data[0].cottage_number,
+          cottageNumber: data[0].cottageNumber,
           isCottage: data[0].isCottage
         });
 
@@ -111,8 +111,8 @@ export class WalkinComponent implements OnInit {
     return this.reservationForm.get('type');
   }
 
-  get cottage_number() {
-    return this.reservationForm.get('cottage_number');
+  get cottageNumber() {
+    return this.reservationForm.get('cottageNumber');
   }
 
   ngOnInit(): void {
@@ -136,7 +136,7 @@ export class WalkinComponent implements OnInit {
   }
 
   changeCottageNumber(event: string) {
-    const data = [...this.cottageList].filter((x) => (x.cottage_number === event));
+    const data = [...this.cottageList].filter((x) => (x.cottageNumber === event));
     this.selectedCottage = data[0];
   }
 

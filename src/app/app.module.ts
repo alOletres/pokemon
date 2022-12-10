@@ -24,7 +24,7 @@ import { HomePageComponent } from './components/routes/landing-page/home-page/ho
 import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatMenuModule} from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
@@ -75,6 +75,8 @@ import { UserReducer } from './store/reducer/user.reducer';
 import { CottageReducer } from './store/reducer/cottage.reducer';
 import { StoreFeature } from '@ngrx/store/src/models';
 import { ProfileComponent } from './shared/components/profile/profile.component';
+import { LoadingInteceptorService } from './globals/services/loading-inteceptor.service';
+import { AuthInteceptorService } from './globals/services/auth-inteceptor.service';
 
 const materialModules = [
   MatBadgeModule,
@@ -154,7 +156,10 @@ const materialModules = [
   exports: [
     ...materialModules,
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: LoadingInteceptorService, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInteceptorService, multi: true},
+  ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
