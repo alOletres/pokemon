@@ -77,8 +77,9 @@ import { StoreFeature } from '@ngrx/store/src/models';
 import { ProfileComponent } from './shared/components/profile/profile.component';
 import { LoadingInteceptorService } from './globals/services/loading-inteceptor.service';
 import { AuthInteceptorService } from './globals/services/auth-inteceptor.service';
-
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 const materialModules = [
+  MatProgressBarModule,
   MatBadgeModule,
   MatStepperModule,
   MatSelectModule,
