@@ -6,7 +6,7 @@
 				<!-- cottage book -->
 				<div class="w-1/2 pr-4" *ngIf="dataCottageBook.length !== 0">
 					<mat-tab-group class="border-2 text-xs rounded"  >
-						<mat-tab [label]="book.cottageNumber" *ngFor="let book of dataCottageBook">
+						<mat-tab [label]="book.cottage_number" *ngFor="let book of dataCottageBook">
 							<div class="flex flex-row p-2">
 								<div  class="w-1/2" fxLayoutAlign="center center">
 									<img class="rounded h-full" [src]="base64+', '+ book.images?.[0]" alt="">
@@ -32,7 +32,7 @@
 										<input 
 											type="text" 
 											matInput 
-											[value]="book.cottageNumber"  
+											[value]="book.cottage_number"  
 											readonly="true" 
 											autocomplete="off"
 										/>

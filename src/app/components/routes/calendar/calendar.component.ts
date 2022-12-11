@@ -72,7 +72,7 @@ events: CalendarEvent[] = [
     allDay: true,
     resizable: {
       beforeStart: true,
-      afterEnd: true,
+      afterEnd: true, 
     },
     draggable: true,
   },
