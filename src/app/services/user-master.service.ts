@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { IUser } from './../../../globals/interface/payload';
+import { IUser } from '../globals/interface/payload';
 import { ENDPOINT } from 'src/app/globals/models/endpoint';
-import Method from '../../../utils/method';
+import Method from '../utils/method';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
-import { IResponse } from '../../../globals/interface/default';
+import { IResponse } from '../globals/interface/default';
+
 
 @Injectable({
   providedIn: 'root'

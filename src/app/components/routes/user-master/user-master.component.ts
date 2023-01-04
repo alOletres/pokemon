@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { UserMasterService } from './user-master.service';
+import { UserMasterService } from '../../../services/user-master.service';
 import { ErrorResponse } from '../../../utils/server-response';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,7 +8,7 @@ import { IUser } from '../../../globals/interface/payload';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { IColumnSchema } from '../../../globals/interface/default';
-import { CommonServiceService } from '../../../globals/services/common-service.service';
+import { CommonServiceService } from '../../../services/common-service.service';
 
 @Component({
   selector: 'app-user-master',
@@ -72,7 +72,7 @@ export class UserMasterComponent implements OnInit {
 			email: [null, Validators.required],
 			mobile_number: [null, Validators.required],
 			roles: [null, Validators.required],
-			password: null,
+			password: [null, Validators.required],
 			address: 'address',
 		});
 	}
@@ -83,6 +83,10 @@ export class UserMasterComponent implements OnInit {
 
 	get lastname () {
 		return this.userForm.get('lastname');
+	}
+
+	get password() {
+		return this.userForm.get('password');
 	}
 
 	get email() {
@@ -125,7 +129,6 @@ export class UserMasterComponent implements OnInit {
 			if (this.userForm.invalid) {
 				this.userForm.markAllAsTouched();
 			} else {
-				this.userForm.patchValue({password: 'test'});
 
 				const data = [this.userForm.value];
 
@@ -148,6 +151,8 @@ export class UserMasterComponent implements OnInit {
 					this.ngOnInit();
 					this.snackBar._showSnack(response.message, "success");
 					this.common.reset(this.userForm);
+
+					this.btnName = "Save User";
 			
 				}
 				

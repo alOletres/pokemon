@@ -17,6 +17,12 @@ import {
 } from 'angular-calendar';
 import { EventColor } from 'calendar-utils';
 import { Subject } from 'rxjs';
+import { ErrorResponse } from 'src/app/utils';
+import { SnackBarService } from '../../../shared/services/snack-bar.service';
+import { ReservationService } from '../../../services/reservation.service';
+import Method from '../../../utils/method';
+import { CommonServiceService } from '../../../services/common-service.service';
+
 const colors: Record<string, EventColor> = {
   red: {
     primary: '#ad2121',
@@ -31,83 +37,60 @@ const colors: Record<string, EventColor> = {
     secondary: '#FDF1BA',
   },
 };
+
 @Component({
   selector: 'app-calendar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
+
 export class CalendarComponent implements OnInit {
 
   view: CalendarView = CalendarView.Month;
   CalendarView = CalendarView;
   viewDate: Date = new Date();
 
-  actions: CalendarEventAction[] = [
-  {
-    label: '<i class="fas fa-fw fa-pencil-alt"></i>',
-    a11yLabel: 'Edit',
-    onClick: ({ event }: { event: CalendarEvent }): void => {
-      // this.handleEvent('Edited', event);
-    },
-  },
-  {
-    label: '<i class="fas fa-fw fa-trash-alt"></i>',
-    a11yLabel: 'Delete',
-    onClick: ({ event }: { event: CalendarEvent }): void => {
-      this.events = this.events.filter((iEvent) => iEvent !== event);
-      // this.handleEvent('Deleted', event);
-    },
-  },
-];
-
 refresh = new Subject<void>();
 events: CalendarEvent[] = [
-  {
-    start: subDays(startOfDay(new Date()), 1),
-    end: addDays(new Date(), 1),
-    title: 'A 3 day event',
-    color: { ...colors['red'] },
-    actions: this.actions,
-    allDay: true,
-    resizable: {
-      beforeStart: true,
-      afterEnd: true, 
-    },
-    draggable: true,
-  },
-  {
-    //an event no end date
-    start: startOfDay(new Date()),
-    title: 'Birthday event',
-    color: { ...colors['yellow'] },
-    actions: this.actions,
-  },
-  {
-    start: subDays(endOfMonth(new Date()), 3),
-    end: addDays(endOfMonth(new Date()), 3),
-    title: 'A long event that spans 2 months',
-    color: { ...colors['blue'] },
-    allDay: true,
-  },
-  {
-    // A draggable and resizable event
-    start: addHours(startOfDay(new Date()), 2),
-    end: addHours(new Date(), 2),
-    title: 'Wedding event',
-    color: { ...colors['yellow'] },
-    actions: this.actions,
-    resizable: {
-      beforeStart: true,
-      afterEnd: true,
-    },
-    draggable: true,
-  },
+ 
+  // {
+  //   //an event no end date
+  //   start: startOfDay(new Date()),
+  //   title: 'Birthday event',
+  //   color: { ...colors['yellow'] },
+  //   // actions: this.actions,
+  // },
+  // {
+  //   start: subDays(endOfMonth(new Date()), 3),
+  //   end: addDays(endOfMonth(new Date()), 3),
+  //   title: 'A long event that spans 2 months',
+  //   color: { ...colors['blue'] },
+  //   allDay: true,
+  // },
+  // {
+  //   // A draggable and resizable event
+  //   start: addHours(startOfDay(new Date()), 2),
+  //   end: addHours(new Date(), 2),
+  //   title: 'Wedding event',
+  //   color: { ...colors['yellow'] },
+  //   // actions: this.actions,
+  //   resizable: {
+  //     beforeStart: true,
+  //     afterEnd: true,
+  //   },
+  //   draggable: true,
+  // },
 ];
-activeDayIsOpen: boolean = true;
-constructor() { }
+activeDayIsOpen: boolean = false;
+
+constructor(
+  private snackBar: SnackBarService, 
+  private http_resservation: ReservationService,
+  private http_common: CommonServiceService,) { }
 
 ngOnInit(): void {
+  this.getBook();
 }
 
 dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -146,22 +129,22 @@ handleEvent(action: string, event: CalendarEvent): void {
   // this.modal.open(this.modalContent, { size: 'lg' });
 }
 
- addEvent(): void {
-    this.events = [
-      ...this.events,
-      {
-        title: 'New event',
-        start: startOfDay(new Date()),
-        end: endOfDay(new Date()),
-        color: colors['red'],
-        draggable: true,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true,
-        },
-      },
-    ];
-  }
+//  addEvent(): void {
+//     this.events = [
+//       ...this.events,
+//       {
+//         title: 'New event',
+//         start: startOfDay(new Date()),
+//         end: endOfDay(new Date()),
+//         color: colors['red'],
+//         draggable: true,
+//         resizable: {
+//           beforeStart: true,
+//           afterEnd: true,
+//         },
+//       },
+//     ];
+//   }
 
   deleteEvent(eventToDelete: CalendarEvent) {
     this.events = this.events.filter((event) => event !== eventToDelete);
@@ -170,7 +153,47 @@ handleEvent(action: string, event: CalendarEvent): void {
   setView(view: CalendarView) {
     this.view = view;
   }
+
 	closeOpenMonthViewDay() {
-	this.activeDayIsOpen = false;
-}
+	  this.activeDayIsOpen = false;
+  }
+
+  async getBook(): Promise<void> {
+    try {
+      const response = await this.http_resservation.getBook();
+      const data = response.data?.filter((x) => (x.status === 'approved'));
+
+      const events: CalendarEvent[] = [];
+
+      data?.map((x) => {
+
+        const total_days = this.http_common.diff_minutes(
+          new Date(x.selected_date_to),
+          new Date(x.selected_date_from)
+        );
+        
+        events.push({
+          start: startOfDay(new Date(x.selected_date_from)),
+          end: endOfDay(new Date(x.selected_date_to)),
+          title: `A ${total_days} day event`,
+          color: { ...colors['red'] },
+          // actions: this.actions,
+          allDay: true,
+          resizable: {
+            beforeStart: true,
+            afterEnd: true, 
+          },
+          // draggable: true,
+        })
+      });
+
+
+      this.events = [...events];
+      
+    } catch (err) {
+      const error = ErrorResponse(err);
+			this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
+    }
+  }
+
 }

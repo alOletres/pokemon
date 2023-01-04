@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize, Observable } from 'rxjs';
-import { ProgressBarService } from '../../shared/services/progress-bar.service';
+import { ProgressBarService } from '../shared/services/progress-bar.service';
 
 @Injectable({
   providedIn: 'root'

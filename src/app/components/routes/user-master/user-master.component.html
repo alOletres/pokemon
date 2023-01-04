@@ -1,9 +1,10 @@
 
-<div class="mt-10">
-	<div class="ml-2"> <h3 class=" pr-2 font-semibold text-lg uppercase text-blue-900">User master Form</h3></div>
+<div class="mt-2">
+	<!-- <div class="ml-2"> <h3 class=" pr-2 font-semibold text-lg uppercase text-blue-900">User master Form</h3></div> -->
 	<div class="p-2 flex">
 		
-		<div class="w-1/4 bg-white mat-elevation-z8 p-2 mt-2 mr-2">
+		<div class="w-1/4 bg-white mat-elevation-z8 p-2 mr-2 h-fit">
+			
 			<h4 class="text-xs font-semibold text-gray-500">Fill out user information!</h4>
 			<form [formGroup]="userForm" (ngSubmit)="saveUser()"> 
 				<mat-form-field appearance="outline" class="text-xs w-full">
@@ -65,6 +66,17 @@
 						>
 						Contact is required
 					</mat-error>
+				</mat-form-field>
+
+				<mat-form-field appearance="outline" class="text-xs w-full">
+					<mat-label>Password</mat-label>
+					<input 
+						type="text"
+						matInput
+						autocomplete="off" 
+						formControlName="password"
+					/>
+					<mat-error *ngIf="password?.touched && roles?.errors?.['required']">Password is required</mat-error>
 				</mat-form-field>
 
 				<mat-form-field appearance="outline" class="text-xs w-full">

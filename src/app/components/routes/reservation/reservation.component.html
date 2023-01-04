@@ -1,1 +1,26 @@
+<mat-toolbar>
+	<span>Resservation list</span>
+</mat-toolbar>
 
+<div class="p-2">
+	<div class="w-full bg-white mat-elevation-z8">
+		<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="end">
+			<mat-tab [label]="'ALL('+ data_allSource.data.length + ')'">
+				<app-table (eventListener)="openDialog($event)" [data_source]="data_allSource"></app-table>
+			</mat-tab>
+			<mat-tab [label]="'PENDING('+ data_pendingSource.data.length +')'">
+				<app-table (eventListener)="openDialog($event)" [data_source]="data_pendingSource"></app-table>
+			</mat-tab>
+			<mat-tab [label]="'APPROVE('+ data_approveSource.data.length +')'">
+				<app-table (eventListener)="openDialog($event)" [data_source]="data_approveSource"></app-table>
+			</mat-tab>
+			<mat-tab [label]="'REJECTED('+ data_rejectedSource.data.length + ')'">
+				<app-table (eventListener)="openDialog($event)" [data_source]="data_rejectedSource"></app-table>
+			</mat-tab>
+			<mat-tab [label]="'VOIDED('+ data_voidedSource.data.length +')'">
+				<app-table (eventListener)="openDialog($event)" [data_source]="data_voidedSource"></app-table>
+			</mat-tab>
+		</mat-tab-group>
+	
+	</div>
+</div>

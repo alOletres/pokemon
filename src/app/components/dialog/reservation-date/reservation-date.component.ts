@@ -2,14 +2,14 @@ import { Component, OnInit,Inject, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ICottage } from '../../interface/cottage';
+import { ICottage } from '../../../globals/interface/cottage';
 import { StoreService } from '../../../store/service/store.service';
-import { IBook, IBookAndCottagePayload } from '../../interface/book';
+import { IBook, IBookAndCottagePayload } from '../../../globals/interface/book';
 import { SignInComponent } from '../sign-in/sign-in.component';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/model/appState.model';
-import { IUser } from '../../interface/payload';
+import { IUser } from '../../../globals/interface/payload';
 
 @Component({
   selector: 'app-reservation-date',
@@ -64,9 +64,6 @@ export class ReservationDateComponent implements OnInit {
 
   ngOnInit(): void {
 
-		console.log(this.dataBook);
-		
-
 		if(this.dataBook.length > 0) {
 
 			this.dateForm = this.fb.group({
@@ -110,6 +107,8 @@ export class ReservationDateComponent implements OnInit {
 			// if(!this.user) {
 			// 	this.dialog.open(SignInComponent, { width: '400px', disableClose: true, data: {...this.dateForm.value, ...this.data} })
 			// } else {
+
+
 
 				const data = [this.data];
 

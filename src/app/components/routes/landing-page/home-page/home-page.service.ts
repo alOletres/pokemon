@@ -14,8 +14,8 @@ export class HomePageService {
 
   async getCottage(): Promise<IResponse<ICottage[]>> {
 		try {
-			const response = this.http.get<IResponse<ICottage[]>>(`${ENDPOINT.RESORT}/cottage/list/${'all'}`, this.method.landingHeader());
-			return await lastValueFrom(response);
+			const response = this.http.get<IResponse<ICottage[]>>(`${ENDPOINT.RESORT}/cottage/list/all`, this.method.landingHeader());
+			return await lastValueFrom(response);			
 		} catch (err) {
 			throw err;
 		}

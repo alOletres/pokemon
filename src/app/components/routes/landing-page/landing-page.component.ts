@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { SignUpComponent } from '../../../globals/dialog/sign-up/sign-up.component';
+import { SignUpComponent } from '../../dialog/sign-up/sign-up.component';
 import Method from '../../../utils/method';
 import { StoreService } from '../../../store/service/store.service';
 import { IUser } from '../../../globals/interface/payload';

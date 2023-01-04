@@ -1,7 +1,6 @@
 import { Component, OnInit, Optional, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ICottage } from '../../../globals/interface/cottage';
-import { EMage } from '../../../globals/enums/image';
 
 @Component({
   selector: 'app-cottage-dialog',
@@ -13,7 +12,6 @@ export class CottageDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<CottageDialogComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: ICottage) {
-      console.log(data);
       this.url = data.images as string; 
     }
 

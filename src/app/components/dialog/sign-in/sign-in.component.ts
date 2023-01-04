@@ -3,12 +3,12 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dial
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SignUpComponent } from '../sign-up/sign-up.component';
 import { StoreService } from '../../../store/service/store.service';
-import { IBook, IUser } from '../../interface';
-import { IBookPayload } from '../../interface/cottage';
+import { IBook, IUser } from '../../../globals/interface';
+import { IBookPayload } from '../../../globals/interface/cottage';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { Router } from '@angular/router';
-import { IBookAndCottagePayload } from '../../interface/book';
-import { AuthService } from '../../../components/routes/auth/auth.service';
+import { IBookAndCottagePayload } from '../../../globals/interface/book';
+import { AuthService } from '../../routes/auth/auth.service';
 import { ErrorResponse } from '../../../utils/server-response';
 import Method from '../../../utils/method';
 
@@ -55,8 +55,6 @@ export class SignInComponent implements OnInit {
 			try {
 				const response = await this.http_auth.login(this.sign_inForm.value);
 
-				console.log(response);
-				
 				this.snackBar._showSnack(response.message, "success");
 				// save here the user details;
 				const accessToken = response.data?.accessToken as string

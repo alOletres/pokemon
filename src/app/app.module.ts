@@ -1,6 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
+import { CommonModule, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 /** routing module */
@@ -52,9 +52,9 @@ import { ContactComponent } from './components/routes/landing-page/contact/conta
 import { BookComponent } from './components/routes/landing-page/book/book.component';
 import { OnlineReservationComponent } from './components/routes/online-reservation/online-reservation.component';
 import { AboutComponent } from './components/routes/landing-page/about/about.component';
-import { ReservationDateComponent } from './globals/dialog/reservation-date/reservation-date.component';
-import { SignInComponent } from './globals/dialog/sign-in/sign-in.component';
-import { SignUpComponent } from './globals/dialog/sign-up/sign-up.component';
+import { ReservationDateComponent } from './components/dialog/reservation-date/reservation-date.component';
+import { SignInComponent } from './components/dialog/sign-in/sign-in.component';
+import { SignUpComponent } from './components/dialog/sign-up/sign-up.component';
 import { ReportsComponent } from './components/routes/reports/reports.component';
 import { SnackBarComponent } from './shared/components/snack-bar/snack-bar.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
@@ -65,7 +65,6 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 /**
  * directive
  */
-import { ImageDirective } from './globals/directive/image.directive';
 import { CottageDialogComponent } from './components/dialog/cottage-dialog/cottage-dialog.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from './../environments/environment';
@@ -75,9 +74,16 @@ import { UserReducer } from './store/reducer/user.reducer';
 import { CottageReducer } from './store/reducer/cottage.reducer';
 import { StoreFeature } from '@ngrx/store/src/models';
 import { ProfileComponent } from './shared/components/profile/profile.component';
-import { LoadingInteceptorService } from './globals/services/loading-inteceptor.service';
-import { AuthInteceptorService } from './globals/services/auth-inteceptor.service';
+import { LoadingInteceptorService } from './services/loading-inteceptor.service';
+import { AuthInteceptorService } from './services/auth-inteceptor.service';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { TableComponent } from './components/props/table/table.component';
+import { ViewReservationComponent } from './components/views/view-reservation/view-reservation.component';
+import { ViewHeaderComponent } from './shared/components/view-header/view-header.component';
+import { CottageTableComponent } from './components/props/cottage-table/cottage-table.component';
+import { BookDetailsComponent } from './components/dialog/book-details/book-details.component';
+
 const materialModules = [
   MatProgressBarModule,
   MatBadgeModule,
@@ -100,6 +106,7 @@ const materialModules = [
   MatTableModule,
   MatSortModule,
   MatPaginatorModule,
+  MatToolbarModule
 ]
 @NgModule({
   declarations: [
@@ -126,10 +133,14 @@ const materialModules = [
     SignUpComponent,
     ReportsComponent,
     SnackBarComponent,
-    ImageDirective,
     CottageDialogComponent,
     WalkinComponent,
     ProfileComponent,
+    TableComponent,
+    ViewReservationComponent,
+    ViewHeaderComponent,
+    CottageTableComponent,
+    BookDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -158,6 +169,7 @@ const materialModules = [
     ...materialModules,
   ],
   providers: [
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInteceptorService, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: AuthInteceptorService, multi: true},
   ],

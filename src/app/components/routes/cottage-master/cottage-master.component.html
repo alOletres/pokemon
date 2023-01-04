@@ -33,12 +33,12 @@
 								<mat-label>Cottage #</mat-label>
 								<input 
 									type="text" 
-									formControlName="cottageNumber" 
+									formControlName="cottage_number" 
 									matInput 
 									autocomplete="off" 
 								/>
 								<mat-error 
-									*ngIf="cottageNumber?.touched && cottageNumber?.errors?.['required']">
+									*ngIf="cottage_number?.touched && cottage_number?.errors?.['required']">
 									Cottage number is required
 								</mat-error>
 							</mat-form-field>

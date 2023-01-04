@@ -24,6 +24,8 @@ export class AuthService {
 			const response = this.http.post<IResponse<ISecret>>(`${ENDPOINT.RESORT}/authenticate`, payload);
 			return await firstValueFrom(response);
 		} catch (err) {
+			console.log(err);
+			
 			throw err;
 		}
 	}

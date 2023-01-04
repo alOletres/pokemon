@@ -1,0 +1,53 @@
+<div>
+	<div class="pt-1 pr-1 pl-1">
+		<mat-form-field appearance="outline" class="w-full text-xs">
+			<mat-label>Search</mat-label>
+			<span matPrefix><mat-icon>search</mat-icon></span>
+			<input type="text" (keyup)="applyFilter($event)" autocomplete="off" matInput />
+		</mat-form-field>
+	</div>
+	<table mat-table matSort #sort="matSort" class="w-full text-xs" [dataSource]="data_source">
+		<ng-container [matColumnDef]="col.key" *ngFor="let col of column_schema">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header class=" bg-slate-100 uppercase">
+				{{col.label}}
+			</th>
+	
+			<td mat-cell *matCellDef="let element" class="text-xs">
+				<div [ngSwitch]="col.type">
+					<div *ngSwitchCase="'date'">
+						<span>{{element[col.key] | date: 'MM-dd-YYYY'}}</span>
+					</div>
+	
+					<div *ngSwitchCase="'status'">
+						<span class="text-green-600">{{element[col.key]}}</span>
+					</div>
+	
+					<div *ngSwitchCase="'isEdit'">
+						<button 
+							mat-raised-button 
+							class="bg-orange-600 text-white"
+							(click)="viewResservation(element)"
+							>
+							View
+						</button>
+					</div>
+					<div *ngSwitchDefault>
+						{{element[col.key]}}
+					</div>
+				</div>
+			</td>
+		</ng-container>
+		<tr mat-header-row *matHeaderRowDef="display_columns"></tr>
+		<tr mat-row *matRowDef="let row; columns:display_columns"></tr>
+	</table>
+
+	<div *ngIf="data_source.data.length === 0" class="p-2">
+		<h1 class="text-center uppercase">no record found</h1>
+	</div>
+
+	<div>
+		<mat-paginator #paginator [length]="100" [pageSize]="20" [pageSizeOptions]="[5, 10, 25, 100]"
+			aria-label="Select page">
+		</mat-paginator>
+	</div>
+</div>

@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ICarouselImage } from './../../../../globals/interface/interface';
-import { ReservationDateComponent } from '../../../../globals/dialog/reservation-date/reservation-date.component';
-import { CottageMasterService } from '../../cottage-master/cottage-master.service';
+import { ReservationDateComponent } from '../../../dialog/reservation-date/reservation-date.component';
+import { CottageMasterService } from '../../../../services/cottage-master.service';
 import { SnackBarService } from '../../../../shared/services/snack-bar.service';
 import { ErrorResponse } from '../../../../utils/server-response';
 import { MatTableDataSource } from '@angular/material/table';
@@ -48,8 +48,8 @@ export class HomePageComponent implements OnInit {
       });
     }
 
-  ngOnInit(): void {
-    this.getCottage();
+  async ngOnInit() {
+    await Promise.resolve().then(() => this.getCottage());
   }
 
   async applyFilter(event: Event) {
@@ -65,17 +65,16 @@ export class HomePageComponent implements OnInit {
 	
   }
 
-  async getCottage(): Promise<void> {
+  async getCottage() {
     try {
       this.changeDetectorRef.detectChanges();
 
       const response = await this.http_home.getCottage();
-      this.dataCottage.data = response.data as ICottage[];
+      this.dataCottage.data = response.data as ICottage[];      
 
       this.data = this.dataCottage.connect();
 
     } catch (err) {
-      
       const error = ErrorResponse(err);
       this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
     }

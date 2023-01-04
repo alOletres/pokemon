@@ -20,5 +20,22 @@ export interface IColumnSchema {
 	label: string;
 }
 
+export interface ISwalCustom {
+	title: string;
+	input: 'email' | 'text' | 'password';
+	inputLabel: string;
+	inputPlaceholder: string;
+}
+
+export interface INewWindow<T> {
+	url: string;
+	payload: T;
+}
+
+export interface IUpdateStatus {
+	id?: number;
+	status: string;
+	reason: string;
+}
 
 

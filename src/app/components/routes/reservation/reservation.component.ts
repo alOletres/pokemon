@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonServiceService } from '../../../globals/services/common-service.service';
-import { ECOTTAGE_TYPE } from '../../../globals/enums/default';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ReservationService } from '../../../services/reservation.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { IBook, IBookingPayload } from '../../../globals/interface/book';
+import { BookDetailsComponent } from '../../dialog/book-details/book-details.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-reservation',
@@ -10,67 +12,64 @@ import { ECOTTAGE_TYPE } from '../../../globals/enums/default';
 })
 export class ReservationComponent implements OnInit {
 
-	isEditable = false;
-  reservationForm!: FormGroup;
-	cottageType: string[] = [ECOTTAGE_TYPE.FLOATING, ECOTTAGE_TYPE.NON_FLOATING];
+	data_allSource = new MatTableDataSource<IBook>([]);
+	data_pendingSource = new MatTableDataSource<IBook>([]);
+	data_approveSource =  new MatTableDataSource<IBook>([]);
+	data_rejectedSource = new MatTableDataSource<IBook>([]);
+	data_voidedSource = new MatTableDataSource<IBook>([]);
 
-  constructor(private fb: FormBuilder, private http_common: CommonServiceService) {
-		this.reservationForm = this.fb.group({
-			firstname: [null, Validators.required],
-			lastname: [null, Validators.required],
-			contact: [null, Validators.required],
-			eventName: [null, Validators.required],
-			address: [null, Validators.required],
-			cottage: [null, Validators.required],
-			start: [null, Validators.required],
-			end: [null, Validators.required],
-			comment: ['N/A', Validators.required]	
-		});
+  constructor(private http_resservation: ReservationService, private dialog: MatDialog) {
+
 	}
 
-	get firstname () {
-		return this.reservationForm.get('firstname'); 
-	}
 
-	get lastname () {
-		return this.reservationForm.get('lastname'); 
-	}
-
-	get contact () {
-		return this.reservationForm.get('contact');
-	}
-
-	get eventName () {
-		return this.reservationForm.get('eventName');
-	}
-
-	get address () {
-		return this.reservationForm.get('address');
-	}
-
-	get cottage () {
-		return this.reservationForm.get('cottage');
-	}
-
-	get dateReserved () {
-		return this.reservationForm.get('dateReserved');
-	}
-
-	get comment () {
-		return this.reservationForm.get('comment');
-	}
   ngOnInit(): void {
+		this.getBook();
   }
 
-	reservedCottage() {
-		if(this.reservationForm.invalid) {
-			this.reservationForm?.markAllAsTouched();
-		} else {
+
+	async getBook() {
+		try {
+			const response = await this.http_resservation.getBook();
+			const data = response.data as IBook[];
+
+			/** al booking "pending" | "approved" | "rejected" | "voided" */
+			this.data_allSource.data = data;
+
+			/** pending booking */
+			const pending = [...data].filter((x) => (x.status === 'pending'));
+			this.data_pendingSource.data = pending;
+
+			/** approved booking */
+			const approved = [...data].filter((x) => (x.status === 'approved'));
+			this.data_approveSource.data = approved;
+
+			/** rejected booking */
+			const rejected = [...data].filter((x) => (x.status === 'rejected'));
+			this.data_rejectedSource.data = rejected;
+
+			/** voided */
+			const voided = [...data].filter((x) => (x.status === 'voided'));
+			this.data_voidedSource.data = voided;
+			
+
+		} catch (err) {
+			throw err;
 		}
 	}
 
-	clearForm () {
-		this.http_common.reloadCurrentRoute()
+	openDialog(payload: IBookingPayload) {
+		const dialogRef = this.dialog.open(BookDetailsComponent, {
+			width: '1000px', 
+			disableClose: true, 
+			data: payload
+		});
+
+		dialogRef.afterClosed().subscribe(() => {
+			this.ngOnInit();
+		});
 	}
+
+	
 
 }

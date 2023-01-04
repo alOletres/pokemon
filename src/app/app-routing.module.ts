@@ -16,6 +16,7 @@ import { AboutComponent } from './components/routes/landing-page/about/about.com
 import { ReportsComponent } from './components/routes/reports/reports.component';
 import { WalkinComponent } from './components/routes/walkin/walkin.component';
 import { ProfileComponent } from './shared/components/profile/profile.component';
+import { ViewReservationComponent } from './components/views/view-reservation/view-reservation.component';
 const routes: Routes = [
 	{
 		path: '',
@@ -94,6 +95,10 @@ const routes: Routes = [
 				component: WalkinComponent
 			}
 		]
+	},
+	{
+		path: 'view-reservation/:payload',
+		component: ViewReservationComponent
 	}
 ];
 

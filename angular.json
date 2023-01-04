@@ -34,7 +34,8 @@
               "raf",
               "pdfmake/build/pdfmake",
               "exceljs",
-              "moment"
+              "moment",
+              "sweetalert2"
            ],
             "outputPath": "dist/resservation",
             "index": "src/index.html",

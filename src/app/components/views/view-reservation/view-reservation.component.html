@@ -1,0 +1,192 @@
+<app-view-header></app-view-header>
+
+
+<div class="pt-20 pl-5 pr-5">
+	<div class="flex">
+		<h1 class="uppercase text-gray-600 font-bold p-1">Reservation</h1>
+		<div>
+			<span class="text-sm capitalize rounded p-1 text-green-600 font-mono bg-slate-100">{{book_details.status}}</span>
+		</div>
+	</div>
+	<div class="flex space-x-2">
+		<button
+			mat-raised-button
+			class="bg-white text-green-600"
+			(click)="updateStatus('approved')"
+			>
+			Approve
+		</button>
+
+		<button
+			mat-raised-button
+			class="bg-white text-orange-600"
+			(click)="updateStatus('rejected')"
+			>
+			Rejected
+		</button>
+
+		<button
+			mat-raised-button
+			class="bg-white text-red-600"
+			(click)="updateStatus('voided')"
+			>
+			Void
+		</button>
+
+		<button
+			mat-raised-button
+			class="bg-white text-gray-600"
+			(click)="closeTab()"
+			>
+			Close
+		</button>
+	</div>
+</div>
+
+<div class="p-4">
+	<div class="flex justify-between w-full space-x-2">
+		<div class="w-1/2 border-2 h-fit">
+			<div class="flex justify-between">
+				<p class="text-gray-600 text-sm p-2">Book cottage...</p>
+				<div class="flex text-xs space-x-2 p-2 text-gray-600 font-mono">
+					<p>From: {{book_details.selected_date_from | date: 'MM-dd-YYYY' }}</p>
+					<p>To: {{book_details.selected_date_to | date: 'MM-dd-YYYY'}}</p>
+				</div>
+			</div>
+
+			<div>
+				<table
+					mat-table
+					class="w-full"
+					[dataSource]="data_cottage"
+					>
+					<ng-container 
+						[matColumnDef]="col.key" 
+						*ngFor="let col of column_schema">
+						<th
+							mat-header-cell
+							*matHeaderCellDef
+							class="bg-gray-100 font-bold uppercase break-words w-36 max-w-xs"
+							>
+							{{col.label}}
+						</th>
+						<td
+							mat-cell
+							*matCellDef="let element"
+							class="break-words w-36 max-w-xs text-xs"
+							>
+
+							<div [ngSwitch]="col.type">
+
+								<div *ngSwitchCase="'images'">
+									<img 
+										class="border-2 "
+										[src]="element[col.key]" 
+										alt=""
+									/>
+								</div>
+								<div *ngSwitchDefault>
+									{{element[col.key]}}
+								</div>
+							</div>
+						
+						</td>
+
+					</ng-container>
+
+					<tr mat-header-row *matHeaderRowDef="display_column"></tr>
+					<tr mat-row *matRowDef="let row; columns:display_column"></tr>
+				</table>
+			</div>
+
+			<div class="flex justify-end text-gray-500 font-normal">
+				<div class="w-3/5 p-1 flex">
+					<div class="w-4/5 text-right text-xs mr-4 space-y-1">
+						<p>Sub total:</p>
+						<p>Number of days:</p>
+						<p class="font-semibold">Total amount:</p>
+					</div>
+					<div class="w-1/3 text-left text-xs space-y-1">
+						<p>{{sub_total}}</p>
+						<p>{{nmbrfdys}}</p>
+						<p class="font-semibold">{{sub_total * nmbrfdys}} </p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="w-1/2 border-2 h-full">
+			<p class="text-gray-600 text-sm p-2">Payment details...</p>
+
+			<div >
+				<ng-container *ngFor="let payments of data_payments">
+					<div class="flex">
+						<div class=" w-36 pr-2">
+							<img 
+								class="h-50 w-40"
+								[src]="payments.receipt" 
+								alt=""
+							/>
+						</div>
+
+						<div class="flex justify-center items-center">
+							<form class="text-xs">
+								<mat-form-field floatLabel="always" class="w-1/2 pr-1">
+									<mat-label>Account name</mat-label>
+									<input 
+										class="capitalize"
+										type="text" 
+										matInput 
+										autocomplete="off"
+										readonly="true"
+										[value]="payments.account_name"
+									/>
+								</mat-form-field>
+
+								<mat-form-field floatLabel="always" class="w-1/2 pr-1">
+									<mat-label>Account number</mat-label>
+									<input 
+										type="text" 
+										matInput 
+										autocomplete="off"
+										readonly="true"
+										[value]="payments.account_number"
+									/>
+								</mat-form-field>
+
+								<mat-form-field floatLabel="always" class="w-full pr-1"> 
+									<mat-label>Reference number</mat-label>
+									<input 
+										type="text" 
+										matInput
+										autocomplete="off"
+										readonly="true"
+										[value]="payments.reference_number"
+									/>
+								</mat-form-field>
+
+								<p class="font-mono text-sm">Book by:</p>
+
+								<mat-form-field floatLabel="always" class="w-1/2 pr-1">
+									<mat-label>Complete name</mat-label>
+									<input type="text" matInput readonly="true"/>
+								</mat-form-field>
+
+								<mat-form-field floatLabel="always" class="w-1/2 pr-1">
+									<mat-label>Email</mat-label>
+									<input type="text" matInput readonly="true"/>
+								</mat-form-field>
+
+								<mat-form-field floatLabel="always" class="w-full pr-1">
+									<mat-label>Address</mat-label>
+									<input type="text" matInput readonly="true"/>
+								</mat-form-field>
+
+							</form>
+						</div>
+					</div>
+				</ng-container>
+			</div>
+
+		</div>
+	</div>
+</div>

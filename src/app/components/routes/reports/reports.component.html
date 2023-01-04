@@ -24,56 +24,27 @@
 			</div>
 	</div>
 
-	<table class="border-2 w-full">
-		<thead class="text-xs uppercase text-left bg-slate-400">
-			<tr>
-				<th class="p-2">no.</th>
-				<th class="p-2">customer name</th>
-				<th class="p-2">customer type</th>
-				<th class="p-2">reservation type</th>
-				<th class="p-2">cottage type</th>
-				<th class="p-2">cottage #.</th>
-				<th class="p-2">start date reserved</th>
-				<th class="p-2">end date reserved</th>
-				<th class="p-2">number of days</th>
-				<th class="p-2">date created</th>
-				<th class="p-2">status</th>
-				<th class="p-2">amount</th>
-			</tr>
-		</thead>
-		<tbody class="text-xs">
-			<tr class=" hover:bg-yellow-100  cursor-pointer">
-				<td class="p-2">1.</td>
-				<td class="p-2">Marjorie</td>
-				<td class="p-2">Guest</td>
-				<td class="p-2">Online</td>
-				<td class="p-2">Floating cottage</td>
-				<td class="p-2">COT-0001</td>
-				<td class="p-2">09/20/2022</td>
-				<td class="p-2">09/20/2022</td>
-				<td class="p-2">1day</td>
-				<td class="p-2">09/01/2022</td>
-				<td class="p-2">Occupied</td>
-				<td class="p-2">{{1000 | currency : "&#8369;"}}</td>
-			</tr>
-			<tr class=" hover:bg-yellow-100  cursor-pointer">
-				<td class="p-2">1.</td>
-				<td class="p-2">Princess</td>
-				<td class="p-2">Customer</td>
-				<td class="p-2">Walkin</td>
-				<td class="p-2">Floating cottage</td>
-				<td class="p-2">COT-0001</td>
-				<td class="p-2">09/24/2022</td>
-				<td class="p-2">09/24/2022</td>
-				<td class="p-2">1day</td>
-				<td class="p-2">09/01/2022</td>
-				<td class="p-2">Occupied</td>
-				<td class="p-2">{{1000 | currency : "&#8369;"}}</td>
-			</tr>
-			<tr>
-				<td colspan="11" class="p-2 text-center font-semibold border-t-2">Total Income</td>
-				<td class="p-2 font-semibold border-t-2">{{2000 | currency : "&#8369;"}}</td>
-			</tr>
-		</tbody>
-	</table>
+	<div class="w-full overflow-x-auto">
+		<table
+			mat-table
+			[dataSource]="data_reports"
+			class="w-full mat-elevation-z8"
+			matSort
+			#reportSort="matSort"
+			>
+
+			<ng-container [matColumnDef]="col.key" *ngFor="let col of column_schema">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header class=" bg-slate-100 uppercase">
+						{{col.label}}
+					</th>
+
+				<td mat-cell *matCellDef="let element">
+					{{element[col.key]}}
+				</td>
+			</ng-container>
+
+			<tr mat-header-row *matHeaderCellDef="display_column"></tr>
+			<tr mat-row *matRowDef="let row; columns:display_column"></tr>
+		</table>
+	</div>
 </div>

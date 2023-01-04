@@ -129,10 +129,9 @@
 
 								<mat-form-field appearance="outline" class="w-1/2">
 									<mat-label>Contact</mat-label>
-									<span matPrefix>+63 &nbsp;</span>
 									<input 
-										type="text" 
-										maxlength="10" 
+										type="number"
+										maxlength="11" 
 										matInput 
 										formControlName="contact" 
 										autocomplete="off"
@@ -269,36 +268,42 @@
 									<p>Acount Name</p>
 									<span class="text-sm font-medium text-gray-500 dark:text-white">RVS RESORT</span>
 								</div>
-								
-							</div>
-
+							</div>	
+							
 							<div class="space-x-4">
 								<button 
 									mat-raised-button
-									matStepperPrevious 
 									class="bg-yellow-400 text-white"
+									(click)="previousStepper(stepper)"
 									>
 									Back
 								</button> 
 
 								<button 
 									class="bg-blue-600 text-white"
-									mat-raised-button 
-									matStepperNext
-									(click)="submit()"
+									mat-raised-button
+									(click)="submit(stepper)"
 									>
 									Submit
 								</button>
 							</div>
-							
 						</div>
 					</div>
 				</div>
 			</form>
+
 		</mat-step>
 
 		<mat-step>
 			<ng-template matStepLabel>Done</ng-template>
+
+			<div class="flex justify-center items-center">
+				<img 
+					src="assets/donegif.gif" 
+					alt=""
+					height="500"
+				/>
+			</div>
 		</mat-step>
 	</mat-stepper>
 </div>

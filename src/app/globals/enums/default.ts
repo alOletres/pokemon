@@ -6,5 +6,6 @@ export enum ECOTTAGE_TYPE {
 export enum ESystemUser {
 	ADMIN="admin",
 	CUSTOMER="customer",
-	STAFF="staff"
+	STAFF="staff",
+	GUEST="guest"
 }

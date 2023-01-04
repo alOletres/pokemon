@@ -1,11 +1,11 @@
 import { Component, OnInit, Optional, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { UserMasterService } from '../../../components/routes/user-master/user-master.service';
+import { UserMasterService } from '../../../services/user-master.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { ErrorResponse } from '../../../utils/server-response';
 import { SignInComponent } from '../sign-in/sign-in.component';
-import { IUser } from '../../interface/payload';
+import { IUser } from '../../../globals/interface/payload';
 
 @Component({
   selector: 'app-sign-up',

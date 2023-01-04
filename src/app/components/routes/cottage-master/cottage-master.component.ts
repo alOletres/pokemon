@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CottageMasterService } from './cottage-master.service';
+import { CottageMasterService } from '../../../services/cottage-master.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { ErrorResponse } from '../../../utils/server-response';
-import { CommonServiceService } from '../../../globals/services/common-service.service';
+import { CommonServiceService } from '../../../services/common-service.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { IColumnSchema, ICottage } from '../../../globals/interface';
 import { MatPaginator } from '@angular/material/paginator';
@@ -82,7 +82,7 @@ export class CottageMasterComponent implements OnInit {
 		private method: Method,) {
 		this.cottageForm = this.fb.group({
 			type: [null, Validators.required],
-			cottageNumber: [null, Validators.required],
+			cottage_number: [null, Validators.required],
 			capacity: [null, Validators.required],
 			price: [null, Validators.required],
 			description: [null, Validators.required],
@@ -95,8 +95,8 @@ export class CottageMasterComponent implements OnInit {
 		return this.cottageForm.get('type');
 	}
 
-	get cottageNumber () {
-		return this.cottageForm.get('cottageNumber');
+	get cottage_number () {
+		return this.cottageForm.get('cottage_number');
 	}
 
 	get capacity () {
@@ -137,7 +137,6 @@ export class CottageMasterComponent implements OnInit {
 			? this.url = event.target.result 
 			: this.fileChanges = event.target.result;
 		}
-
 		this.cottageForm.get('images')?.patchValue(this.file);
 
 	}
@@ -220,6 +219,7 @@ export class CottageMasterComponent implements OnInit {
 				}
 				
 				return x;
+
 			});
 
 
@@ -233,8 +233,7 @@ export class CottageMasterComponent implements OnInit {
 			this.snackBar._showSnack(response.message, "success");
 			this.ngOnInit();
 
-		} catch (err) {
-			
+		} catch (err) {			
 			const error = ErrorResponse(err);
 			this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
 		}

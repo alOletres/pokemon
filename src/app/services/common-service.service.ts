@@ -38,7 +38,6 @@ export class CommonServiceService {
     let currentUrl = this._router.url;
     this._router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
         this._router.navigate([currentUrl]);
-        console.log(currentUrl);
     });
   }
 
@@ -53,8 +52,13 @@ export class CommonServiceService {
 		const total = Math.abs(Math.round(days));
 
 		const x = total === 0 ? 1 : total;
-		console.log(x, total);
-		
+
 		return  x;
 	}
+
+	
+
+
 }
+
+

@@ -3,10 +3,11 @@ import {
 	IResponse, 
 	ILogin, 
 	ISecret, 
-	IColumnSchema 
+	IColumnSchema,
+	ISwalCustom
 } from './default';
 import { ICottage } from './cottage';
-import { IBook, IBookingPaymentType } from './book';
+import { IBook, IBookingPaymentType, IDBPayment } from './book';
 export {
 	IUser, 
 	IResponse, 
@@ -15,5 +16,7 @@ export {
 	ICottage, 
 	IColumnSchema,
 	IBook,
-	IBookingPaymentType
+	IBookingPaymentType,
+	ISwalCustom,
+	IDBPayment
 };

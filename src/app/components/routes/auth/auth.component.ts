@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from './auth.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
-import { ErrorResponse } from './../../../utils';
 import Method from '../../../utils/method';
 import { StoreService } from '../../../store/service/store.service';
 import { IUser } from '../../../globals/interface/payload';
@@ -42,8 +41,7 @@ export class AuthComponent implements OnInit {
 	async LoginUser() {
 		try {
 			const response = await this.http_auth.login(this.loginForm.value);			
-			console.log(response);
-			
+	
 			this.snackBar._showSnack(response.message, "success");
 			const accessToken = response.data?.accessToken as string
 			const userDetails = this.method.cookieDecode("accessToken", accessToken) as IUser;
@@ -57,7 +55,7 @@ export class AuthComponent implements OnInit {
 			this.store_method.addToUser(userDetails);
 			const roles: string[] = JSON.parse(userDetails.role as string).map((x: string) => (x));
 
-			const checkRoles = roles.filter((x) => (x === ESystemUser.CUSTOMER));
+			const checkRoles = roles.filter((x) => (x === ESystemUser.CUSTOMER || x === ESystemUser.GUEST));
 			
 			if(checkRoles.length > 0) {
 				// customer rani diri
@@ -69,9 +67,7 @@ export class AuthComponent implements OnInit {
 			}
 
 		} catch (err) {
-			
-			const error = ErrorResponse(err);
-			this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
+			throw err;
 		}
 	}
 

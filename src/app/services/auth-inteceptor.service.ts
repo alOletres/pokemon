@@ -10,9 +10,10 @@ import {
   filter, 
   take 
 } from 'rxjs';
-import Method from '../../utils/method';
-import { AuthService } from '../../components/routes/auth/auth.service';
-import { IResponse, ISecret } from '../interface';
+import Method from '../utils/method';
+import { AuthService } from '../components/routes/auth/auth.service';
+import { IResponse, ISecret } from '../globals/interface';
+import { SnackBarService } from '../shared/services/snack-bar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class AuthInteceptorService implements HttpInterceptor {
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
-  constructor(private method: Method, private authService: AuthService,) { }
+  constructor(private method: Method, private authService: AuthService, private snackBar: SnackBarService,) { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     
     let authReq  = req;
@@ -33,16 +34,14 @@ export class AuthInteceptorService implements HttpInterceptor {
     }
 
      return next.handle(authReq).pipe(catchError((error: HttpErrorResponse) => {
-      // if (error instanceof HttpErrorResponse && !authReq.url.includes('auth/signin') && error.status === 401) {
-      //   return this.handle401Error(authReq, next);
-      // }
-      
+   
       if(error.status === 403) {
-        // refresh token or logout 
+        // refresh token or logout
         return this.handle401Error(authReq, next);
-      } else 
-
-      return throwError(() => new Error(error.error));
+      } else {
+        this.snackBar._showSnack(`${error.error.message} ${error.status}`, "error");
+        return throwError(() => new Error(error.error));
+      }
 
     }));
   }
