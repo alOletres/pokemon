@@ -49,6 +49,7 @@ export class HomePageComponent implements OnInit {
     }
 
   async ngOnInit() {
+    
     await Promise.resolve().then(() => this.getCottage());
   }
 

@@ -12,6 +12,17 @@ import { EMage } from 'src/app/globals/enums/image';
 import { BookService } from '../../../services/book.service';
 import { IUpdateStatus } from 'src/app/globals/interface/default';
 import { PaymentService } from '../../../services/payment.service';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/model/appState.model';
+import { IUser } from '../../../globals/interface/payload';
+import { UserService } from '../../wrapper/user/user.service';
+import { UserMasterService } from '../../../services/user-master.service';
+import * as moment from 'moment';
+
+interface IPayload_Dialog {
+  payload: IBookAndCottagePayload;
+  user: IUser[];
+}
 
 @Component({
   selector: 'app-book-details',
@@ -56,22 +67,42 @@ export class BookDetailsComponent implements OnInit {
   display_column: string[] = this.column_schema.map((x) => (x.key));
 
   data_cottage = new MatTableDataSource<ICottage>([]);
+  data_payments!: IDBPayment[];
   // book_details!: IBookAndCottagePayload;
   sub_total!: number;
   nmbrfdys!: number;
-  data_payments!: IDBPayment[];
+  user!: IUser[];
+
+  user_role!: string;
+  data!: IBookAndCottagePayload;
+
+  current_date = new Date();
+  booleanRejected: boolean = true; 
   
   constructor(
     public dialogRef: MatDialogRef<BookDetailsComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: IBookAndCottagePayload,
+    @Optional() @Inject(MAT_DIALOG_DATA) public payload: IPayload_Dialog,
     private http_cottage: CottageMasterService, 
     private http_common: CommonServiceService,
 		private http_book: BookService,
     private snackBar: SnackBarService,
 		private method: Method,
 		private http_payment: PaymentService,
+    private store: Store<AppState>,
+    private http_user: UserMasterService,
 		
   ) { 
+
+    this.data = payload.payload;
+
+    this.store.select("user").subscribe((data): void => {
+      try {
+        this.user = data;
+
+      } catch (err) {
+        return undefined
+      }
+    })
     this.nmbrfdys =  this.http_common.diff_minutes(new Date(this.data.selected_date_to), new Date(this.data.selected_date_from));
     
   }
@@ -80,9 +111,37 @@ export class BookDetailsComponent implements OnInit {
 		Promise.resolve().then(() => {
 			this.getCottage();
 			this.getPayments();
+      this.getUser();
 		});
+      
   }
 
+  async getUser(): Promise<void> {
+    try {
+      const response = await this.http_user.getUser();
+      const data = response.data as IUser[];
+      const result = data.filter((x) => (x.id === this.user[0].id));
+      const user_data = result.map((x) => {
+        x.role = JSON.parse(x.role as string);
+        return x;
+      });
+
+      this.user_role = user_data[0].role?.[0];
+
+      const created_at = moment(this.data.createdAt).add(4, "hour").format("LLL");
+
+      const current = moment(this.current_date).format("LLL");
+
+      if(this.user_role === "customer") {
+         this.booleanRejected = created_at > current ? false : true;
+      }
+
+     
+    } catch (err) {
+      const error = ErrorResponse(err);
+      this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
+    }
+  }
 	async getCottage(): Promise<void> {
 		try {
 			const response = await this.http_cottage.getCottage();
@@ -103,10 +162,12 @@ export class BookDetailsComponent implements OnInit {
         x.images = `${EMage.BASE64_INITIAL},${x.images?.[0]}`;
         return x;
       });
-      
+
+
+            
       this.data_cottage.data = list;
 
-      this.sub_total = sub_total([...list]);
+      this.sub_total = this.method.sub_total([...list]);
 
 		} catch (err) {
 			const error = ErrorResponse(err);
@@ -126,7 +187,6 @@ export class BookDetailsComponent implements OnInit {
         x.receipt = img;
         return x;
       });
-      
       this.data_payments = new_arr;
       
     } catch (err) {
@@ -147,7 +207,6 @@ export class BookDetailsComponent implements OnInit {
       const data = {id: this.data.id, status, reason} as IUpdateStatus;
 
       const response = await this.http_book.updateBookingStatus({...data});
-
       this.snackBar._showSnack(response.message, "success");
       
 			this.dialogRef.close();
@@ -159,10 +218,3 @@ export class BookDetailsComponent implements OnInit {
 
 }
 
-const sub_total = (data: ICottage[]): number => {
-  let total = 0;
-  data.forEach((x) => {
-    total += x.price;
-  });
-  return total;
-}

@@ -2,12 +2,13 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import jwt_decode from 'jwt-decode';
-import { ISwalCustom, IUser } from './../globals/interface';
+import { ICottage, ISwalCustom, IUser } from './../globals/interface';
 import { EMage } from '../globals/enums/image';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { INewWindow } from '../globals/interface/default';
-import { IBookingPayload } from '../globals/interface/book';
+import { IBook, IBookingPayload, IPayment } from '../globals/interface/book';
+import { CommonServiceService } from '../services/common-service.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -98,6 +99,42 @@ export default class Method {
 
 	}
 
+	sub_total (data: ICottage[]): number {
+  let total = 0;
+  data.forEach((x) => {
+    total += x.price;
+  });
+  return total;
+}
+
+}
+
+export const total_amount = (from: Date, to: Date, x_amount?: number): number[] => {
+
+  let numberOfDays: number = 0, total_amount: number = 0, amount: number = 0;
+  const handling_amount: number = x_amount as number;
+
+  numberOfDays = new CommonServiceService().diff_minutes(
+    new Date(to), new Date(from)
+  );
+  amount = numberOfDays * handling_amount;
+  total_amount += amount;
+
+  return [numberOfDays, total_amount];
+
+}
+
+export const total_income = (payload: (IUser & IBook & IPayment)[]) => {
+  let total_income: number = 0, numberOfDays: number = 0, total: number = 0;
+  
+  payload.map((x) => {
+    numberOfDays = new CommonServiceService().diff_minutes(
+      new Date(x.selected_date_to), new Date(x.selected_date_from)
+    );
+    total = numberOfDays * x.amount;
+    total_income += total;
+  });
+  return total_income;
 }
 
 

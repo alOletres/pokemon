@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 })
 export class CommonServiceService {
 
-  constructor(private _router: Router) { }
+  constructor(private _router?: Router) { }
 
    reset(form: any) {
 		form.reset();
@@ -35,9 +35,9 @@ export class CommonServiceService {
 	}
 
 	reloadCurrentRoute() {
-    let currentUrl = this._router.url;
-    this._router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-        this._router.navigate([currentUrl]);
+    let currentUrl = this._router?.url;
+    this._router?.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this._router?.navigate([currentUrl]);
     });
   }
 

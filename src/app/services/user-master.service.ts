@@ -4,7 +4,7 @@ import { IUser } from '../globals/interface/payload';
 import { ENDPOINT } from 'src/app/globals/models/endpoint';
 import Method from '../utils/method';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
-import { IResponse } from '../globals/interface/default';
+import { IChangePassword, IResponse } from '../globals/interface/default';
 
 
 @Injectable({
@@ -40,6 +40,20 @@ export class UserMasterService {
 			const url = this.http.put<IResponse<string>>(`${ENDPOINT.RESORT}/user/edit/${id}`, payload, this.method.authorization());
 			const response = await firstValueFrom(url);
 			return response;
+		} catch (err) {
+			throw err;
+		}
+	}
+
+	async updatePassword(payload: IChangePassword): Promise<IResponse<string>> {
+		try {
+			const id = payload["id"];
+			delete payload["id"];
+			
+			const url = this.http.put<IResponse<string>>(`${ENDPOINT.RESORT}/user/edit/password/${id}`, payload, this.method.authorization());
+			const response = await firstValueFrom(url);
+			return response;
+
 		} catch (err) {
 			throw err;
 		}

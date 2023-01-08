@@ -4,7 +4,7 @@ import Method from '../utils/method';
 import { ENDPOINT } from 'src/app/globals/models/endpoint';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { IResponse, IUpdateStatus } from '../globals/interface/default';
-import { IReportPayload } from '../globals/interface/book';
+import { IBook, IReportPayload } from '../globals/interface/book';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +44,16 @@ export class BookService {
       const response = await lastValueFrom(url);
       return response;
 
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getBook(): Promise<IResponse<IBook[]>> {
+    try {
+      const url = this.http.get<IResponse<IBook[]>>(`${ENDPOINT.RESORT}/book/list`, this.method.authorization());
+      const response = await firstValueFrom(url);
+      return response;
     } catch (err) {
       throw err;
     }

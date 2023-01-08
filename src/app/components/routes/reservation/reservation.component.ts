@@ -1,9 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ReservationService } from '../../../services/reservation.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { IBook, IBookingPayload } from '../../../globals/interface/book';
+import { IBook, IBookAndCottagePayload, IBookingPayload } from '../../../globals/interface/book';
 import { BookDetailsComponent } from '../../dialog/book-details/book-details.component';
 import { MatDialog } from '@angular/material/dialog';
+import { BookService } from '../../../services/book.service';
+import { UserService } from '../../wrapper/user/user.service';
+import { UserMasterService } from '../../../services/user-master.service';
+import { IUser } from '../../../globals/interface/payload';
 
 @Component({
   selector: 'app-reservation',
@@ -18,19 +21,25 @@ export class ReservationComponent implements OnInit {
 	data_rejectedSource = new MatTableDataSource<IBook>([]);
 	data_voidedSource = new MatTableDataSource<IBook>([]);
 
-  constructor(private http_resservation: ReservationService, private dialog: MatDialog) {
+	data_user!: IUser[];
+
+  constructor(
+		private http_book: BookService, 
+		private dialog: MatDialog,
+		private http_user: UserMasterService,) {
 
 	}
 
 
   ngOnInit(): void {
 		this.getBook();
+		this.getUser();
   }
 
 
 	async getBook() {
 		try {
-			const response = await this.http_resservation.getBook();
+			const response = await this.http_book.getBook();
 			const data = response.data as IBook[];
 
 			/** al booking "pending" | "approved" | "rejected" | "voided" */
@@ -58,11 +67,27 @@ export class ReservationComponent implements OnInit {
 		}
 	}
 
+	async getUser(): Promise<void> {
+		try {
+			const response = await this.http_user.getUser();
+			const data = response.data as IUser[];
+			this.data_user = data;
+		} catch (err) {
+			throw err;
+		}
+	}
+
 	openDialog(payload: IBookingPayload) {
+		
+		const element = payload as IBookAndCottagePayload;
+
+		const user = [...this.data_user].filter((x) => (x.id === element.booker));
+
+
 		const dialogRef = this.dialog.open(BookDetailsComponent, {
 			width: '1000px', 
 			disableClose: true, 
-			data: payload
+			data: {payload, user},
 		});
 
 		dialogRef.afterClosed().subscribe(() => {

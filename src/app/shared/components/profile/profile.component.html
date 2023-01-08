@@ -15,11 +15,11 @@
 		<mat-tab-group>
 			<mat-tab class="text-left" label="Profile Settings">
 				<div class="flex justify-center">
-					<div class="w-1/2 pt-4">
-						<form [formGroup]="profileForm" class="text-xs">
+					<div class="w-full pt-4">
+						<form [formGroup]="profileForm" (ngSubmit)="updateUser()" class="text-xs">
 							<mat-form-field 
 								appearance="outline" 
-								class="w-full" 
+								class="w-1/2 pr-1 capitalize" 
 								floatLabel="always">
 								<mat-label>Firstname</mat-label>
 								<input 
@@ -27,12 +27,13 @@
 									matInput 
 									formControlName="firstname"
 									autocomplete="off"
+									class="capitalize"
 								/>
 							</mat-form-field>
 
 							<mat-form-field 
 								appearance="outline"
-								class="w-full"
+								class="w-1/2 capitalize"
 								floatLabel="always">
 								
 								<mat-label>Lastname</mat-label>
@@ -42,12 +43,13 @@
 									matInput
 									formControlName="lastname"
 									autocomplete="off"
+									class="capitalize"
 								/>
 							</mat-form-field>
 
 							<mat-form-field 
 								appearance="outline" 
-								class="w-full" 
+								class="w-1/2 pr-1" 
 								floatLabel="always">
 								<mat-label>Email</mat-label>
 								<input 
@@ -55,12 +57,13 @@
 									matInput 
 									formControlName="email"
 									autocomplete="off"
+									class="lowercase"
 								/>
 							</mat-form-field>
 
 							<mat-form-field 
 								appearance="outline" 
-								class="w-full" 
+								class="w-1/2" 
 								floatLabel="always">
 								<mat-label>Contact</mat-label>
 
@@ -76,6 +79,7 @@
 								<button
 									mat-raised-button
 									class="bg-blue-600 text-white w-full"
+									type="submit"
 									>
 									{{btnName}}
 								</button>
@@ -88,7 +92,11 @@
 			<mat-tab class="text-left" label="Security Login">
 				<div class="flex justify-center">
 					<div class="w-1/2 mt-1">
-						<form [formGroup]="securityForm" class="text-xs">
+						<form 
+							[formGroup]="securityForm" 
+							class="text-xs" 
+							(ngSubmit)="updatePassword()"
+							>
 							<mat-form-field appearance="outline" class="w-full">
 								<mat-label>Current Password</mat-label>
 								<mat-icon matPrefix>lock</mat-icon>
@@ -96,7 +104,7 @@
 									type="password" 
 									matInput 
 									autocomplete="off" 
-									formControlName="currentPassword" 
+									formControlName="current_password" 
 								/>
 							</mat-form-field>
 
@@ -107,7 +115,7 @@
 									[type]="hide ? 'password' : 'text'" 
 									matInput 
 									autocomplete="off" 
-									formControlName="currentPassword" 
+									formControlName="new_password" 
 								/>
 								<button 
 									mat-icon-button 
@@ -131,7 +139,7 @@
 									[type]="hide1 ? 'password' : 'text'" 
 									matInput 
 									autocomplete="off" 
-									formControlName="confirmPassword"
+									formControlName="confirm_password"
 								/>
 								<button 
 									mat-icon-button 
@@ -157,6 +165,7 @@
 								<button
 									mat-raised-button
 									class="bg-blue-600 text-white w-full"
+									type="submit"
 									>
 									Save Changes
 								</button>
@@ -165,7 +174,12 @@
 					</div>
 				</div>
 			</mat-tab>
-			<mat-tab class="text-left" label="History">
+			<mat-tab class="" label="History">
+				<app-table 
+					(eventListener)="openDialog($event)" 
+					[data_source]="data_booked"
+					>
+				</app-table>
 			</mat-tab>
 		</mat-tab-group>
 	

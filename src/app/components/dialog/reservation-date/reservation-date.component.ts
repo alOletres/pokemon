@@ -10,6 +10,7 @@ import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/model/appState.model';
 import { IUser } from '../../../globals/interface/payload';
+import { BookService } from '../../../services/book.service';
 
 @Component({
   selector: 'app-reservation-date',
@@ -22,6 +23,8 @@ export class ReservationDateComponent implements OnInit {
 
 	dataBook!: IBookAndCottagePayload[];
 
+	data_booked!: IBook[];
+
 	user!: IUser;
 
   constructor(
@@ -33,6 +36,7 @@ export class ReservationDateComponent implements OnInit {
 		private store_method: StoreService,
 		private snackBar: SnackBarService,
 		private store: Store<AppState>,
+		private http_book: BookService,
 	) {
 
 		store.select("cottage").subscribe((data): void => {
@@ -86,8 +90,21 @@ export class ReservationDateComponent implements OnInit {
 				selected_date_to: [null, Validators.required]
 			});
 		}
+		
+		Promise.resolve().then(() => this.getBook());
 
   }
+
+	async getBook() {
+		try {
+			const response = await this.http_book.getBook();
+			const data = response.data as IBook[];
+			console.log(data);
+			
+		} catch (err) {
+			throw err;
+		}
+	}
 
 	fillOutInfo (): void {
 		if(this.dateForm.invalid) {

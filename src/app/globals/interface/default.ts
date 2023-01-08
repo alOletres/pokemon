@@ -38,4 +38,14 @@ export interface IUpdateStatus {
 	reason: string;
 }
 
+export interface IChangePassword {
+	id?: number;
+	currentPassword: string;
+	newPassword: string;
+	confirmPassword: string;
+}
+
+export type ILabelFormat = "dddd Do yyyy" | "MMM YYYY" | "YYYY";
+
+export type ILabelName = "month" | "year" | "days";
 

@@ -272,6 +272,7 @@ export class BookComponent implements OnInit {
 					payment: {...paymentDetails},
 					other: {...otherDetails},
 					type: "online",
+					userid: !this.user ? null : this.user.id
 				}
 
 				for (let item of Object.keys(payload)) {

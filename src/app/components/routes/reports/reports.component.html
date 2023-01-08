@@ -4,47 +4,121 @@
 
 <div class="ml-6 mr-6">
 	<div class="flex justify-between">
-			<mat-form-field appearance="outline" class="text-xs">
-				<mat-label>Enter a date range</mat-label>
-				<mat-date-range-input [rangePicker]="picker">
-					<input matStartDate  placeholder="Start date">
-					<input matEndDate  placeholder="End date">
-				</mat-date-range-input>
-				<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-				<mat-date-range-picker #picker></mat-date-range-picker>
-			</mat-form-field>
+			<form [formGroup]="dateRangeForm" class="flex space-x-4" (ngSubmit)="appFilterDate()">
+				<mat-form-field appearance="outline" class="text-xs">
+					<mat-label>Enter a date range</mat-label>
+					<mat-date-range-input [rangePicker]="picker">
+						<input 
+							matStartDate 
+							placeholder="Start date" 
+							readonly="true"
+							formControlName="startDate"
+						/>
+						<input 
+							matEndDate 
+							placeholder="End date"
+							readonly="true"
+							formControlName="endDate"
+						/>
+					</mat-date-range-input>
+					<mat-datepicker-toggle 
+						matSuffix 
+						[for]="picker"
+						>
+					</mat-datepicker-toggle>
+					<mat-date-range-picker 
+						#picker
+						>
+					</mat-date-range-picker>
+				</mat-form-field>
+
+				<div class="pt-2">
+					<button
+						mat-raised-button
+						class="bg-blue-600 text-white"
+						type="submit"
+						>
+						Filter by Date
+					</button>
+				</div>
+			</form>
 
 			<div>
 				<button
 					mat-raised-button
 					class="bg-yellow-400 text-white"
+					(click)="printReport()"
 					>
 					Print
 				</button>
 			</div>
 	</div>
 
-	<div class="w-full overflow-x-auto">
+	<div class="w-full overflow-x-auto mat-elevation-z8 bg-white">
 		<table
 			mat-table
 			[dataSource]="data_reports"
-			class="w-full mat-elevation-z8"
+			class="w-full text-xs"
 			matSort
 			#reportSort="matSort"
 			>
 
 			<ng-container [matColumnDef]="col.key" *ngFor="let col of column_schema">
-					<th mat-header-cell *matHeaderCellDef mat-sort-header class=" bg-slate-100 uppercase">
-						{{col.label}}
-					</th>
+				<th 
+					mat-header-cell 
+					*matHeaderCellDef 
+					mat-sort-header 
+					class=" bg-slate-100 uppercase break-words w-36 max-w-xs"
+					>
+					{{col.label}}
+				</th>
 
-				<td mat-cell *matCellDef="let element">
-					{{element[col.key]}}
+				<td 
+					mat-cell 
+					*matCellDef="let element"
+					class="break-words w-36 max-w-xs text-xs"
+					>
+					<div [ngSwitch]="col.type">
+
+						<div *ngSwitchCase="'date'">
+							<span> {{element[col.key] | date: 'MM-dd-YYYY'}} </span>
+						</div>
+
+						<div *ngSwitchCase="'status'" class="text-xs text-green-600">
+							<span> {{element[col.key]}} </span>
+						</div>
+
+						<div *ngSwitchDefault class="capitalize">
+							<span> {{element[col.key]}} </span>
+						</div>
+					</div>
+				</td>
+
+				<td mat-footer-cell *matFooterCellDef>
+					<div *ngIf="report_length !== 0" >
+						<div *ngIf="col.type === 'amount'">Total</div>
+						<div *ngIf="col.type === 'total_amount'">{{display_total | currency : "&#8369;"}}</div>
+					</div>
 				</td>
 			</ng-container>
 
-			<tr mat-header-row *matHeaderCellDef="display_column"></tr>
+			<tr mat-header-row *matHeaderRowDef="display_column"></tr>
 			<tr mat-row *matRowDef="let row; columns:display_column"></tr>
+			<tr mat-footer-row *matFooterRowDef="display_column"></tr>
 		</table>
+
+		<div class="flex justify-center p-4" *ngIf="report_length === 0">
+			<h1 class="text-sm uppercase">no record found</h1>
+		</div>
+
+		<div>
+				<mat-paginator 
+					#reportPaginator 
+					[length]="100" 
+					[pageSize]="20" 
+					[pageSizeOptions]="[5, 10, 25, 100]"
+					aria-label="Select page">
+				</mat-paginator>
+			</div>
 	</div>
 </div>

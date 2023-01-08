@@ -19,6 +19,8 @@ export interface IBook {
 	isCottage: boolean;
 	status: EBookingStatuses;
   payment_record: number;
+  number_of_days?: number;
+  
 }
 // Types
 export interface IDates { 
@@ -34,7 +36,7 @@ export interface IPayment {
   reference: string;
   remarks: string;
 }
-export type TBookingType = "walkin" | "online"
+export type TBookingType = '"walkin"' | '"online"'
 
 export interface IBookingPayload {
   cottages: number[] | string;

@@ -68,9 +68,16 @@
 	
 				<div>
 					<ng-container *ngFor="let payments of data_payments">
-						<div class="flex">
-							<div class=" w-36 pr-2">
-								<img class="h-50 w-40" [src]="payments.receipt" alt="" />
+						<div class="flex justify-center items-center">
+							<div class=" w-56 pr-2">
+								<div *ngIf="payments.account_name; else elseBlock">
+									<img class="h-50 w-45" [src]="payments.receipt" alt="" />
+								</div>
+								<ng-template #elseBlock>
+									<div class="flex justify-center items-center bg-slate-400 h-56">
+											<h1 class="text-gray-600">Cash</h1>
+									</div>
+								</ng-template>
 							</div>
 	
 							<div class="flex justify-center items-center">
@@ -86,26 +93,48 @@
 										<input type="text" matInput autocomplete="off" readonly="true" [value]="payments.account_number" />
 									</mat-form-field>
 	
-									<mat-form-field floatLabel="always" class="w-full pr-1">
+									<mat-form-field floatLabel="always" class="w-1/2 pr-1">
 										<mat-label>Reference number</mat-label>
 										<input type="text" matInput autocomplete="off" readonly="true" [value]="payments.reference_number" />
+									</mat-form-field>
+
+									<mat-form-field floatLabel="always" class="w-1/2">
+										<mat-label>Amount</mat-label>
+										<input type="text" matInput autocomplete="off" readonly="true" [value]="payments.amount"/>
 									</mat-form-field>
 	
 									<p class="font-mono text-sm">Book by:</p>
 	
 									<mat-form-field floatLabel="always" class="w-1/2 pr-1">
 										<mat-label>Complete name</mat-label>
-										<input type="text" matInput readonly="true" />
+										<input 
+											type="text" 
+											matInput
+											class="capitalize"
+											readonly="true"  
+											[value]="payload.user[0].firstname + ' ' + payload.user[0].lastname"
+										/>
 									</mat-form-field>
 	
 									<mat-form-field floatLabel="always" class="w-1/2 pr-1">
 										<mat-label>Email</mat-label>
-										<input type="text" matInput readonly="true" />
+										<input 
+											type="text" 
+											matInput 
+											readonly="true" 
+											[value]="payload.user[0].email"
+										/>
 									</mat-form-field>
 	
 									<mat-form-field floatLabel="always" class="w-full pr-1">
 										<mat-label>Address</mat-label>
-										<input type="text" matInput readonly="true" />
+										<input 
+											class="capitalize"
+											type="text" 
+											matInput 
+											readonly="true" 
+											[value]="payload.user[0].address"
+										/>
 									</mat-form-field>
 	
 								</form>
@@ -120,23 +149,42 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-	<button
-		mat-button
-		mat-dialog-close
-		>
-		Close
-	</button>
-		<div class="flex space-x-2">
-			<button mat-raised-button class="bg-white text-green-600" (click)="updateStatus('approved')">
+
+		<div class="pr-2">
+			<button
+				mat-button
+				mat-dialog-close
+				>
+				Close
+			</button>
+		</div>
+	
+
+		<div class="flex space-x-2" *ngIf="user_role !== 'customer'">
+			<button 
+				mat-raised-button 
+				class="bg-white text-green-600" 
+				(click)="updateStatus('approved')"
+				>
 				Approve
 			</button>
 		
-			<button mat-raised-button class="bg-white text-orange-600" (click)="updateStatus('rejected')">
-				Rejected
-			</button>
 		
-			<button mat-raised-button class="bg-white text-red-600" (click)="updateStatus('voided')">
+			<button 
+				mat-raised-button 
+				class="bg-white text-red-600" 
+				(click)="updateStatus('voided')"
+				>
 				Void
 			</button>
 		</div>
+
+		<button 
+			mat-raised-button 
+			class="bg-white text-orange-600" 
+			(click)="updateStatus('rejected')"
+			>
+			Rejected
+		</button>
+		
 </mat-dialog-actions>

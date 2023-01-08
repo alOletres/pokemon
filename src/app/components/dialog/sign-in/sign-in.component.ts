@@ -67,6 +67,10 @@ export class SignInComponent implements OnInit {
 			
 				// save in store management 
 				this.store_method.addToUser(userDetails);
+				// close the dialog
+				this.dialogRef.close();
+				// navigate to home page
+				this.router.navigate(['/home']);
 
 
 			} catch (err) {

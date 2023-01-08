@@ -32,7 +32,6 @@ export class LandingPageComponent implements OnInit {
           return undefined
         }
       });
-      
     }
 
   ngOnInit(): void {
@@ -44,8 +43,12 @@ export class LandingPageComponent implements OnInit {
   }
   getUser(): void {
     const accessToken = this.method.getCookie("accessToken");
-    const user = this.method.cookieDecode("accessToken", accessToken) as IUser;
-    this.store_method.addToUser(user);
+   
+    if(accessToken) {
+      const user = this.method.cookieDecode("accessToken", accessToken) as IUser;
+      this.store_method.addToUser(user);
+    }
+   
   }
 
   signOut(): void {

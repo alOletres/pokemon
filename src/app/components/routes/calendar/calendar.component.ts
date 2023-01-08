@@ -19,9 +19,9 @@ import { EventColor } from 'calendar-utils';
 import { Subject } from 'rxjs';
 import { ErrorResponse } from 'src/app/utils';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
-import { ReservationService } from '../../../services/reservation.service';
 import Method from '../../../utils/method';
 import { CommonServiceService } from '../../../services/common-service.service';
+import { BookService } from '../../../services/book.service';
 
 const colors: Record<string, EventColor> = {
   red: {
@@ -86,7 +86,7 @@ activeDayIsOpen: boolean = false;
 
 constructor(
   private snackBar: SnackBarService, 
-  private http_resservation: ReservationService,
+  private http_book: BookService,
   private http_common: CommonServiceService,) { }
 
 ngOnInit(): void {
@@ -160,7 +160,7 @@ handleEvent(action: string, event: CalendarEvent): void {
 
   async getBook(): Promise<void> {
     try {
-      const response = await this.http_resservation.getBook();
+      const response = await this.http_book.getBook();
       const data = response.data?.filter((x) => (x.status === 'approved'));
 
       const events: CalendarEvent[] = [];

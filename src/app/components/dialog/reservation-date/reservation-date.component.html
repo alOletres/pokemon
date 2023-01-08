@@ -13,12 +13,11 @@
 	<form [formGroup]="dateForm">
 		<mat-form-field appearance="outline" floatAlways="true" class="w-full pr-2 text-xs ">
 			<mat-label>Select Available Date</mat-label>
-			<mat-date-range-input [rangePicker]="picker" >
+			<mat-date-range-input  [min]="minDate" [rangePicker]="picker" >
 				<input 
 					matInput 
 					formControlName="selected_date_from" 
 					readonly="true" 
-					[min]="minDate" 
 					matStartDate 
 					placeholder="Start date"
 				/>
@@ -26,7 +25,6 @@
 					matInput 
 					formControlName="selected_date_to" 
 					readonly="true" 
-					[min]="minDate" 
 					matEndDate 
 					placeholder="End date"
 				/>
