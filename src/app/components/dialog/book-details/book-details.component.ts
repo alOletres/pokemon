@@ -77,7 +77,7 @@ export class BookDetailsComponent implements OnInit {
   data!: IBookAndCottagePayload;
 
   current_date = new Date();
-  booleanRejected: boolean = true; 
+  booleanRejected: boolean = false; 
   
   constructor(
     public dialogRef: MatDialogRef<BookDetailsComponent>,
@@ -133,7 +133,7 @@ export class BookDetailsComponent implements OnInit {
       const current = moment(this.current_date).format("LLL");
 
       if(this.user_role === "customer") {
-         this.booleanRejected = created_at > current ? false : true;
+         this.booleanRejected = created_at > current
       }
 
      

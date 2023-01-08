@@ -179,12 +179,14 @@
 			</button>
 		</div>
 
-		<button 
-			mat-raised-button 
-			class="bg-white text-orange-600" 
-			(click)="updateStatus('rejected')"
-			>
-			Rejected
-		</button>
-		
+		<div *ngIf="booleanRejected">
+			<button 
+				mat-raised-button 
+				class="bg-white text-orange-600" 
+				(click)="updateStatus('rejected')"
+				>
+				Rejected
+			</button>
+		</div>
+
 </mat-dialog-actions>
