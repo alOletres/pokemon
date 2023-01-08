@@ -5,21 +5,34 @@
 			<mat-card-title>
 				<h4 class="text-left text-gray-500 font-semibold text-lg">Message as your concerns by filling up these fields!</h4>
 			</mat-card-title>
-			<form class="text-xs">
+			<form class="text-xs" [formGroup]="contactForm" (ngSubmit)="sendMessage()">
 				<mat-form-field class="w-full" appearance="outline"> 
 					<mat-label>Message</mat-label>
-					<textarea matInput autocomplete="off" cols="10" rows="10"></textarea>
+					<textarea 
+						matInput 
+						autocomplete="off" 
+						cols="10" 
+						rows="10"
+						formControlName="html"
+						>
+					</textarea>
 				</mat-form-field>
 
 				<mat-form-field class="w-full" appearance="outline">
 					<mat-label>Enter your email here!</mat-label>
-					<input type="text" matInput autocomplete="off">
+					<input 
+						type="text" 
+						matInput 
+						autocomplete="off"
+						formControlName="from"
+					/>
 				</mat-form-field>
 
 				<div >
 					<button 
 						class="bg-blue-600 text-white w-full capitalize"
 						mat-raised-button
+						type="submit"
 						>
 						Send message
 					</button>

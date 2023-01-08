@@ -58,4 +58,15 @@ export class UserMasterService {
 			throw err;
 		}
 	}
+
+	async sendMessage(payload: {from: string, html: string}): Promise<IResponse<string>> {
+		try {
+			const url = this.http.post<IResponse<string>>(`${ENDPOINT.RESORT}/user/contactus`, payload, this.method.landingHeader());
+			const response = await firstValueFrom(url);
+			return response;
+
+		} catch (err) {
+			throw err;
+		}
+	}
 }
