@@ -39,7 +39,12 @@ export class AuthInteceptorService implements HttpInterceptor {
         // refresh token or logout
         return this.handle401Error(authReq, next);
       } else {
-        this.snackBar._showSnack(`${error.error.message} ${error.status}`, "error");
+        console.log(error);
+
+        const error_message = (!error.error.message) ? error.message : error.error.message
+        
+        
+        this.snackBar._showSnack(`${error_message} ${error.status}`, "error");
         return throwError(() => new Error(error.error));
       }
 

@@ -288,7 +288,7 @@ export class BookComponent implements OnInit {
 
 				const response = await this.http_book.bookCottage(formData);
 
-				this.snackBar._showSnack(response.message, "success");	
+				this.snackBar._showSnack(response.message, "success");
 
 				stepper.next();
 

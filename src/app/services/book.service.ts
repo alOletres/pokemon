@@ -51,7 +51,7 @@ export class BookService {
 
   async getBook(): Promise<IResponse<IBook[]>> {
     try {
-      const url = this.http.get<IResponse<IBook[]>>(`${ENDPOINT.RESORT}/book/list`, this.method.authorization());
+      const url = this.http.get<IResponse<IBook[]>>(`${ENDPOINT.RESORT}/book/list`, this.method.landingHeader());
       const response = await firstValueFrom(url);
       return response;
     } catch (err) {

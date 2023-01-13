@@ -133,7 +133,8 @@ export class BookDetailsComponent implements OnInit {
       const current = moment(this.current_date).format("LLL");
 
       if(this.user_role === "customer") {
-         this.booleanRejected = created_at > current
+        
+         this.booleanRejected = created_at < current
       }
 
      

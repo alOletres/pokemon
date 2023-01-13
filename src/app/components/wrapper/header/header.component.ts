@@ -31,10 +31,13 @@ export class HeaderComponent implements OnInit {
 
    getUser(): void {
     const accessToken = this.method.getCookie("accessToken");
-    const user = this.method.cookieDecode("accessToken", accessToken) as IUser;
-    this.user = user;
+    if(accessToken) {
+      const user = this.method.cookieDecode("accessToken", accessToken) as IUser;
+      this.user = user;
+      
+      this.store_method.addToUser(user);
+    }
     
-    this.store_method.addToUser(user);
   }
 
 }
