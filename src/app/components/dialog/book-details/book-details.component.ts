@@ -128,13 +128,13 @@ export class BookDetailsComponent implements OnInit {
 
       this.user_role = user_data[0].role?.[0];
 
-      const created_at = moment(this.data.createdAt).add(4, "hour").format("LLL");
+      const created_at = moment(this.data.createdAt).add(4, "hours").format("LLL");
 
       const current = moment(this.current_date).format("LLL");
 
       if(this.user_role === "customer") {
         
-         this.booleanRejected = created_at < current
+         this.booleanRejected = created_at > current ? false : true;
       }
 
      
