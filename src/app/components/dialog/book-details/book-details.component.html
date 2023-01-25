@@ -148,7 +148,7 @@
 	</div>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
+<mat-dialog-actions align="end" class="space-x-1">
 
 		<div class="pr-2">
 			<button
@@ -158,9 +158,8 @@
 				Close
 			</button>
 		</div>
-	
 
-		<div class="flex space-x-2" *ngIf="user_role !== 'customer'">
+		<div class="flex " *ngIf="user_role !== 'customer'">
 			<button 
 				mat-raised-button 
 				class="bg-white text-green-600" 

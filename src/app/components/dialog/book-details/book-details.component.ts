@@ -65,10 +65,9 @@ export class BookDetailsComponent implements OnInit {
 	];
 
   display_column: string[] = this.column_schema.map((x) => (x.key));
-
   data_cottage = new MatTableDataSource<ICottage>([]);
   data_payments!: IDBPayment[];
-  // book_details!: IBookAndCottagePayload;
+
   sub_total!: number;
   nmbrfdys!: number;
   user!: IUser[];
@@ -77,7 +76,7 @@ export class BookDetailsComponent implements OnInit {
   data!: IBookAndCottagePayload;
 
   current_date = new Date();
-  booleanRejected: boolean = false; 
+  booleanRejected: boolean = true; 
   
   constructor(
     public dialogRef: MatDialogRef<BookDetailsComponent>,
@@ -128,19 +127,17 @@ export class BookDetailsComponent implements OnInit {
 
       this.user_role = user_data[0].role?.[0];
 
-      const created_at = moment(this.data.createdAt).add(4, "hours").format("LLL");
+      const created_at4hours = moment(this.data.createdAt).add(4, "hours").format("LLL");
 
-      const current = moment(this.current_date).format("LLL");
+      const current_date = moment(this.current_date).format("LLL");
 
       if(this.user_role === "customer") {
-        
-         this.booleanRejected = created_at > current ? false : true;
+        this.booleanRejected = created_at4hours > current_date ? true: false;
       }
 
      
     } catch (err) {
-      const error = ErrorResponse(err);
-      this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
+      throw err;
     }
   }
 	async getCottage(): Promise<void> {

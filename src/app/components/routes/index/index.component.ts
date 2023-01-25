@@ -18,6 +18,7 @@ export class IndexComponent implements OnInit {
  
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
+  /** income statistics declarations */
   public barChartOptions: ChartConfiguration['options'] = {
     elements: {
       line: {
@@ -51,29 +52,46 @@ export class IndexComponent implements OnInit {
     // console.log(event, active);
   }
 
-  /** decleration */
+  public graph_lbl_lst: string[] = ["days", "month", "year"];
+  public graph_lbl_name: ILabelName = "year";
+  public current_date = new Date();
+  public data_reports!: (IUser & IBook & IPayment)[];
+  public total_income: number = 0;
 
-  graph_lbl_lst: string[] = ["days", "month", "year"];
-  graph_lbl_name: ILabelName = "year";
-  
-  current_date = new Date();
-  data_reports!: (IUser & IBook & IPayment)[];
-  total_income: number = 0;
+  /** trend analysis declaration */
+  public barChartOptionsTrend: ChartConfiguration['options'] = {
+    elements: {
+      line: {
+        tension: 0.4
+      }
+    },
+    // We use these empty structures as placeholders for dynamic theming.
+    scales: {
+      x: {},
+      y: {
+        min: 10
+      }
+    },
+    plugins: {
+      legend: { display: true },
+    }
+  };
+  public barChartLabelsTrend: string[] = [] //'2006', '2007', '2008', '2009', '2010', '2011', '2012';
+  public barChartTypeTrend: ChartType = 'bar';
 
+  public barChartDataTrend: ChartData<'bar'> = {
+    datasets: []
+  };
+  public graph_lbl_trend: string[] = [...this.graph_lbl_lst];
+  public label_default_trend: ILabelName = "year";
+  public data_trend!: string;
   
   constructor(private http_book: BookService,) { }
 
   async ngOnInit(): Promise<void> {
     await this.getReports();
-    this.graphLabelEvent();
-  }
-
-  setLineGraph(): void {
-    this.barChartType = "line";
-  }
-
-  setBarGraph(): void {
-    this.barChartType = "bar";
+    this.graphLabelIncome();
+    this.graphLabelAnalysis(); 
   }
 
   async getReports() {
@@ -87,25 +105,29 @@ export class IndexComponent implements OnInit {
     }
   }
 
-  graphLabelEvent() {
-    const date_format: ILabelFormat = this.graph_lbl_name === "month" 
-      ? "MMM YYYY" 
-      : this.graph_lbl_name === "days" 
-      ? "dddd Do yyyy" 
-      : "YYYY";
+  graphLabelAnalysis() {
+    const result = calculateLabel(this.label_default_trend);
+    const label = result.label;
+    const date_format = result.date_format;
+    const payload = [...this.data_reports];
 
-    const label: string[] = [];
+    this.barChartDataTrend = {
+      labels: [...label],
+      datasets: [
+        {
+          data: calculateTrend({label, payload, status: '"online"', date_format}),
+          label: 'Peak season'
+        },
+      ]
+    };
+  }
 
-    let startDay = 1
+  graphLabelIncome() {
 
-    while (startDay <= 7) {
-      const date_result = moment(this.current_date).subtract(startDay, this.graph_lbl_name);
-      label.push(date_result.format(date_format));
-      
-      startDay++;
-    }
-
-    const payload = this.data_reports;
+    const result = calculateLabel(this.graph_lbl_name);
+    const label = result.label;
+    const date_format = result.date_format;
+    const payload = [...this.data_reports];
 
     this.barChartData = {
       labels: [...label],
@@ -134,25 +156,43 @@ export interface ICalculateDataSets {
   date_format: ILabelFormat
 }
 
+const calculateTrend = ({
+  label,
+  payload,
+  status,
+  date_format
+}: ICalculateDataSets) => {
+
+  const data: number[] = [];
+
+  label.map((lbl) => {
+    const result = payload.filter((value) => (
+      moment(value.createdAt).format(date_format) === lbl 
+    ));
+
+    data.push(result.length);
+  });
+
+  return data
+}
+
 const calculateDataSets = ({
   label,
   payload,
   status,
   date_format
 }: ICalculateDataSets): number[] => {
+
   let total: number = 0;
-
   const total_handler: number[] = [];
-
+  
   label.map((lbl) => {
     const result = payload.filter((values) => (
-
       moment(values.createdAt).format(date_format) === lbl 
       && 
       values.type === status
 
     )).map((x) => {
-
       total += x.amount;
       return total;
     });
@@ -162,10 +202,33 @@ const calculateDataSets = ({
     } else {
       total_handler.push(...result);
     }
-
-    
+  
   });
 
   return total_handler;
 
+}
+
+const calculateLabel = (labelName: ILabelName) => {
+  const date_format: ILabelFormat = labelName === "month" 
+      ? "MMM YYYY" 
+      : labelName === "days" 
+      ? "dddd Do yyyy" 
+      : "YYYY";
+
+    const label: string[] = [];
+
+    let startDay = 0
+
+    while (startDay <= 7) {
+      const date_result = moment(new Date()).subtract(startDay, labelName);
+      label.push(date_result.format(date_format));
+      
+      startDay++;
+    }
+
+  return {
+    date_format,
+    label
+  }
 }

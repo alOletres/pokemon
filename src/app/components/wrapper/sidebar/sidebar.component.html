@@ -20,6 +20,7 @@
 		[routerLink]="['/reservation']" 
 		routerLinkActive="active" 
 		[routerLinkActiveOptions]="{exact: true}"
+		*ngIf="role_name === 'admin'"
 		>
 		<mat-icon>assignment</mat-icon> <span>Reservation</span>
 	</mat-list-item>
@@ -31,7 +32,7 @@
 		<mat-icon>calendar_today</mat-icon> <span>Calendar events</span>
 	</mat-list-item>
 
-		<mat-list-item (click)="openUiElements()">
+	<mat-list-item (click)="openUiElements()" *ngIf="role_name === 'admin'">
 		<mat-icon>settings</mat-icon> <span>Settings</span>
 		<mat-icon 
 			class="menu-button" 

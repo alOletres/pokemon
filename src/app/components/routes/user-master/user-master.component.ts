@@ -52,7 +52,7 @@ export class UserMasterComponent implements OnInit {
 
 	displayColumns: string[] = this.columnSchema.map((x) => (x.key));
 
-	userRole: string[] = ['admin', 'staff'];
+	userRole: string[] = ['admin', 'booking-agent'];
 	userForm!: FormGroup;
 	btnName: string = "Save User";
 
@@ -112,13 +112,15 @@ export class UserMasterComponent implements OnInit {
 	passValue(element: IUser) {
 		const roles = element.role as string[];
 
+		const role_name = roles.map((x) => (x));
+
 		this.userForm.patchValue({
 			id: element.id,
 			firstname: element.firstname,
 			lastname: element.lastname,
 			email: element.email,
 			mobile_number: element.mobile_number,
-			roles: roles.map((x) => (x)),
+			roles: role_name[0],
 		});
 
 		this.btnName = "Update User";
@@ -133,7 +135,7 @@ export class UserMasterComponent implements OnInit {
 				const data = [this.userForm.value];
 
 				const element = data.map((x) => {
-					x.roles = JSON.stringify(x.roles);
+					x.roles = JSON.stringify([x.roles]);
 					return x;
 				});
 

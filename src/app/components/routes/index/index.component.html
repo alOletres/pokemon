@@ -4,12 +4,12 @@
 
 <div class="flex justify-between">
 
-	<div class="w-1/2 pr-4 pl-4">
+	<div class="w-1/2 p-4 mr-2 ml-2 mat-elevation-z8">
 		<!-- <div class="w-full">
 			asdf
 		</div> -->
 		<!-- design here -->
-		<div class="grid grid-cols-2 gap-2">
+		<!-- <div class="grid grid-cols-2 gap-2">
 			<div 
 				class="
 				bg-white shadow-lg w-full text-sm 
@@ -59,42 +59,39 @@
 						</div>
 						<div class="p-3 bg-white rounded-b-lg break-words flex justify-end text-red-600">{{total_income}}</div>
 					</div>
+		</div> -->
+		<app-chart
+			chartName="Trend Analysis"
+			[barChartData]="barChartDataTrend"
+			[barChartOptions]="barChartOptionsTrend"
+			[barChartType]="barChartTypeTrend"
+			>
+		</app-chart>
+
+		<div class="text-xs flex justify-center">
+			<mat-button-toggle-group (mwlClick)="graphLabelAnalysis()" [(ngModel)]="label_default_trend">
+				<mat-button-toggle 
+					class="text-xs" 
+					*ngFor="let label of graph_lbl_trend" 
+					[value]="label">
+					<span class="capitalize">{{label}}</span>
+				</mat-button-toggle>
+			</mat-button-toggle-group>
 		</div>
 	</div>
 	
 	<div class="w-1/2 overflow-hidden mat-elevation-z8 p-4 mr-2">
-		<div class="flex justify-between">
-			<div class="flex">
-				<mat-icon>graphic_eq</mat-icon>
-				<h1 class="text-sm font-mono">Income Statistics</h1>
-			</div>
-			<mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-				<mat-button-toggle 
-					value="bold"
-					(mwlClick)="setLineGraph()"
-					>
-						<mat-icon>timeline</mat-icon>
-				</mat-button-toggle>
-				<mat-button-toggle 
-					value="italic"
-					(mwlClick)="setBarGraph()"
-					>
-						<mat-icon> bar_chart</mat-icon>
-				</mat-button-toggle>
-			</mat-button-toggle-group>
-		</div>
-		<canvas 
-			class="w-1/2 text-xs" 
-			baseChart 
-			[data]="barChartData" 
-			[options]="barChartOptions" 
-			[type]="barChartType"
-			(chartHover)="chartHovered($event)" 
-			(chartClick)="chartClicked($event)">
-		</canvas>
+
+		<app-chart
+			[chartName]="'Income Statistics'"
+			[barChartData]="barChartData"
+			[barChartOptions]="barChartOptions"
+			[barChartType]="barChartType"
+			>
+		</app-chart>
 
 		<div class="text-xs flex justify-center">
-			<mat-button-toggle-group (mwlClick)="graphLabelEvent()" [(ngModel)]="graph_lbl_name">
+			<mat-button-toggle-group (mwlClick)="graphLabelIncome()" [(ngModel)]="graph_lbl_name">
 				<mat-button-toggle 
 					class="text-xs" 
 					*ngFor="let label of graph_lbl_lst" 

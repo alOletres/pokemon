@@ -83,6 +83,7 @@ import { ViewReservationComponent } from './components/views/view-reservation/vi
 import { ViewHeaderComponent } from './shared/components/view-header/view-header.component';
 import { CottageTableComponent } from './components/props/cottage-table/cottage-table.component';
 import { BookDetailsComponent } from './components/dialog/book-details/book-details.component';
+import { ChartComponent } from './shared/components/chart/chart.component';
 
 const materialModules = [
   MatProgressBarModule,
@@ -141,6 +142,7 @@ const materialModules = [
     ViewHeaderComponent,
     CottageTableComponent,
     BookDetailsComponent,
+    ChartComponent,
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,31 @@
+<div>
+	<div class="flex justify-between">
+		<div class="flex">
+			<mat-icon>graphic_eq</mat-icon>
+			<h1 class="text-sm font-mono">{{chartName}}</h1>
+		</div>
+		<mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+			<mat-button-toggle 
+				value="bold"
+				(mwlClick)="setLineGraph()"
+				>
+					<mat-icon>timeline</mat-icon>
+			</mat-button-toggle>
+			<mat-button-toggle 
+				value="italic"
+				(mwlClick)="setBarGraph()"
+				>
+					<mat-icon> bar_chart</mat-icon>
+			</mat-button-toggle>
+		</mat-button-toggle-group>
+	</div>
+	<canvas 
+		class="w-1/2 text-xs" 
+		baseChart 
+		[data]="barChartData" 
+		[options]="barChartOptions" 
+		[type]="barChartType"
+		(chartHover)="chartHovered($event)" 
+		(chartClick)="chartClicked($event)">
+	</canvas>
+</div>
