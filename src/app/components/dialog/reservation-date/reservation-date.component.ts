@@ -2,10 +2,8 @@ import { Component, OnInit,Inject, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ICottage } from '../../../globals/interface/cottage';
 import { StoreService } from '../../../store/service/store.service';
 import { IBook, IBookAndCottagePayload } from '../../../globals/interface/book';
-import { SignInComponent } from '../sign-in/sign-in.component';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/model/appState.model';
@@ -19,7 +17,7 @@ import { BookService } from '../../../services/book.service';
 })
 export class ReservationDateComponent implements OnInit {
 	dateForm!: FormGroup;
-	minDate = new Date();
+	minDate = new Date('2018-01-01');
 
 	dataBook!: IBookAndCottagePayload[];
 
