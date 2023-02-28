@@ -149,8 +149,6 @@ export class CottageMasterComponent implements OnInit {
 				
 				const formData = new FormData();
 
-				// formData.append("images", this.file);
-
 				for (let item of Object.keys(this.cottageForm.value)) {
 					formData.append(item, this.cottageForm.value[item])
 				}
