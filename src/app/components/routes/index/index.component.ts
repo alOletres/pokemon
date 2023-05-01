@@ -67,7 +67,7 @@ export class IndexComponent implements OnInit {
   public graph_lbl_name: ILabelName = 'year';
   public current_date = new Date();
   public data_reports!: (IUser & IBook & IPayment)[];
-  public total_income: number = 0;
+  public total_income: string = '';
 
   /** trend analysis declaration */
   public barChartOptionsTrend: ChartConfiguration['options'] = {
@@ -128,21 +128,21 @@ export class IndexComponent implements OnInit {
       labels: [...label],
       datasets: [
         {
-          data: calculateTrendSeason({
+          data: calculatePeakSeason({
             label,
             payload,
             status: '"online"',
             date_format,
-          }).peakSeasonArray,
+          }),
           label: 'Peak season',
         },
         {
-          data: calculateTrendSeason({
+          data: calculateLeanSeason({
             label,
             payload,
             status: '"online"',
             date_format,
-          }).leanSeasonArray,
+          }),
           label: 'Lean season',
         },
       ],
@@ -188,7 +188,50 @@ export interface ICalculateDataSets {
   date_format: ILabelFormat;
 }
 
-const calculateTrendSeason = ({
+const calculatePeakSeason = ({
+  label,
+  payload,
+  status,
+  date_format,
+}: ICalculateDataSets) => {
+  /**
+   * 2018
+   * total income divide by current year from the start of company
+   */
+
+  const constantValue: number =
+    date_format === 'YYYY' ? 100 : date_format === 'MMM YYYY' ? 10 : 5;
+
+  const peakSeasonArray: number[] = [];
+  const leanSeasonArray: number[] = [];
+
+  label.map((lbl) => {
+    const result = payload.filter(
+      (value) => moment(value.createdAt).format(date_format) === lbl
+    );
+
+    /**
+     * if equal or below 30 is lean season
+     */
+
+    if (result.length <= constantValue) {
+      // leanSeasonArray.push(result.length);
+      peakSeasonArray.push(0);
+    } else {
+      /**
+       * else peak season
+       */
+
+      peakSeasonArray.push(result.length);
+    }
+  });
+
+  console.log(peakSeasonArray);
+
+  return peakSeasonArray;
+};
+
+const calculateLeanSeason = ({
   label,
   payload,
   status,
@@ -221,11 +264,11 @@ const calculateTrendSeason = ({
        * else peak season
        */
 
-      peakSeasonArray.push(result.length);
+      leanSeasonArray.push(0);
     }
   });
 
-  return { leanSeasonArray, peakSeasonArray };
+  return leanSeasonArray;
 };
 
 const calculateDataSets = ({
