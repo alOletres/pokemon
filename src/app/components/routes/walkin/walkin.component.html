@@ -1,251 +1,315 @@
 <div class="p-2">
-	<div class="p-2">
-		<h3 class="font-semibold text-lg uppercase text-blue-900">Walkin Reservation Form</h3>
+  <div class="p-2">
+    <h3 class="font-semibold text-lg uppercase text-blue-900">
+      Walkin Reservation Form
+    </h3>
 
-		<div class="mt-4">
-			<mat-stepper linear #stepper>
-				<mat-step [stepControl]="reservationForm" [editable]="isEditable">
-					<ng-template matStepLabel>Fill in reservation information</ng-template>
+    <div class="mt-4">
+      <mat-stepper linear #stepper>
+        <mat-step [stepControl]="reservationForm" [editable]="isEditable">
+          <ng-template matStepLabel
+            >Fill in reservation information</ng-template
+          >
 
-					<div class="flex">
-						<div class="w-2/5 border-2 h-fit rounded mr-4">
-							<form [formGroup]="reservationForm" class="text-xs p-4">
+          <div class="flex">
+            <div class="w-2/5 border-2 h-fit rounded mr-4">
+              <form [formGroup]="reservationForm" class="text-xs p-4">
+                <mat-form-field appearance="outline" class="text-xs w-full">
+                  <mat-date-range-input [rangePicker]="picker" [min]="min_date">
+                    <input
+                      matInput
+                      matStartDate
+                      placeholder="Start date"
+                      readonly="true"
+                      formControlName="selected_date_from"
+                    />
+                    <input
+                      matInput
+                      matEndDate
+                      placeholder="End date"
+                      readonly="true"
+                      formControlName="selected_date_to"
+                    />
+                  </mat-date-range-input>
+                  <mat-datepicker-toggle matSuffix [for]="picker">
+                  </mat-datepicker-toggle>
+                  <mat-date-range-picker #picker> </mat-date-range-picker>
 
-								<mat-form-field appearance="outline" class="text-xs w-full">
-									<mat-date-range-input [rangePicker]="picker">
-										<input 
-											matInput 
-											matStartDate 
-											placeholder="Start date"
-											readonly="true"
-											formControlName="selected_date_from"
-										/>
-										<input 
-											matInput 
-											matEndDate 
-											placeholder="End date"
-											readonly="true"
-											formControlName="selected_date_to"
-										/>
-									</mat-date-range-input>
-									<mat-datepicker-toggle 
-										matSuffix 
-										[for]="picker"
-										>
-									</mat-datepicker-toggle>
-									<mat-date-range-picker 
-										#picker
-										>
-									</mat-date-range-picker>
+                  <mat-error
+                    *ngIf="selected_date_from?.touched && selected_date_from?.errors?.['required'] 
+										&& selected_date_to?.touched && selected_date_to?.errors?.['required'] "
+                    >Date is required</mat-error
+                  >
+                </mat-form-field>
 
-									<mat-error 
-										*ngIf="selected_date_from?.touched && selected_date_from?.errors?.['required'] 
-										&& selected_date_to?.touched && selected_date_to?.errors?.['required'] ">Date is required</mat-error>
-									
-								</mat-form-field>
+                <mat-form-field appearance="outline" class="w-full">
+                  <mat-label>Select type cottage</mat-label>
+                  <mat-select
+                    class="capitalize"
+                    formControlName="type"
+                    (ngModelChange)="changeCottageType($event)"
+                  >
+                    <mat-option
+                      class="capitalize"
+                      *ngFor="let cottage of cottageType"
+                      [value]="cottage"
+                    >
+                      {{ cottage }}
+                    </mat-option>
+                  </mat-select>
 
-								<mat-form-field appearance="outline" class="w-full">
-									<mat-label>Select type cottage</mat-label>
-									<mat-select class="capitalize" formControlName="type" (ngModelChange)="changeCottageType($event)">
-										<mat-option
-											class="capitalize" 
-											*ngFor="let cottage of cottageType" 
-											[value]="cottage"
-											>
-											{{cottage}}
-										</mat-option>
-									</mat-select>
+                  <mat-error *ngIf="type?.touched && type?.errors?.['required']"
+                    >Type is required</mat-error
+                  >
+                </mat-form-field>
 
-									<mat-error *ngIf="type?.touched && type?.errors?.['required']">Type is required</mat-error>
-								</mat-form-field>	
+                <mat-form-field appearance="outline" class="w-full">
+                  <mat-label>Select Available cottage number</mat-label>
+                  <mat-select
+                    class="capitalize"
+                    formControlName="cottage_number"
+                    (ngModelChange)="changeCottageNumber($event)"
+                  >
+                    <mat-option
+                      *ngFor="let cottage of cottageList"
+                      [value]="cottage.cottage_number"
+                      >{{ cottage.cottage_number }}</mat-option
+                    >
+                  </mat-select>
 
-								<mat-form-field appearance="outline" class="w-full">
-									<mat-label>Select cottage number</mat-label>
-									<mat-select 
-										class="capitalize" 
-										formControlName="cottage_number" 
-										(ngModelChange)="changeCottageNumber($event)"
-										>
-										<mat-option *ngFor="let cottage of cottageList" [value]="cottage.cottage_number">{{cottage.cottage_number}}</mat-option>
-									</mat-select>
+                  <mat-error
+                    *ngIf="cottage_number?.touched && cottage_number?.errors?.['required'] "
+                    >Cottage number is required</mat-error
+                  >
+                </mat-form-field>
 
-									<mat-error *ngIf="cottage_number?.touched && cottage_number?.errors?.['required'] ">Cottage number is required</mat-error>
-								</mat-form-field>
+                <div class="w-full">
+                  <button
+                    mat-raised-button
+                    class="bg-blue-600 text-white w-full"
+                    (click)="addCottage()"
+                  >
+                    {{ btnName }}
+                  </button>
+                </div>
+              </form>
+            </div>
 
-								<div class="w-full">
-									<button 
-										mat-raised-button
-										class="bg-blue-600 text-white w-full"
-										(click)="addCottage()"
-										>
-										{{btnName}}
-									</button>
-								</div>
-							</form>
-						</div>
+            <!-- added cottage -->
 
-						<!-- added cottage -->
+            <div class="w-3/5">
+              <mat-tab-group
+                class="border-2 text-xs rounded"
+                *ngIf="cottageAddedList.length !== 0"
+              >
+                <mat-tab
+                  [label]="cottage.cottage_number"
+                  *ngFor="let cottage of cottageAddedList"
+                >
+                  <div class="flex flex-row p-2">
+                    <div class="w-1/2" fxLayoutAlign="center center">
+                      <img
+                        class="rounded h-full"
+                        [src]="base64+', '+ cottage.images?.[0]"
+                        alt=""
+                      />
+                    </div>
 
-						<div class="w-3/5">
-							<mat-tab-group class="border-2 text-xs rounded" *ngIf="cottageAddedList.length !== 0">
-								<mat-tab [label]="cottage.cottage_number" *ngFor="let cottage of cottageAddedList">
-									<div class="flex flex-row p-2">
-										<div class="w-1/2" fxLayoutAlign="center center">
-											<img class="rounded h-full" [src]="base64+', '+ cottage.images?.[0]" alt="">
-										</div>
-						
-										<div class="w-1/2 pl-2">
-											<p class="text-sm font-medium text-gray-500 dark:text-white">Cottage Breakdown!</p>
-											<br>
-											<mat-form-field class="text-xs w-full" floatLabel="always">
-												<mat-label>Cottage type</mat-label>
-												<input class="capitalize" type="text" [value]="cottage.type" matInput readonly="true" autocomplete="off" />
-											</mat-form-field>
-						
-											<mat-form-field class="text-xs w-full" floatLabel="always">
-												<mat-label>Available Cottage</mat-label>
-												<input type="text" matInput readonly="true" [value]="cottage.cottage_number" autocomplete="off" />
-											</mat-form-field>
-						
-											<div class="pt-2">
-												<p class="text-xs font-medium text-gray-700 dark:text-white">Description</p>
-												<p class="text-xs font-medium text-gray-500 dark:text-white">{{cottage.description}} </p>
-											</div>
-						
-											<div class="pt-2">
-												<p class="text-xs font-medium text-gray-700 dark:text-white">Capacity</p>
-												<p class="text-xs font-medium text-gray-500 dark:text-white"></p>
-											</div>
-						
-											<div class="pt-2">
-												<p class="text-xs font-medium text-gray-700 dark:text-white">Cottage price</p>
-												<p class="text-xs font-medium text-gray-500 dark:text-white">{{cottage.price| currency : "&#8369;"}}</p>
-											</div>
-						
-											<div>
-												<button 
-													class="bg-red-500 text-white w-full" 
-													mat-raised-button
-													(click)="deleteCottage(cottage.id)"
-													>
-													Cancel Cottage
-												</button>
-											</div>
-										</div>
-									</div>
-								</mat-tab>
-							</mat-tab-group>
+                    <div class="w-1/2 pl-2">
+                      <p
+                        class="text-sm font-medium text-gray-500 dark:text-white"
+                      >
+                        Cottage Breakdown!
+                      </p>
+                      <br />
+                      <mat-form-field
+                        class="text-xs w-full"
+                        floatLabel="always"
+                      >
+                        <mat-label>Cottage type</mat-label>
+                        <input
+                          class="capitalize"
+                          type="text"
+                          [value]="cottage.type"
+                          matInput
+                          readonly="true"
+                          autocomplete="off"
+                        />
+                      </mat-form-field>
 
-							<div *ngIf="cottageAddedList.length === 0" fxLayout="row" fxLayoutAlign="center center">
-								<h4 class="text-center mt-20">NO ADDED COTTAGE YET!</h4>
-							</div>
-						</div>
+                      <mat-form-field
+                        class="text-xs w-full"
+                        floatLabel="always"
+                      >
+                        <mat-label>Available Cottage</mat-label>
+                        <input
+                          type="text"
+                          matInput
+                          readonly="true"
+                          [value]="cottage.cottage_number"
+                          autocomplete="off"
+                        />
+                      </mat-form-field>
 
-						
-					</div>
+                      <div class="pt-2">
+                        <p
+                          class="text-xs font-medium text-gray-700 dark:text-white"
+                        >
+                          Description
+                        </p>
+                        <p
+                          class="text-xs font-medium text-gray-500 dark:text-white"
+                        >
+                          {{ cottage.description }}
+                        </p>
+                      </div>
 
-					<!-- next button -->
-					<div class="flex justify-end mt-4">
-						<button
-							mat-raised-button
-							class="bg-green-600 text-white"
-							(click)="nextStepper(stepper)"
-							>
-							Next <span *ngIf="total !== 0">| Total Amount {{total * totalDays}} | Total Day/s {{totalDays}}</span>
-						</button>
-					</div>
+                      <div class="pt-2">
+                        <p
+                          class="text-xs font-medium text-gray-700 dark:text-white"
+                        >
+                          Capacity
+                        </p>
+                        <p
+                          class="text-xs font-medium text-gray-500 dark:text-white"
+                        ></p>
+                      </div>
 
-				</mat-step>
+                      <div class="pt-2">
+                        <p
+                          class="text-xs font-medium text-gray-700 dark:text-white"
+                        >
+                          Cottage price
+                        </p>
+                        <p
+                          class="text-xs font-medium text-gray-500 dark:text-white"
+                        >
+                          {{ cottage.price | currency : "&#8369;" }}
+                        </p>
+                      </div>
 
-				<mat-step [editable]="isEditable">
-					<ng-template matStepLabel>Fill in user information</ng-template>
+                      <div>
+                        <button
+                          class="bg-red-500 text-white w-full"
+                          mat-raised-button
+                          (click)="deleteCottage(cottage.id)"
+                        >
+                          Cancel Cottage
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </mat-tab>
+              </mat-tab-group>
 
-					<div>
-						<form [formGroup]="userForm" class="text-xs" (ngSubmit)="submitBook(stepper)" >
-							<mat-form-field appearance="outline" class="w-1/4 pr-1" >
-								<mat-label>Firstname</mat-label>
-								<input 
-									type="text" 
-									matInput 
-									autocomplete="off"
-									formControlName="firstname"
-								/>
-							</mat-form-field>
+              <div
+                *ngIf="cottageAddedList.length === 0"
+                fxLayout="row"
+                fxLayoutAlign="center center"
+              >
+                <h4 class="text-center mt-20">NO ADDED COTTAGE YET!</h4>
+              </div>
+            </div>
+          </div>
 
-							<mat-form-field appearance="outline" class="w-1/4 pr-1">
-								<mat-label>Lastname</mat-label>
-								<input 
-									type="text" 
-									matInput 
-									autocomplete="off"
-									formControlName="lastname"
-								/>
-							</mat-form-field>
+          <!-- next button -->
+          <div class="flex justify-end mt-4">
+            <button
+              mat-raised-button
+              class="bg-green-600 text-white"
+              (click)="nextStepper(stepper)"
+            >
+              Next
+              <span *ngIf="total !== 0"
+                >| Total Amount {{ total * totalDays }} | Total Day/s
+                {{ totalDays }}</span
+              >
+            </button>
+          </div>
+        </mat-step>
 
-							<mat-form-field appearance="outline" class="w-1/4 pr-1">
-								<mat-label>Email</mat-label>
-								<input 
-									type="text" 
-									matInput 
-									autocomplete="off"
-									formControlName="email"
-								/>
-							</mat-form-field>
+        <mat-step [editable]="isEditable">
+          <ng-template matStepLabel>Fill in user information</ng-template>
 
-							<mat-form-field appearance="outline" class="w-1/4 ">
-								<mat-label>Contact</mat-label>
-								<input 
-									type="text" 
-									matInput 
-									autocomplete="off"
-									formControlName="mobile_number"
-								/>
-							</mat-form-field>
+          <div>
+            <form
+              [formGroup]="userForm"
+              class="text-xs"
+              (ngSubmit)="submitBook(stepper)"
+            >
+              <mat-form-field appearance="outline" class="w-1/4 pr-1">
+                <mat-label>Firstname</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  autocomplete="off"
+                  formControlName="firstname"
+                />
+              </mat-form-field>
 
-							<mat-form-field appearance="outline" class="w-1/2 pr-1">
-								<mat-label>Address</mat-label>
-								<textarea 
-									matInput 
-									autocomplete="off"
-									formControlName="address"
-									>
-								</textarea>
-							</mat-form-field>
+              <mat-form-field appearance="outline" class="w-1/4 pr-1">
+                <mat-label>Lastname</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  autocomplete="off"
+                  formControlName="lastname"
+                />
+              </mat-form-field>
 
-							<mat-form-field appearance="outline" class="w-1/2">
-								<mat-label>Comment(Optional)</mat-label>
-								<textarea 
-									matInput 
-									autocomplete="off"
-									formControlName="comment"
-									>
-								</textarea>
-							</mat-form-field>
+              <mat-form-field appearance="outline" class="w-1/4 pr-1">
+                <mat-label>Email</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  autocomplete="off"
+                  formControlName="email"
+                />
+              </mat-form-field>
 
-							<div class="flex justify-end">
-								<button mat-button matStepperPrevious>Previous</button>
-								<button
-									mat-raised-button
-									class="bg-blue-600 text-white"
-									type="submit"
-									>
-									Submit
-								</button>
-							</div>
-						</form>
-					</div>
-				</mat-step>
-				<mat-step>
-					<ng-template matStepLabel>Done</ng-template>
+              <mat-form-field appearance="outline" class="w-1/4">
+                <mat-label>Contact</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  autocomplete="off"
+                  formControlName="mobile_number"
+                />
+              </mat-form-field>
 
-					<div class="flex justify-center items-center">
-						<img 
-							src="assets/donegif.gif" 
-							alt=""
-							height="500"
-						/>
-					</div>
-				</mat-step>
-				
-			</mat-stepper>	
-		</div>
+              <mat-form-field appearance="outline" class="w-1/2 pr-1">
+                <mat-label>Address</mat-label>
+                <textarea matInput autocomplete="off" formControlName="address">
+                </textarea>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="w-1/2">
+                <mat-label>Comment(Optional)</mat-label>
+                <textarea matInput autocomplete="off" formControlName="comment">
+                </textarea>
+              </mat-form-field>
+
+              <div class="flex justify-end">
+                <button mat-button matStepperPrevious>Previous</button>
+                <button
+                  mat-raised-button
+                  class="bg-blue-600 text-white"
+                  type="submit"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Done</ng-template>
+
+          <div class="flex justify-center items-center">
+            <img src="assets/donegif.gif" alt="" height="500" />
+          </div>
+        </mat-step>
+      </mat-stepper>
+    </div>
+  </div>
+</div>

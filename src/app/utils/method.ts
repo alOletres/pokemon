@@ -146,3 +146,18 @@ export const total_income = (payload: (IUser & IBook & IPayment)[]): string => {
   });
   return convertNumberWithComma(total_income);
 };
+
+export const mergeArray = (data: any) => {
+  let merge = data[0];
+
+  data.map((value: string, i: number) => {
+    let mergeArray;
+
+    if (i > 0) {
+      mergeArray = [...merge, ...data[i]];
+      merge = mergeArray;
+    }
+  });
+
+  return [...merge];
+};

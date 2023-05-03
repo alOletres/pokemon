@@ -239,7 +239,7 @@ const calculateLeanSeason = ({
    */
 
   const constantValue: number =
-    date_format === 'YYYY' ? 500 : date_format === 'MMM YYYY' ? 300 : 150;
+    date_format === 'YYYY' ? 500 : date_format === 'MMM YYYY' ? 300 : 10;
 
   const leanSeasonArray: number[] = [];
 

@@ -10,15 +10,19 @@ import { StoreService } from '../../../store/service/store.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/model/appState.model';
 import { EMage } from '../../../globals/enums/image';
-import Method from '../../../utils/method';
+import Method, { mergeArray } from '../../../utils/method';
 import {
+  IBook,
   IBookAndCottagePayload,
   IBookingPayload,
+  IPayment,
   TProps,
 } from '../../../globals/interface/book';
 import { MatStepper } from '@angular/material/stepper';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BookService } from '../../../services/book.service';
+import { IUser } from 'src/app/globals/interface';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-walkin',
@@ -29,20 +33,19 @@ export class WalkinComponent implements OnInit {
   isEditable = false;
   reservationForm!: FormGroup;
   userForm!: FormGroup;
-
   cottageType: string[] = [ECOTTAGE_TYPE.FLOATING, ECOTTAGE_TYPE.NON_FLOATING];
   base64 = EMage.BASE64_INITIAL;
   dataCottage!: ICottage[];
-
   cottageAddedList!: IBookAndCottagePayload[];
   cottageList!: ICottage[];
-
   selectedCottage!: ICottage;
-
   btnName = 'Add Cottage';
-
   total: number = 0;
   totalDays: number = 0;
+
+  min_date = new Date();
+
+  data_book_list: (IBook & IUser & IPayment)[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -100,6 +103,7 @@ export class WalkinComponent implements OnInit {
   ngOnInit(): void {
     this.getCottage();
     this.getCottageBook();
+    this.getBook();
   }
 
   getCottageBook() {
@@ -132,15 +136,74 @@ export class WalkinComponent implements OnInit {
       const response = await this.http_cottage.getCottage();
       this.dataCottage = response.data as ICottage[];
     } catch (err) {
-      const error = ErrorResponse(err);
-      this.snackBar._showSnack(`${error.myError} ${error.status}`, 'error');
+      throw err;
     }
   }
 
-  changeCottageType(event: string) {
-    const data = [...this.dataCottage].filter((x) => x.type === event);
+  async getBook() {
+    const response = await this.http_book.getBook();
+    const data = response.data as (IBook & IUser & IPayment)[];
+    this.data_book_list = data;
+  }
 
-    this.cottageList = data;
+  changeCottageType(event: string) {
+    /**
+     * @trap for available cottage only in specific date
+     */
+    const cottagesList = [...this.dataCottage].filter((x) => x.type === event);
+    const cottagesListDb: number[] = [];
+    /**
+     * selected date
+     */
+
+    const frontFrom = moment(
+      this.reservationForm.get('selected_date_from')?.value
+    ).format('YYYY-MM-DD');
+    const frontTo = moment(
+      this.reservationForm.get('selected_date_to')?.value
+    ).format('YYYY-MM-DD');
+
+    /**
+     * @check date and get the cottage number
+     */
+
+    const checkCottages = [...this.data_book_list]
+      .filter((value) => {
+        const dbfrom = moment(value.selected_date_from).format('YYYY-MM-DD');
+        const dbto = moment(value.selected_date_to).format('YYYY-MM-DD');
+
+        const condition =
+          frontFrom === dbfrom ||
+          frontFrom === dbto ||
+          frontTo === dbfrom ||
+          frontTo === dbfrom ||
+          frontTo === dbto;
+
+        return condition;
+      })
+      .map((value) => value.cottages);
+
+    if (checkCottages && checkCottages.length) {
+      const distractedCottages = checkCottages.map((value) => {
+        if (value && typeof value === 'string') {
+          value = JSON.parse(value);
+        }
+        return value;
+      });
+      const array = mergeArray(distractedCottages);
+
+      cottagesListDb.push(...array);
+    }
+
+    if (cottagesListDb && cottagesListDb.length) {
+      const notEqualValues = cottagesList.filter(
+        (value) => !cottagesListDb.some((obj) => obj === value.id)
+      );
+
+      this.cottageList = notEqualValues;
+    } else {
+      this.cottageList = cottagesList;
+    }
   }
 
   changeCottageNumber(event: string) {
@@ -291,9 +354,12 @@ export class WalkinComponent implements OnInit {
 
       stepper.next();
     } catch (err) {
-      const error = ErrorResponse(err);
-      this.snackBar._showSnack(`${error.myError} ${error.status}`, 'error');
+      throw err;
     }
+  }
+
+  dateSearchChange(event: any) {
+    console.log(event);
   }
 }
 

@@ -133,6 +133,10 @@ export class ReportsComponent implements OnInit {
             new Date(x.selected_date_from)
           );
           x.total_amount = x.amount * x.number_of_days;
+
+          const role =
+            x.role && typeof x.role === 'string' ? JSON.parse(x.role) : x.role;
+          x.role = role;
           return x;
         });
 

@@ -1,50 +1,53 @@
 <div class="flex justify-between">
-	<div class="flex justify-start">
-		<img class=" h-8 w-8"  src="assets/resort.png" alt="">
-		<h3 mat-dialog-title>RVS RESORT</h3>
-	</div>
+  <div class="flex justify-start">
+    <img class="h-8 w-8" src="assets/resort.png" alt="" />
+    <h3 mat-dialog-title>RVS RESORT</h3>
+  </div>
 
-	<div>
-		<p class="text-sm font-medium text-gray-500 dark:text-white">Booked Date List!</p>
-	</div>
+  <div>
+    <p class="text-sm font-medium text-gray-500 dark:text-white">
+      Booked Date List!
+    </p>
+  </div>
 </div>
 
 <mat-dialog-content>
-	<form [formGroup]="dateForm">
-		<mat-form-field appearance="outline" floatAlways="true" class="w-full pr-2 text-xs ">
-			<mat-label>Select Available Date</mat-label>
-			<mat-date-range-input  [min]="minDate" [rangePicker]="picker" >
-				<input 
-					matInput 
-					formControlName="selected_date_from" 
-					readonly="true" 
-					matStartDate 
-					placeholder="Start date"
-				/>
-				<input 
-					matInput 
-					formControlName="selected_date_to" 
-					readonly="true" 
-					matEndDate 
-					placeholder="End date"
-				/>
-			</mat-date-range-input>
-			<mat-datepicker-toggle 
-				class="text-lg" 
-				matSuffix 
-				[for]="picker"
-				>
-			</mat-datepicker-toggle>
-			<mat-date-range-picker #picker ></mat-date-range-picker>
-			<mat-error 
-				*ngIf="selected_date_from?.touched && selected_date_from?.errors?.['required'] 
+  <form [formGroup]="dateForm">
+    <mat-form-field
+      appearance="outline"
+      floatAlways="true"
+      class="w-full pr-2 text-xs"
+    >
+      <mat-label>Select Available Date</mat-label>
+      <!-- [min]="minDate" -->
+      <mat-date-range-input [rangePicker]="picker">
+        <input
+          matInput
+          formControlName="selected_date_from"
+          readonly="true"
+          matStartDate
+          placeholder="Start date"
+        />
+        <input
+          matInput
+          formControlName="selected_date_to"
+          readonly="true"
+          matEndDate
+          placeholder="End date"
+        />
+      </mat-date-range-input>
+      <mat-datepicker-toggle class="text-lg" matSuffix [for]="picker">
+      </mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+      <mat-error
+        *ngIf="selected_date_from?.touched && selected_date_from?.errors?.['required'] 
 				|| selected_date_to?.touched && selected_date_to?.errors?.['required']"
-				>
-				Date is required
-			</mat-error>
-		</mat-form-field>
-	</form>
-	<!-- <table class="w-full text-xs">
+      >
+        Date is required
+      </mat-error>
+    </mat-form-field>
+  </form>
+  <!-- <table class="w-full text-xs">
 		<thead >
 			<tr class="uppercase text-gray-500 text-left">
 				<th class="p-2">cottage type</th>
@@ -67,15 +70,15 @@
 	</table> -->
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-	<button mat-dialog-close mat-button> Close </button>
-	<button
-		(click)="reservedCottage()" 
-		mat-raised-button 
-		class="bg-yellow-400 text-white"
-		>
-		Reserve Cottage
-	</button>
-	<!-- <button
+  <button mat-dialog-close mat-button>Close</button>
+  <button
+    (click)="reservedCottage()"
+    mat-raised-button
+    class="bg-yellow-400 text-white"
+  >
+    Reserve Cottage
+  </button>
+  <!-- <button
 		(click)="fillOutInfo()" 
 		mat-raised-button 
 		class="bg-blue-700 text-white"

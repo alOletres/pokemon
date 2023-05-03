@@ -1,137 +1,148 @@
-
-<div *ngIf="progressBarService.isLoading.value" class="cs-backdrop fixed w-full z-50">
-	<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+<div
+  *ngIf="progressBarService.isLoading.value"
+  class="cs-backdrop fixed w-full z-50"
+>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
 
-<nav class="bg-white border-gray-200  dark:bg-gray-900">
-	<div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl px-4 md:px-6 py-2.5">
-		<a class="flex items-center">
-			<img 
-				src="assets/resort.png" 
-				class="mr-3 h-6 sm:h-9" 
-				alt="Flowbite Logo"
-			/>
-			<span 
-				class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
-				>
-				RVS Resort
-			</span>
-		</a>
-		<div class="flex items-center">
-			<a 
-				href="tel:5541251234" 
-				class="mr-6 text-sm font-medium text-gray-500 dark:text-white hover:underline"
-				>
-				(+63) 998 5366 016
-			</a>
-			<div *ngIf="!user else elseBlock">
-				<a 
-					[routerLink]="['/login']" 
-					routerLinkActive="active" 
-					[routerLinkActiveOptions]="{exact: true}" 
-					class="text-sm pr-4 font-medium text-blue-600 dark:text-blue-500 hover:underline"
-					>
-					Login
-				</a>
-				<a  
-					(click)="signUp()"
-					class="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
-					>
-					Sign up!
-				</a>
-			</div>
+<nav class="bg-white border-gray-200 dark:bg-gray-900">
+  <div
+    class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl px-4 md:px-6 py-2.5"
+  >
+    <a class="flex items-center">
+      <img
+        src="assets/resort.png"
+        class="mr-3 h-6 sm:h-9"
+        alt="Flowbite Logo"
+      />
+      <span
+        class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
+      >
+        RVS Resort
+      </span>
+    </a>
+    <div class="flex items-center">
+      <a
+        href="tel:5541251234"
+        class="mr-6 text-sm font-medium text-gray-500 dark:text-white hover:underline"
+      >
+        (+63) 998 5366 016
+      </a>
+      <div *ngIf="!user; else elseBlock">
+        <a
+          [routerLink]="['/login']"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="text-sm pr-4 font-medium text-blue-600 dark:text-blue-500 hover:underline"
+        >
+          Sign in
+        </a>
+        <a
+          (click)="signUp()"
+          class="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
+        >
+          Sign up!
+        </a>
+      </div>
 
-			<ng-template #elseBlock>
-				<div 
-					[matMenuTriggerFor]="beforeMenu" 
-					class="flex justify-between space-x-1 cursor-pointer hover:text-gray-500 hover:underline">
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-						class="w-6 h-6">
-						<path stroke-linecap="round" stroke-linejoin="round"
-							d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
-					</svg>
+      <ng-template #elseBlock>
+        <div
+          [matMenuTriggerFor]="beforeMenu"
+          class="flex justify-between space-x-1 cursor-pointer hover:text-gray-500 hover:underline"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
 
-					<p class="capitalize  font-semibold">{{user.firstname}}</p>
-				</div>
+          <p class="capitalize font-semibold">{{ user.firstname }}</p>
+        </div>
 
-				<mat-menu #beforeMenu xPosition="before">
-					<div class="user-menu-title">
-						<h4 class="user-menu-title__name capitalize">Hi! {{user.firstname}}</h4>
-						<!-- <a class="user-menu-title__link" >Flatlogic.com</a> -->
-					</div>
-					<button 
-						[routerLink]="['/profile']"
-						routerLinkActive="active"
-						[routerLinkActiveOptions]="{exact: true}" 
-						mat-menu-item class="user-menu__item-title">
-						<mat-icon class="user-menu-icon">person</mat-icon>Profile
-					</button>
-					<div class="sign-button-wrapper">
-						<button 
-							class="sign-button" 
-							mat-flat-button
-							(click)="signOut()"
-							>
-							Sign out
-						</button>
-					</div>
-				</mat-menu>
-
-
-			</ng-template>
-			
-		</div>
-	</div>
+        <mat-menu #beforeMenu xPosition="before">
+          <div class="user-menu-title">
+            <h4 class="user-menu-title__name capitalize">
+              Hi! {{ user.firstname }}
+            </h4>
+            <!-- <a class="user-menu-title__link" >Flatlogic.com</a> -->
+          </div>
+          <button
+            [routerLink]="['/profile']"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            mat-menu-item
+            class="user-menu__item-title"
+          >
+            <mat-icon class="user-menu-icon">person</mat-icon>Profile
+          </button>
+          <div class="sign-button-wrapper">
+            <button class="sign-button" mat-flat-button (click)="signOut()">
+              Sign out
+            </button>
+          </div>
+        </mat-menu>
+      </ng-template>
+    </div>
+  </div>
 </nav>
 <nav class="bg-gray-50 dark:bg-gray-700">
-	<div class="py-3 px-4 mx-auto max-w-screen-xl md:px-6">
-		<div class="">
-			<ul class="flex flex-row mt-0 mr-6 space-x-8 text-sm font-medium">
-				<li>
-					<a 
-						[routerLink]="['/home']" 
-						routerLinkActive="active" 
-						[routerLinkActiveOptions]="{exact: true}" 
-						class="text-gray-900 dark:text-white hover:underline" 
-						aria-current="page"
-						>
-						Home
-					</a>
-				</li>
-				<li>
-					<a 
-						[routerLink]="['/contact']" 
-						routerLinkActive="active" 
-						[routerLinkActiveOptions]="{exact: true}" 
-						class="text-gray-900 dark:text-white hover:underline"
-						>
-						Contact
-					</a>
-				</li>
-				<li>
-					<a 
-						[routerLink]="['/book']" 
-						routerLinkActive="active" 
-						[routerLinkActiveOptions]="{exact: true}" 
-						class="text-gray-900 dark:text-white hover:underline"
-						>
-						Book
-					</a>
-				</li>
-				<li>
-					<a 
-						[routerLink]="['/about']" 
-						routerLinkActive="active" 
-						[routerLinkActiveOptions]="{exact: true}" 
-						class="text-gray-900 dark:text-white hover:underline"
-						>
-						About
-					</a>
-				</li>
-			</ul>
-		</div>
-	</div>
+  <div class="py-3 px-4 mx-auto max-w-screen-xl md:px-6">
+    <div class="">
+      <ul class="flex flex-row mt-0 mr-6 space-x-8 text-sm font-medium">
+        <li>
+          <a
+            [routerLink]="['/home']"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="text-gray-900 dark:text-white hover:underline"
+            aria-current="page"
+          >
+            Home
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/contact']"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="text-gray-900 dark:text-white hover:underline"
+          >
+            Contact
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/book']"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="text-gray-900 dark:text-white hover:underline"
+          >
+            Book
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/about']"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="text-gray-900 dark:text-white hover:underline"
+          >
+            About
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>
-<div >
-<router-outlet></router-outlet>
+<div>
+  <router-outlet></router-outlet>
 </div>

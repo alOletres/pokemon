@@ -1,31 +1,31 @@
 import { IBookPayload } from './cottage';
 import { IUser } from './payload';
 
-export type EBookingStatuses = "pending" | "approved" | "rejected" | "voided"
+export type EBookingStatuses = 'pending' | 'approved' | 'rejected' | 'voided';
 
 export interface IBook {
-	id: number;
+  id: number;
   type: string;
-  
-	date_booked: Date;
-	cottage: number;
-	selected_date_from: Date;
-	selected_date_to: Date;
-	payment_type: IBookingPaymentType;
-	booker: number;
-	receipt: string;
-	createdAt: Date;
-	updateAt: Date;
-	isCottage: boolean;
-	status: EBookingStatuses;
+
+  date_booked: Date;
+  cottage: number;
+  cottages: string | number[];
+  selected_date_from: Date;
+  selected_date_to: Date;
+  payment_type: IBookingPaymentType;
+  booker: number;
+  receipt: string;
+  createdAt: Date;
+  updateAt: Date;
+  isCottage: boolean;
+  status: EBookingStatuses;
   payment_record: number;
   number_of_days?: number;
-  
 }
 // Types
-export interface IDates { 
-  from: Date; 
-  to: Date; 
+export interface IDates {
+  from: Date;
+  to: Date;
 }
 
 export interface IPayment {
@@ -36,7 +36,7 @@ export interface IPayment {
   reference: string;
   remarks: string;
 }
-export type TBookingType = '"walkin"' | '"online"'
+export type TBookingType = '"walkin"' | '"online"';
 
 export interface IBookingPayload {
   cottages: number[] | string;
@@ -44,7 +44,7 @@ export interface IBookingPayload {
   user?: IUser;
   payment: IPayment;
   other?: object;
-} 
+}
 
 export interface IDBPayment {
   id: number;
@@ -57,10 +57,16 @@ export interface IDBPayment {
   amount: number;
 }
 
-export type TProps = "cottages" | "dates" | "user" | "payment" | "other" | "type";
+export type TProps =
+  | 'cottages'
+  | 'dates'
+  | 'user'
+  | 'payment'
+  | 'other'
+  | 'type';
 
-export type IBookingPaymentType = "gcash" | "cash";
+export type IBookingPaymentType = 'gcash' | 'cash';
 
-export type IBookAndCottagePayload = IBookPayload &  IBook & IBookingPayload;
+export type IBookAndCottagePayload = IBookPayload & IBook & IBookingPayload;
 
 export type IReportPayload = IBookAndCottagePayload & IUser & IDBPayment;
