@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from './../../../../store/model/appState.model';
-import { IBookAndCottagePayload, IBookingPayload, TProps } from '../../../../globals/interface/book';
+import {
+  IBookAndCottagePayload,
+  IBookingPayload,
+  TProps,
+} from '../../../../globals/interface/book';
 import { EMage } from '../../../../globals/enums/image';
 import * as moment from 'moment';
 import { SnackBarService } from '../../../../shared/services/snack-bar.service';
@@ -18,305 +22,321 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-book',
   templateUrl: './book.component.html',
-  styleUrls: ['./book.component.css']
+  styleUrls: ['./book.component.css'],
 })
-
 export class BookComponent implements OnInit {
-	isEditable = false;
-	bookForm!: FormGroup;
-	cottageForm!: FormGroup;
-	paymentForm!: FormGroup;
-	base64 = EMage.BASE64_INITIAL;
-	file!: File;
-	receiptPhoto: string = "assets/receipt.jpg";
+  isEditable = false;
+  bookForm!: FormGroup;
+  cottageForm!: FormGroup;
+  paymentForm!: FormGroup;
+  base64 = EMage.BASE64_INITIAL;
+  file!: File;
+  receiptPhoto: string = 'assets/receipt.jpg';
 
-	dataCottageBook!: IBookAndCottagePayload[];
+  dataCottageBook!: IBookAndCottagePayload[];
 
-	startDate: string = "";
-	endDate: string = "";
-	numberOfDays: number = 0;
-	totalAmount: number = 0;
+  startDate: string = '';
+  endDate: string = '';
+  numberOfDays: number = 0;
+  totalAmount: number = 0;
 
-	user!: IUser;
+  user!: IUser;
 
   constructor(
-		private fb: FormBuilder, 
-		private store: Store<AppState>, 
-		private snackBar: SnackBarService,
-		private store_method: StoreService,
-		private http_book: BookService,
-		private common: CommonServiceService,
-		private method: Method,
-		) {
+    private fb: FormBuilder,
+    private store: Store<AppState>,
+    private snackBar: SnackBarService,
+    private store_method: StoreService,
+    private http_book: BookService,
+    private common: CommonServiceService,
+    private method: Method
+  ) {
+    store.select('user').subscribe((data): void => {
+      try {
+        this.user = data[0];
+      } catch (Err) {
+        return undefined;
+      }
+    });
 
-		store.select("user").subscribe((data): void => {
-			try {
-				this.user = data[0];
-			} catch (Err) {
-				return undefined
-			}
-		});
+    this.paymentForm = this.fb.group({
+      accountName: [null, Validators.required],
+      accountNumber: [null, Validators.required],
+      reference: [null, Validators.required],
+      amount: [null, Validators.required],
+      images: [null, Validators.required],
+      remarks: null,
+    });
 
-		this.paymentForm = this.fb.group({
-			accountName: [null, Validators.required],
-			accountNumber: [null, Validators.required],
-			reference: [null, Validators.required],
-			amount: [null, Validators.required],
-			images: [null, Validators.required],
-			remarks: null,
+    this.cottageForm = this.fb.group({
+      type: ['Floating cottage', Validators.required],
+      availableCottage: [null, Validators.required],
+      event: ['Birthday', Validators.required],
+    });
 
-		});
+    /**
+     * display cottage book
+     */
 
-		this.cottageForm = this.fb.group({
-			type: ['Floating cottage', Validators.required],
-			availableCottage: [null, Validators.required],
-			event: ['Birthday', Validators.required],
-		});
+    store.select('cottage').subscribe((data): void => {
+      try {
+        this.dataCottageBook = data;
 
-		/**
-		 * display cottage book
-		 */
+        this.startDate = moment(data[0].selected_date_from).format(
+          'MM-DD-YYYY'
+        );
+        this.endDate = moment(data[0].selected_date_to).format('MM-DD-YYYY');
 
-		store.select("cottage").subscribe((data): void => {
-			try {
-				this.dataCottageBook = data;
+        const totalDays = this.common.diff_minutes(
+          new Date(data[0].selected_date_to),
+          new Date(data[0].selected_date_from)
+        );
 
-				this.startDate = moment(data[0].selected_date_from).format("MM-DD-YYYY");
-				this.endDate = moment(data[0].selected_date_to).format("MM-DD-YYYY");
+        this.numberOfDays = totalDays;
 
-				const totalDays = this.common.diff_minutes(new Date(data[0].selected_date_to), new Date(data[0].selected_date_from));
-
-				this.numberOfDays = totalDays;
-
-				this.totalAmount = totalAmount(this.dataCottageBook);
-
-			} catch (err) {
-				return undefined
-			}
-			
-		});
-
-	}
-
-	get accountName () {
-		return this.bookForm.get('accountName');
-	}
-	get accountNumber () {
-		return this.bookForm.get('accountNumber');
-	}
-	get reference () {
-		return this.bookForm.get('reference');
-	}
-	get amount () {
-		return this.bookForm.get('amount');
-	}
-	get remarks () {
-		return this.bookForm.get('remarks');
-	}
-	get firstname () {
-		return this.bookForm.get('firstname');
-	}
-
-	get lastname () {
-		return this.bookForm.get('lastname');
-	}
-
-	get contact () {
-		return this.bookForm.get('contact');
-	}
-
-	get address () {
-		return this.bookForm.get('address');
-	}
-
-	get start () {
-		return this.bookForm.get('start');
-	}
-
-	get end () {
-		return this.bookForm.get('end');
-	}
-
-	get comment () {
-		return this.bookForm.get('comment');
-	}
-
-  ngOnInit(): void {
-		
-		this.bookForm = this.fb.group({
-			firstname: [(!this.user)? null: this.user.firstname, Validators.required],
-			lastname: [(!this.user)? null: this.user.lastname, Validators.required],
-			contact: [(!this.user)? null: this.user.mobile_number, Validators.required],
-			email: [(!this.user) ? null : this.user.email, Validators.required],
-			address:[(!this.user)? null: this.user.address, Validators.required],
-			
-			isCottage: [null, Validators.required],
-			comment: null,
-
-			password: null,
-
-			roles: [(!this.user)? JSON.stringify(["customer"]) : this.user.role],
-
-		});
-
-		this.bookForm.patchValue({isCottage: this.dataCottageBook.length > 0 ? 1 : null});
+        this.totalAmount = totalAmount(this.dataCottageBook);
+      } catch (err) {
+        return undefined;
+      }
+    });
   }
 
-	onNextBook(): void {
-		if(this.bookForm.invalid) {
-			try {
-				this.bookForm.markAllAsTouched();
-				if(!this.bookForm.get("isCottage")?.value) throw new HttpErrorResponse({
-					error: "Please select cottage first",
-					status: 500
-				});
-			} catch (err) {
-				const error = ErrorResponse(err);
-				this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
-			}
-		}
-	}
+  get accountName() {
+    return this.bookForm.get('accountName');
+  }
+  get accountNumber() {
+    return this.bookForm.get('accountNumber');
+  }
+  get reference() {
+    return this.bookForm.get('reference');
+  }
+  get amount() {
+    return this.bookForm.get('amount');
+  }
+  get remarks() {
+    return this.bookForm.get('remarks');
+  }
+  get firstname() {
+    return this.bookForm.get('firstname');
+  }
 
-	changeImage(event: any) {
+  get lastname() {
+    return this.bookForm.get('lastname');
+  }
 
-		this.file = event.target.files[0];
+  get contact() {
+    return this.bookForm.get('contact');
+  }
 
-		const reader = new FileReader();
-		
-		reader.readAsDataURL(this.file);
+  get address() {
+    return this.bookForm.get('address');
+  }
 
-		reader.onload = (event: any) => {
-			this.receiptPhoto = event.target.result
-		}
+  get start() {
+    return this.bookForm.get('start');
+  }
 
-		this.paymentForm.get('images')?.patchValue(this.file);
+  get end() {
+    return this.bookForm.get('end');
+  }
 
-	}
+  get comment() {
+    return this.bookForm.get('comment');
+  }
 
-	async submit (stepper: MatStepper) {
-		if (this.paymentForm.invalid) {
-			this.paymentForm.markAllAsTouched();
-			try {
-				if(!this.paymentForm.get("images")?.value) throw new HttpErrorResponse({
-					error: "Please attach your payment receipt",
-					status: 500
-				});
-			} catch (err) {
-				const error = ErrorResponse(err);
-				this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
-			}
-		} else {
-			try {
+  ngOnInit(): void {
+    this.bookForm = this.fb.group({
+      firstname: [!this.user ? null : this.user.firstname, Validators.required],
+      lastname: [!this.user ? null : this.user.lastname, Validators.required],
+      contact: [
+        !this.user ? null : this.user.mobile_number,
+        Validators.required,
+      ],
+      email: [!this.user ? null : this.user.email, Validators.required],
+      address: [!this.user ? null : this.user.address, Validators.required],
 
-				const psswrd = (!this.user) ? await this.method.customSwal({
-					title: 'Create your own password',
-					input: 'text',
-					inputLabel: "Enter your password",
-					inputPlaceholder: ""
-				}) : null;
-				
-				this.bookForm.get("password")?.patchValue(psswrd);
+      isCottage: [null, Validators.required],
+      comment: null,
 
-				const formData = new FormData();
+      password: null,
 
-				/**
-				 * 
-				 * Flatten the object and get only the cottage id,
-				 * As it will automatically associate all cottage data using the id
-				 */
-				const selectedCottages: [id: number] = [...this.dataCottageBook].map((item: IBookAndCottagePayload) => item.id) as [id: number]
+      roles: [!this.user ? JSON.stringify(['customer']) : this.user.role],
+    });
 
-				// Getting the selected dates
-				const selectedDates: {from: Date; to: Date} = [...this.dataCottageBook].filter((item: IBookAndCottagePayload) => {
-					return ("selected_date_from" in item && item["selected_date_from"]) && ("selected_date_to" in item && item["selected_date_to"])
-				}).map((item: IBookAndCottagePayload) => {
-					return {
-						from: item.selected_date_from,
-						to: item.selected_date_to,
-						
-					}
-				})[0];
+    this.bookForm.patchValue({
+      isCottage: this.dataCottageBook.length > 0 ? 1 : null,
+    });
+  }
 
-				// User details
-				const userDetails = { ...this.bookForm.value }
+  onNextBook(): void {
+    if (this.bookForm.invalid) {
+      try {
+        this.bookForm.markAllAsTouched();
+        if (!this.bookForm.get('isCottage')?.value)
+          throw new HttpErrorResponse({
+            error: 'Please select cottage first',
+            status: 500,
+          });
+      } catch (err) {
+        const error = ErrorResponse(err);
+        this.snackBar._showSnack(`${error.myError} ${error.status}`, 'error');
+      }
+    }
+  }
 
-				// Payment details
-				const paymentDetails = { ...this.paymentForm.value, images: undefined }
+  changeImage(event: any) {
+    this.file = event.target.files[0];
 
-				// Extracting payment method from previous object then adding it to paymentDetails object
-				paymentDetails["payment_type"] = [...this.dataCottageBook].find((item: IBookAndCottagePayload) => "payment_type" in item && item["payment_type"])?.payment_type
+    const reader = new FileReader();
 
-				// Other details, comment, etc.
-				const otherDetails = "comment" in userDetails && userDetails["comment"]
-					? { comment: userDetails.comment}
-					: {};
+    reader.readAsDataURL(this.file);
 
-				// Receipt attachment
-				const receipt: File = this.paymentForm.value && this.paymentForm.value["images"]
-					? this.paymentForm.value["images"]
-					: null;
+    reader.onload = (event: any) => {
+      this.receiptPhoto = event.target.result;
+    };
 
-				// Final cleanup
-				if ("comment" in userDetails) {
-					delete userDetails["comment"]
-				}
+    this.paymentForm.get('images')?.patchValue(this.file);
+  }
 
-				if ("images" in paymentDetails) {
-					delete paymentDetails["images"]
-				}
+  async submit(stepper: MatStepper) {
+    if (this.paymentForm.invalid) {
+      this.paymentForm.markAllAsTouched();
+      try {
+        if (!this.paymentForm.get('images')?.value)
+          throw new HttpErrorResponse({
+            error: 'Please attach your payment receipt',
+            status: 500,
+          });
+      } catch (err) {
+        const error = ErrorResponse(err);
+        this.snackBar._showSnack(`${error.myError} ${error.status}`, 'error');
+      }
+    } else {
+      try {
+        const psswrd = !this.user
+          ? await this.method.customSwal({
+              title: 'Create your own password',
+              input: 'text',
+              inputLabel: 'Enter your password',
+              inputPlaceholder: '',
+            })
+          : null;
 
-				const payload = {
-					cottages: [...selectedCottages],
-					dates: {...selectedDates},
-					user: {...userDetails},
-					payment: {...paymentDetails},
-					other: {...otherDetails},
-					type: "online",
-					userid: !this.user ? null : this.user.id
-				}
+        this.bookForm.get('password')?.patchValue(psswrd);
 
-				for (let item of Object.keys(payload)) {
-					let props: TProps = item as TProps
+        const formData = new FormData();
 
-					const value: string = payload[props] as unknown as string
-					
-					formData.append(props, JSON.stringify(value))
-				}
+        /**
+         *
+         * Flatten the object and get only the cottage id,
+         * As it will automatically associate all cottage data using the id
+         */
+        const selectedCottages: [id: number] = [...this.dataCottageBook].map(
+          (item: IBookAndCottagePayload) => item.id
+        ) as [id: number];
 
-				formData.append("images", receipt);
-				
+        // Getting the selected dates
+        const selectedDates: { from: Date; to: Date } = [
+          ...this.dataCottageBook,
+        ]
+          .filter((item: IBookAndCottagePayload) => {
+            return (
+              'selected_date_from' in item &&
+              item['selected_date_from'] &&
+              'selected_date_to' in item &&
+              item['selected_date_to']
+            );
+          })
+          .map((item: IBookAndCottagePayload) => {
+            return {
+              from: item.selected_date_from,
+              to: item.selected_date_to,
+            };
+          })[0];
 
-				const response = await this.http_book.bookCottage(formData);
+        // User details
+        const userDetails = { ...this.bookForm.value };
 
-				this.snackBar._showSnack(response.message, "success");
+        // Payment details
+        const paymentDetails = { ...this.paymentForm.value, images: undefined };
 
-				stepper.next();
+        // Extracting payment method from previous object then adding it to paymentDetails object
+        paymentDetails['payment_type'] = [...this.dataCottageBook].find(
+          (item: IBookAndCottagePayload) =>
+            'payment_type' in item && item['payment_type']
+        )?.payment_type;
 
-			} catch (err) {
-				
-				const error = ErrorResponse(err);
-				this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
-			}
-			
-		}
-	}
+        // Other details, comment, etc.
+        const otherDetails =
+          'comment' in userDetails && userDetails['comment']
+            ? { comment: userDetails.comment }
+            : {};
 
-	cancelCottage(element: IBookAndCottagePayload) {
-		this.store_method.deleteCottage(element.id);
-		this.snackBar._showSnack("Cottage Successfully cancelled!", "success");
-	}
+        // Receipt attachment
+        const receipt: File =
+          this.paymentForm.value && this.paymentForm.value['images']
+            ? this.paymentForm.value['images']
+            : null;
 
-	previousStepper(stepper: MatStepper): void {
-		this.isEditable = true;
-		stepper.previous();
-	}
+        // Final cleanup
+        if ('comment' in userDetails) {
+          delete userDetails['comment'];
+        }
 
-	
+        if ('images' in paymentDetails) {
+          delete paymentDetails['images'];
+        }
+
+        const payload = {
+          cottages: [...selectedCottages],
+          dates: { ...selectedDates },
+          user: { ...userDetails },
+          payment: { ...paymentDetails },
+          other: { ...otherDetails },
+          type: 'online',
+          userid: !this.user ? null : this.user.id,
+        };
+
+        for (let item of Object.keys(payload)) {
+          let props: TProps = item as TProps;
+
+          const value: string = payload[props] as unknown as string;
+
+          formData.append(props, JSON.stringify(value));
+        }
+
+        formData.append('images', receipt);
+
+        const response = await this.http_book.bookCottage(formData);
+
+        this.snackBar._showSnack(response.message, 'success');
+
+        stepper.next();
+
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
+      } catch (err) {
+        const error = ErrorResponse(err);
+        this.snackBar._showSnack(`${error.myError} ${error.status}`, 'error');
+      }
+    }
+  }
+
+  cancelCottage(element: IBookAndCottagePayload) {
+    this.store_method.deleteCottage(element.id);
+    this.snackBar._showSnack('Cottage Successfully cancelled!', 'success');
+  }
+
+  previousStepper(stepper: MatStepper): void {
+    this.isEditable = true;
+    stepper.previous();
+  }
 }
 
 const totalAmount = (data: IBookAndCottagePayload[]): number => {
-	let total = 0;
-	data.forEach((x) => (total += x.price));
+  let total = 0;
+  data.forEach((x) => (total += x.price));
 
-	return total
-}
+  return total;
+};

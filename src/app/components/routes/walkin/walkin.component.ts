@@ -11,7 +11,11 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/model/appState.model';
 import { EMage } from '../../../globals/enums/image';
 import Method from '../../../utils/method';
-import { IBookAndCottagePayload, IBookingPayload, TProps } from '../../../globals/interface/book';
+import {
+  IBookAndCottagePayload,
+  IBookingPayload,
+  TProps,
+} from '../../../globals/interface/book';
 import { MatStepper } from '@angular/material/stepper';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BookService } from '../../../services/book.service';
@@ -19,15 +23,14 @@ import { BookService } from '../../../services/book.service';
 @Component({
   selector: 'app-walkin',
   templateUrl: './walkin.component.html',
-  styleUrls: ['./walkin.component.css']
+  styleUrls: ['./walkin.component.css'],
 })
 export class WalkinComponent implements OnInit {
-
   isEditable = false;
   reservationForm!: FormGroup;
   userForm!: FormGroup;
 
-	cottageType: string[] = [ECOTTAGE_TYPE.FLOATING, ECOTTAGE_TYPE.NON_FLOATING];
+  cottageType: string[] = [ECOTTAGE_TYPE.FLOATING, ECOTTAGE_TYPE.NON_FLOATING];
   base64 = EMage.BASE64_INITIAL;
   dataCottage!: ICottage[];
 
@@ -36,23 +39,21 @@ export class WalkinComponent implements OnInit {
 
   selectedCottage!: ICottage;
 
-  btnName="Add Cottage";
+  btnName = 'Add Cottage';
 
   total: number = 0;
   totalDays: number = 0;
 
-
   constructor(
-    private fb: FormBuilder, 
-    private snackBar: SnackBarService, 
+    private fb: FormBuilder,
+    private snackBar: SnackBarService,
     private http_cottage: CottageMasterService,
     private common: CommonServiceService,
     private store_method: StoreService,
     private store: Store<AppState>,
     private method: Method,
-    private http_book: BookService,
-    
-    ) {
+    private http_book: BookService
+  ) {
     this.reservationForm = fb.group({
       selected_date_from: [null, Validators.required],
       selected_date_to: [null, Validators.required],
@@ -65,7 +66,7 @@ export class WalkinComponent implements OnInit {
       is_available: null,
       capacity: null,
       description: null,
-      payment_type: "cash",
+      payment_type: 'cash',
     });
 
     this.userForm = fb.group({
@@ -76,17 +77,15 @@ export class WalkinComponent implements OnInit {
       address: [null, Validators.required],
       comment: null,
       password: null,
-      roles: JSON.stringify(["customer"])
+      roles: JSON.stringify(['customer']),
     });
-
-   
   }
 
   get selected_date_from() {
     return this.reservationForm.get('selected_date_from');
   }
 
-  get  selected_date_to() {
+  get selected_date_to() {
     return this.reservationForm.get('selected_date_to');
   }
 
@@ -99,37 +98,33 @@ export class WalkinComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getCottage(); 
+    this.getCottage();
     this.getCottageBook();
-    
   }
 
   getCottageBook() {
-     this.store.select("cottage").subscribe((data): void => {
+    this.store.select('cottage').subscribe((data): void => {
       try {
         this.cottageAddedList = Object.values(data);
         this.total = totalAmount(this.cottageAddedList);
-        
 
         this.reservationForm.patchValue({
           type: this.cottageAddedList[0].type,
           cottage_number: this.cottageAddedList[0].cottage_number,
-          isCottage: this.cottageAddedList[0].isCottage
+          isCottage: this.cottageAddedList[0].isCottage,
         });
 
         this.selected_date_from?.disable();
         this.selected_date_to?.disable();
-         
-        this.totalDays = this.common.diff_minutes(new Date(this.cottageAddedList[0].selected_date_to), new Date(this.cottageAddedList[0].selected_date_from));
 
-        
+        this.totalDays = this.common.diff_minutes(
+          new Date(this.cottageAddedList[0].selected_date_to),
+          new Date(this.cottageAddedList[0].selected_date_from)
+        );
       } catch (err) {
         return undefined;
       }
     });
-
-   
-    
   }
 
   async getCottage(): Promise<void> {
@@ -138,18 +133,20 @@ export class WalkinComponent implements OnInit {
       this.dataCottage = response.data as ICottage[];
     } catch (err) {
       const error = ErrorResponse(err);
-      this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
+      this.snackBar._showSnack(`${error.myError} ${error.status}`, 'error');
     }
   }
 
   changeCottageType(event: string) {
-    const data = [...this.dataCottage].filter((x) => (x.type === event)); 
-  
+    const data = [...this.dataCottage].filter((x) => x.type === event);
+
     this.cottageList = data;
   }
 
   changeCottageNumber(event: string) {
-    const data = [...this.cottageList].filter((x) => (x.cottage_number === event));
+    const data = [...this.cottageList].filter(
+      (x) => x.cottage_number === event
+    );
     this.selectedCottage = data[0];
   }
 
@@ -157,35 +154,35 @@ export class WalkinComponent implements OnInit {
     /**
      * step 1 patchvalue of is cottage to make sure the user click the button
      */
-    this.reservationForm.patchValue({isCottage: true});
+    this.reservationForm.patchValue({ isCottage: true });
 
-    if(this.reservationForm.invalid) {
+    if (this.reservationForm.invalid) {
       this.reservationForm.markAllAsTouched();
     } else {
-
-      if(this.btnName === "Add Cottage") {
-
-
+      if (this.btnName === 'Add Cottage') {
         const data = [this.reservationForm.value] as IBookAndCottagePayload[];
 
         const newArr = data.map((x) => {
           x.id = this.selectedCottage.id as number;
           x.images = this.selectedCottage.images;
-          x.price = this.selectedCottage.price,
-          x.is_available = this.selectedCottage.is_available;
+          (x.price = this.selectedCottage.price),
+            (x.is_available = this.selectedCottage.is_available);
           x.capacity = this.selectedCottage.capacity;
           x.description = this.selectedCottage.description;
-          x.selected_date_from = new Date(this.reservationForm.get("selected_date_from")?.value);
-          x.selected_date_to = new Date(this.reservationForm.get('selected_date_to')?.value);
+          x.selected_date_from = new Date(
+            this.reservationForm.get('selected_date_from')?.value
+          );
+          x.selected_date_to = new Date(
+            this.reservationForm.get('selected_date_to')?.value
+          );
 
           return x;
         });
 
         this.store_method.addToCottage(newArr[0]);
 
-        this.snackBar._showSnack("Cottage Successfully added", "success");
+        this.snackBar._showSnack('Cottage Successfully added', 'success');
         this.ngOnInit();
-
       } else {
         location.reload();
       }
@@ -194,17 +191,14 @@ export class WalkinComponent implements OnInit {
 
   deleteCottage(id: number) {
     this.store_method.deleteCottage(id);
-    this.snackBar._showSnack("Cottage Successfully deleted!", "success");
+    this.snackBar._showSnack('Cottage Successfully deleted!', 'success');
 
-    if(this.cottageAddedList.length === 0) {
-
-      this.reservationForm.patchValue({isCottage: null})
-    
+    if (this.cottageAddedList.length === 0) {
+      this.reservationForm.patchValue({ isCottage: null });
     } else {
-      
       this.selected_date_from?.patchValue(
         new Date(this.cottageAddedList[0].selected_date_from)
-      )
+      );
 
       this.selected_date_to?.patchValue(
         new Date(this.cottageAddedList[0].selected_date_to)
@@ -215,92 +209,97 @@ export class WalkinComponent implements OnInit {
 
   async submitBook(stepper: MatStepper): Promise<void> {
     try {
-      if(this.userForm.invalid) {
+      if (this.userForm.invalid) {
         this.userForm.markAllAsTouched();
       } else {
-
         const psswrd = await this.method.customSwal({
-					title: 'Create your own password',
-					input: 'text',
-					inputLabel: "Enter your password",
-					inputPlaceholder: ""
-				});
-				
-				this.userForm.get("password")?.patchValue(psswrd);
+          title: 'Create your own password',
+          input: 'text',
+          inputLabel: 'Enter your password',
+          inputPlaceholder: '',
+        });
 
-        const cottages = this.cottageAddedList.map((x) => (x.id));
+        this.userForm.get('password')?.patchValue(psswrd);
+
+        const cottages = this.cottageAddedList.map((x) => x.id);
 
         const list = this.cottageAddedList[0];
 
-        const dates = {from: list.selected_date_from, to: list.selected_date_to};
+        const dates = {
+          from: list.selected_date_from,
+          to: list.selected_date_to,
+        };
 
-        const user = {...this.userForm.value};
+        const user = { ...this.userForm.value };
 
-        const other = "comment" in user && user["comment"] 
-        ? {comment: user.comment } 
-        : {}; 
+        const other =
+          'comment' in user && user['comment'] ? { comment: user.comment } : {};
 
-        if("comment" in user) {
-          delete user["comment"]
+        if ('comment' in user) {
+          delete user['comment'];
         }
 
-        const type: string = "walkin";
+        const type: string = 'walkin';
 
         const payment = {
           amount: this.total * this.totalDays,
-          payment_type: "cash"
-        }
-        
+          payment_type: 'cash',
+        };
+
         const payload = {
           cottages,
           dates,
           other,
           user,
           payment,
-          type
+          type,
         };
 
         const formData = new FormData();
 
         for (const item of Object.keys(payload)) {
-          let props: TProps = item as TProps
-          const value: string = payload[props] as unknown as string
+          let props: TProps = item as TProps;
+          const value: string = payload[props] as unknown as string;
           formData.append(props, JSON.stringify(value));
         }
-        
+
         const response = await this.http_book.bookCottage(formData);
 
-        this.snackBar._showSnack(response.message, "success");
+        this.snackBar._showSnack(response.message, 'success');
 
         this.cottageAddedList.length = 0;
 
         stepper.next();
+
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
       }
-    } catch (Err) { 
+    } catch (Err) {
       const error = ErrorResponse(Err);
-      this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
-    } 
+      this.snackBar._showSnack(`${error.myError} ${error.status}`, 'error');
+    }
   }
 
   nextStepper(stepper: MatStepper) {
     try {
-      if(!this.reservationForm.get("isCottage")?.value) throw new HttpErrorResponse({
-        error: "Please select cottage first",
-        status: 500
-      });
+      if (!this.reservationForm.get('isCottage')?.value)
+        throw new HttpErrorResponse({
+          error: 'Please select cottage first',
+          status: 500,
+        });
 
       stepper.next();
     } catch (err) {
       const error = ErrorResponse(err);
-      this.snackBar._showSnack(`${error.myError} ${error.status}`, "error");
+      this.snackBar._showSnack(`${error.myError} ${error.status}`, 'error');
     }
   }
-
 }
 
 const totalAmount = (data: IBookAndCottagePayload[]): number => {
-	let total = 0;
-	data.forEach((x) => (total += x.price));
+  let total = 0;
+  data.forEach((x) => (total += x.price));
 
-	return total
-}
+  return total;
+};

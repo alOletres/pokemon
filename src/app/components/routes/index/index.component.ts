@@ -8,6 +8,7 @@ import { Moment } from 'moment';
 import { ILabelFormat, ILabelName } from 'src/app/globals/interface/default';
 import { total_income } from '../../../utils/method';
 import { IUser } from 'src/app/globals/interface';
+import { log } from 'console';
 
 @Component({
   selector: 'app-index',
@@ -112,6 +113,7 @@ export class IndexComponent implements OnInit {
       this.data_reports = [...data].filter(
         (values) => values.status === 'approved'
       );
+
       this.total_income = total_income([...this.data_reports]);
     } catch (err) {
       throw err;
@@ -200,35 +202,29 @@ const calculatePeakSeason = ({
    */
 
   const constantValue: number =
-    date_format === 'YYYY' ? 100 : date_format === 'MMM YYYY' ? 10 : 5;
+    date_format === 'YYYY' ? 500 : date_format === 'MMM YYYY' ? 300 : 150;
 
   const peakSeasonArray: number[] = [];
-  const leanSeasonArray: number[] = [];
 
   label.map((lbl) => {
-    const result = payload.filter(
-      (value) => moment(value.createdAt).format(date_format) === lbl
-    );
+    const result = [...payload].filter((value) => {
+      const compareDate = moment(value.selected_date_from).format(date_format);
+
+      return compareDate === lbl;
+    });
 
     /**
-     * if equal or below 30 is lean season
+     * constant value greater than result or equal is peakseason
      */
 
-    if (result.length <= constantValue) {
-      // leanSeasonArray.push(result.length);
-      peakSeasonArray.push(0);
-    } else {
-      /**
-       * else peak season
-       */
-
+    if (result.length >= constantValue) {
       peakSeasonArray.push(result.length);
+    } else {
+      peakSeasonArray.push(0);
     }
   });
 
-  console.log(peakSeasonArray);
-
-  return peakSeasonArray;
+  return [...peakSeasonArray];
 };
 
 const calculateLeanSeason = ({
@@ -243,14 +239,13 @@ const calculateLeanSeason = ({
    */
 
   const constantValue: number =
-    date_format === 'YYYY' ? 100 : date_format === 'MMM YYYY' ? 10 : 5;
+    date_format === 'YYYY' ? 500 : date_format === 'MMM YYYY' ? 300 : 150;
 
-  const peakSeasonArray: number[] = [];
   const leanSeasonArray: number[] = [];
 
   label.map((lbl) => {
     const result = payload.filter(
-      (value) => moment(value.createdAt).format(date_format) === lbl
+      (value) => moment(value.selected_date_from).format(date_format) === lbl
     );
 
     /**
@@ -268,6 +263,8 @@ const calculateLeanSeason = ({
     }
   });
 
+  console.log(leanSeasonArray);
+
   return leanSeasonArray;
 };
 
@@ -277,29 +274,26 @@ const calculateDataSets = ({
   status,
   date_format,
 }: ICalculateDataSets): number[] => {
-  let total: number = 0;
-  const total_handler: number[] = [];
-
-  label.map((lbl) => {
+  const totalHolder = label.map((lbl) => {
+    let total: number = 0;
+    const total_handler: number[] = [];
     const result = payload
-      .filter(
-        (values) =>
-          moment(values.createdAt).format(date_format) === lbl &&
+      .filter((values) => {
+        return (
+          moment(values.selected_date_from).format(date_format) === lbl &&
           values.type === status
-      )
+        );
+      })
       .map((x) => {
         total += x.amount;
         return total;
       });
 
-    if (result.length === 0) {
-      total_handler.push(0);
-    } else {
-      total_handler.push(...result);
-    }
+    if (result.length !== 0) return total_handler.push(...result);
+    else return total_handler.push(0);
   });
 
-  return total_handler;
+  return totalHolder;
 };
 
 const calculateLabel = (labelName: ILabelName) => {
