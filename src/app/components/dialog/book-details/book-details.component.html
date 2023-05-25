@@ -210,7 +210,7 @@
 			</button> -->
     </div>
 
-    <div *ngIf="booleanRejected">
+    <div *ngIf="booleanRejected && user_role !== 'customer'">
       <button
         mat-raised-button
         class="bg-white text-orange-600"

@@ -32,6 +32,7 @@ export class ReservationDateComponent implements OnInit {
   data_booked!: IBook[];
   user!: IUser;
   data_book_list: (IBook & IUser & IPayment)[] = [];
+  min_date = new Date();
 
   constructor(
     public dialogRef: MatDialogRef<ReservationDateComponent>,
@@ -97,6 +98,36 @@ export class ReservationDateComponent implements OnInit {
     Promise.resolve().then(() => this.getBook());
   }
 
+  dateFilter: (date: Date | null) => boolean = (date: Date | null) => {
+    if (!date) {
+      return false;
+    }
+
+    const data = [...this.data_book_list].map((value) => {
+      if (value.cottages && typeof value.cottages === 'string') {
+        value.cottages = JSON.parse(value.cottages);
+      }
+      return value;
+    });
+
+    const book_list = data.filter((value) => {
+      let isTrue: boolean = false;
+      if (value.cottages && typeof value.cottages !== 'string') {
+        isTrue = value.cottages.some((value) => value === this.data.id);
+      }
+      return isTrue;
+    });
+
+    const time = date.getTime();
+    return ![...book_list].find(
+      (value) =>
+        new Date(value.selected_date_from).getTime() === time ||
+        new Date(value.selected_date_to).getTime() === time ||
+        (time >= new Date(value.selected_date_from).getTime() &&
+          time <= new Date(value.selected_date_to).getTime())
+    );
+  };
+
   async getBook() {
     try {
       const response = await this.http_book.getBook();
@@ -121,79 +152,22 @@ export class ReservationDateComponent implements OnInit {
       this.dateForm.markAllAsTouched();
     } else {
       this.dialogRef.close();
-      const isExist = this.checkAvailableCottage();
+      const data = [this.data];
 
-      if (isExist) {
-        const data = [this.data];
-
-        const newArr = data.map((x) => {
-          x.payment_type = 'gcash';
-          (x.selected_date_from = this.selected_date_from?.value),
-            (x.selected_date_to = this.selected_date_to?.value);
-          return x;
-        });
-
-        this.store_method.addToCottage(newArr[0]);
-
-        this.snackBar._showSnack(
-          'Cottage Successfully Added temporarily!',
-          'success'
-        );
-        this.router.navigate(['/book']);
-      } else {
-        this.snackBar._showSnack(
-          'This cottage is already taken in the same date!',
-          'error'
-        );
-      }
-    }
-  }
-
-  checkAvailableCottage() {
-    const frontFrom = moment(
-      this.dateForm.get('selected_date_from')?.value
-    ).format('YYYY-MM-DD');
-    const frontTo = moment(this.dateForm.get('selected_date_to')?.value).format(
-      'YYYY-MM-DD'
-    );
-
-    const cottagesListDb: number[] = [];
-
-    const checkCottages = [...this.data_book_list]
-      .filter((value) => {
-        const dbfrom = moment(value.selected_date_from).format('YYYY-MM-DD');
-        const dbto = moment(value.selected_date_to).format('YYYY-MM-DD');
-
-        const condition =
-          frontFrom === dbfrom ||
-          frontFrom === dbto ||
-          frontTo === dbfrom ||
-          frontTo === dbfrom ||
-          frontTo === dbto;
-
-        return condition;
-      })
-      .map((value) => value.cottages);
-
-    if (checkCottages && checkCottages.length) {
-      const distractedCottages = checkCottages.map((value) => {
-        if (value && typeof value === 'string') {
-          value = JSON.parse(value);
-        }
-        return value;
+      const newArr = data.map((x) => {
+        x.payment_type = 'gcash';
+        (x.selected_date_from = this.selected_date_from?.value),
+          (x.selected_date_to = this.selected_date_to?.value);
+        return x;
       });
-      const array = mergeArray(distractedCottages);
 
-      cottagesListDb.push(...array);
-    }
+      this.store_method.addToCottage(newArr[0]);
 
-    if (cottagesListDb && cottagesListDb.length) {
-      const cottages = cottagesListDb.find((value) => value === this.data.id);
-
-      const isExist = cottages ? false : true;
-      return isExist;
-    } else {
-      return true;
+      this.snackBar._showSnack(
+        'Cottage Successfully Added temporarily!',
+        'success'
+      );
+      this.router.navigate(['/book']);
     }
   }
 }

@@ -8,7 +8,6 @@ import { Moment } from 'moment';
 import { ILabelFormat, ILabelName } from 'src/app/globals/interface/default';
 import { total_income } from '../../../utils/method';
 import { IUser } from 'src/app/globals/interface';
-import { log } from 'console';
 
 @Component({
   selector: 'app-index',
@@ -89,7 +88,7 @@ export class IndexComponent implements OnInit {
     },
   };
   public barChartLabelsTrend: string[] = []; //'2006', '2007', '2008', '2009', '2010', '2011', '2012';
-  public barChartTypeTrend: ChartType = 'bar';
+  public barChartTypeTrend: ChartType = 'pie';
 
   public barChartDataTrend: ChartData<'bar'> = {
     datasets: [],
@@ -98,18 +97,50 @@ export class IndexComponent implements OnInit {
   public label_default_trend: ILabelName = 'year';
   public data_trend!: string;
 
+  // Pie
+  public pieChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+
+      // datalabels: {
+
+      //   formatter: (value: any, ctx: any) => {
+      //     if (ctx.chart.data.labels) {
+      //       return ctx.chart.data.labels[ctx.dataIndex];
+      //     }
+      //   },
+      // } ,
+    },
+  };
+
+  public pieChartData: ChartData<'pie', number[], string | string[]> = {
+    labels: [],
+    datasets: [],
+  };
+  public pieChartType: ChartType = 'pie';
+
+  data_book_list: (IUser & IBook & IPayment)[] = [];
+
   constructor(private http_book: BookService) {}
 
   async ngOnInit(): Promise<void> {
     await this.getReports();
-    this.graphLabelIncome();
-    this.graphLabelAnalysis();
+    await Promise.resolve().then(() => {
+      this.graphLabelIncome();
+      this.graphLabelAnalysis();
+      this.rejectGraphData();
+    });
   }
 
   async getReports() {
     try {
       const response = await this.http_book.getReports();
       const data = response.data as (IUser & IBook & IPayment)[];
+      this.data_book_list = data;
       this.data_reports = [...data].filter(
         (values) => values.status === 'approved'
       );
@@ -177,6 +208,25 @@ export class IndexComponent implements OnInit {
             date_format,
           }),
           label: 'Walkin',
+        },
+      ],
+    };
+  }
+
+  /**
+   * reject
+   */
+
+  rejectGraphData() {
+    const data_result = [...this.data_book_list].filter(
+      (value) => value.status === 'rejected'
+    );
+
+    this.pieChartData = {
+      labels: ['Reject'],
+      datasets: [
+        {
+          data: [data_result.length],
         },
       ],
     };
@@ -262,8 +312,6 @@ const calculateLeanSeason = ({
       leanSeasonArray.push(0);
     }
   });
-
-  console.log(leanSeasonArray);
 
   return leanSeasonArray;
 };

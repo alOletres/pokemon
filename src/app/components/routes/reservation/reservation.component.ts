@@ -42,23 +42,28 @@ export class ReservationComponent implements OnInit {
       const response = await this.http_book.getBook();
       const data = response.data as IBook[];
 
+      const source_data = data.map((value) => {
+        value.complete_name = `${value.firstname} ${value.lastname}`;
+        return value;
+      });
+
       /** al booking "pending" | "approved" | "rejected" | "voided" */
-      this.data_allSource.data = data;
+      this.data_allSource.data = source_data;
 
       /** pending booking */
-      const pending = [...data].filter((x) => x.status === 'pending');
+      const pending = [...source_data].filter((x) => x.status === 'pending');
       this.data_pendingSource.data = pending;
 
       /** approved booking */
-      const approved = [...data].filter((x) => x.status === 'approved');
+      const approved = [...source_data].filter((x) => x.status === 'approved');
       this.data_approveSource.data = approved;
 
       /** rejected booking */
-      const rejected = [...data].filter((x) => x.status === 'rejected');
+      const rejected = [...source_data].filter((x) => x.status === 'rejected');
       this.data_rejectedSource.data = rejected;
 
       /** voided */
-      const voided = [...data].filter((x) => x.status === 'voided');
+      const voided = [...source_data].filter((x) => x.status === 'voided');
       this.data_voidedSource.data = voided;
     } catch (err) {
       throw err;

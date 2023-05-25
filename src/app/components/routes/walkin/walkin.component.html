@@ -22,6 +22,7 @@
                       placeholder="Start date"
                       readonly="true"
                       formControlName="selected_date_from"
+                      (dateChange)="startDateChange($event)"
                     />
                     <input
                       matInput
@@ -29,6 +30,7 @@
                       placeholder="End date"
                       readonly="true"
                       formControlName="selected_date_to"
+                      (dateChange)="endDateChange($event)"
                     />
                   </mat-date-range-input>
                   <mat-datepicker-toggle matSuffix [for]="picker">
@@ -42,6 +44,7 @@
                   >
                 </mat-form-field>
 
+                <!-- (ngModelChange)="changeCottageType($event)" -->
                 <mat-form-field appearance="outline" class="w-full">
                   <mat-label>Select type cottage</mat-label>
                   <mat-select

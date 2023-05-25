@@ -21,6 +21,9 @@ export interface IBook {
   status: EBookingStatuses;
   payment_record: number;
   number_of_days?: number;
+  firstname: string;
+  lastname: string;
+  complete_name?: string;
 }
 // Types
 export interface IDates {

@@ -35,9 +35,9 @@ export class WalkinComponent implements OnInit {
   userForm!: FormGroup;
   cottageType: string[] = [ECOTTAGE_TYPE.FLOATING, ECOTTAGE_TYPE.NON_FLOATING];
   base64 = EMage.BASE64_INITIAL;
-  dataCottage!: ICottage[];
-  cottageAddedList!: IBookAndCottagePayload[];
-  cottageList!: ICottage[];
+  dataCottage: ICottage[] = [];
+  cottageAddedList: IBookAndCottagePayload[] = [];
+  cottageList: ICottage[] = [];
   selectedCottage!: ICottage;
   btnName = 'Add Cottage';
   total: number = 0;
@@ -146,20 +146,28 @@ export class WalkinComponent implements OnInit {
     this.data_book_list = data;
   }
 
-  changeCottageType(event: string) {
+  startDateChange(event: any) {
+    this.type?.patchValue(null);
+  }
+
+  endDateChange(event: any) {
+    this.type?.patchValue(null);
+  }
+  changeCottageType(event: any) {
     /**
      * @trap for available cottage only in specific date
      */
+
     const cottagesList = [...this.dataCottage].filter((x) => x.type === event);
     const cottagesListDb: number[] = [];
     /**
      * selected date
      */
 
-    const frontFrom = moment(
+    const selected_date_from = moment(
       this.reservationForm.get('selected_date_from')?.value
     ).format('YYYY-MM-DD');
-    const frontTo = moment(
+    const selected_date_to = moment(
       this.reservationForm.get('selected_date_to')?.value
     ).format('YYYY-MM-DD');
 
@@ -169,15 +177,18 @@ export class WalkinComponent implements OnInit {
 
     const checkCottages = [...this.data_book_list]
       .filter((value) => {
-        const dbfrom = moment(value.selected_date_from).format('YYYY-MM-DD');
-        const dbto = moment(value.selected_date_to).format('YYYY-MM-DD');
+        const selected_from_date_db = moment(value.selected_date_from).format(
+          'YYYY-MM-DD'
+        );
+        const selected_to_date_db = moment(value.selected_date_to).format(
+          'YYYY-MM-DD'
+        );
 
         const condition =
-          frontFrom === dbfrom ||
-          frontFrom === dbto ||
-          frontTo === dbfrom ||
-          frontTo === dbfrom ||
-          frontTo === dbto;
+          (selected_from_date_db >= selected_date_from &&
+            selected_from_date_db <= selected_date_to) ||
+          (selected_to_date_db >= selected_date_from &&
+            selected_to_date_db <= selected_date_to);
 
         return condition;
       })

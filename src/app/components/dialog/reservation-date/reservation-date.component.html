@@ -20,7 +20,11 @@
     >
       <mat-label>Select Available Date</mat-label>
       <!-- [min]="minDate" -->
-      <mat-date-range-input [rangePicker]="picker">
+      <mat-date-range-input
+        [rangePicker]="picker"
+        [min]="min_date"
+        [dateFilter]="dateFilter"
+      >
         <input
           matInput
           formControlName="selected_date_from"
@@ -47,27 +51,6 @@
       </mat-error>
     </mat-form-field>
   </form>
-  <!-- <table class="w-full text-xs">
-		<thead >
-			<tr class="uppercase text-gray-500 text-left">
-				<th class="p-2">cottage type</th>
-				<th class="p-2">cottage no.</th>
-				<th class="p-2">Booked date</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr class="text-xs">
-				<td class="p-2">Floating cottage</td>
-				<td class="p-2">COT-0001</td>
-				<td class="p-2">09/27/2022 - 09/30/2022</td>
-			</tr>
-			<tr class="text-xs">
-				<td class="p-2">Floating cottage</td>
-				<td class="p-2">COT-0001</td>
-				<td class="p-2">10/27/2022 - 10/30/2022</td>
-			</tr>
-		</tbody>
-	</table> -->
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-dialog-close mat-button>Close</button>
@@ -78,11 +61,4 @@
   >
     Reserve Cottage
   </button>
-  <!-- <button
-		(click)="fillOutInfo()" 
-		mat-raised-button 
-		class="bg-blue-700 text-white"
-		>
-		Fill out information
-	</button> -->
 </mat-dialog-actions>

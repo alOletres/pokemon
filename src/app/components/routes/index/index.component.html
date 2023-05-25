@@ -1,108 +1,71 @@
 <mat-toolbar class="page-header text-gray-400" role="heading">
-	<h1>Dashboard</h1>
+  <h1>Dashboard</h1>
 </mat-toolbar>
 
-<div class="flex justify-between">
+<div>
+  <div class="flex justify-between">
+    <div class="w-1/2 p-4 mr-2 ml-2 mat-elevation-z8">
+      <app-chart
+        chartName="Trend Analysis"
+        [barChartData]="barChartDataTrend"
+        [barChartOptions]="barChartOptionsTrend"
+        [barChartType]="barChartTypeTrend"
+        [groupButton]="false"
+      >
+      </app-chart>
 
-	<div class="w-1/2 p-4 mr-2 ml-2 mat-elevation-z8">
-		<!-- <div class="w-full">
-			asdf
-		</div> -->
-		<!-- design here -->
-		<!-- <div class="grid grid-cols-2 gap-2">
-			<div 
-				class="
-				bg-white shadow-lg w-full text-sm 
-				pointer-events-auto bg-clip-padding rounded-lg block mb-3">
-					<div
-						class="bg-white flex justify-between items-center py-2 px-3 bg-clip-padding border-b border-blue-400 rounded-t-lg">
-						<p class="font-bold text-blue-600 flex items-center">
-							<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="info-circle"
-								class="w-4 h-4 mr-2 fill-current" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-								<path fill="currentColor"
-									d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z">
-								</path>
-							</svg>
-							Current date
-						</p>
-						<div class="flex items-center">
-							<p class="text-blue-600 opacity-90 text-lg font-semibold"></p>
-							<button type="button"
-								class="btn-close btn-close-white box-content w-4 h-4 ml-2 text-blue-600 border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-blue-600 hover:opacity-75 hover:no-underline"
-								data-mdb-dismiss="toast" aria-label="Close"></button>
-						</div>
-					</div>
-					<div class="p-3 bg-white rounded-b-lg break-words flex justify-end text-blue-600">{{current_date | date: 'MM-dd-YYY'}}</div>
-				</div>
+      <div class="text-xs flex justify-center">
+        <mat-button-toggle-group
+          (mwlClick)="graphLabelAnalysis()"
+          [(ngModel)]="label_default_trend"
+        >
+          <mat-button-toggle
+            class="text-xs"
+            *ngFor="let label of graph_lbl_trend"
+            [value]="label"
+          >
+            <span class="capitalize">{{ label }}</span>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
 
-				<div 
-					class="
-					bg-white shadow-lg w-full text-sm 
-					pointer-events-auto bg-clip-padding rounded-lg block mb-3">
-						<div
-							class="bg-white flex justify-between items-center py-2 px-3 bg-clip-padding border-b border-red-400 rounded-t-lg">
-							<p class="font-bold text-red-600 flex items-center">
-								<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="info-circle"
-									class="w-4 h-4 mr-2 fill-current" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-									<path fill="currentColor"
-										d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z">
-									</path>
-								</svg>
-								Running income
-							</p>
-							<div class="flex items-center">
-								<p class="text-red-600 opacity-90 text-lg font-semibold"></p>
-								<button type="button"
-									class="btn-close btn-close-white box-content w-4 h-4 ml-2 text-red-600 border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-red-600 hover:opacity-75 hover:no-underline"
-									data-mdb-dismiss="toast" aria-label="Close"></button>
-							</div>
-						</div>
-						<div class="p-3 bg-white rounded-b-lg break-words flex justify-end text-red-600">{{total_income}}</div>
-					</div>
-		</div> -->
-		<app-chart
-			chartName="Trend Analysis"
-			[barChartData]="barChartDataTrend"
-			[barChartOptions]="barChartOptionsTrend"
-			[barChartType]="barChartTypeTrend"
-			>
-		</app-chart>
+    <div class="w-1/2 overflow-hidden mat-elevation-z8 p-4 mr-2 h-fit">
+      <app-chart
+        [chartName]="'Income Statistics'"
+        [barChartData]="barChartData"
+        [barChartOptions]="barChartOptions"
+        [barChartType]="barChartType"
+      >
+      </app-chart>
 
-		<div class="text-xs flex justify-center">
-			<mat-button-toggle-group (mwlClick)="graphLabelAnalysis()" [(ngModel)]="label_default_trend">
-				<mat-button-toggle 
-					class="text-xs" 
-					*ngFor="let label of graph_lbl_trend" 
-					[value]="label">
-					<span class="capitalize">{{label}}</span>
-				</mat-button-toggle>
-			</mat-button-toggle-group>
-		</div>
-	</div>
-	
-	<div class="w-1/2 overflow-hidden mat-elevation-z8 p-4 mr-2">
-
-		<app-chart
-			[chartName]="'Income Statistics'"
-			[barChartData]="barChartData"
-			[barChartOptions]="barChartOptions"
-			[barChartType]="barChartType"
-			>
-		</app-chart>
-
-		<div class="text-xs flex justify-center">
-			<mat-button-toggle-group (mwlClick)="graphLabelIncome()" [(ngModel)]="graph_lbl_name">
-				<mat-button-toggle 
-					class="text-xs" 
-					*ngFor="let label of graph_lbl_lst" 
-					[value]="label">
-					<span class="capitalize">{{label}}</span>
-				</mat-button-toggle>
-			</mat-button-toggle-group>
-		</div>
-	</div>
+      <div class="text-xs flex justify-center">
+        <mat-button-toggle-group
+          (mwlClick)="graphLabelIncome()"
+          [(ngModel)]="graph_lbl_name"
+        >
+          <mat-button-toggle
+            class="text-xs"
+            *ngFor="let label of graph_lbl_lst"
+            [value]="label"
+          >
+            <span class="capitalize">{{ label }}</span>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+  </div>
 </div>
 
-
-
-
+<div class="flex justify-start ml-2">
+  <div class="w-1/2 overflow-hidden mat-elevation-z8 p-4">
+    <canvas
+      baseChart
+      class="chart"
+      [data]="pieChartData"
+      [type]="pieChartType"
+      [options]="pieChartOptions"
+    >
+    </canvas>
+  </div>
+</div>
