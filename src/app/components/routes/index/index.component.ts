@@ -88,7 +88,7 @@ export class IndexComponent implements OnInit {
     },
   };
   public barChartLabelsTrend: string[] = []; //'2006', '2007', '2008', '2009', '2010', '2011', '2012';
-  public barChartTypeTrend: ChartType = 'pie';
+  public barChartTypeTrend: ChartType = 'bar';
 
   public barChartDataTrend: ChartData<'bar'> = {
     datasets: [],
@@ -117,11 +117,11 @@ export class IndexComponent implements OnInit {
     },
   };
 
-  public pieChartData: ChartData<'pie', number[], string | string[]> = {
+  public pieChartData: ChartData<'doughnut', number[], string | string[]> = {
     labels: [],
     datasets: [],
   };
-  public pieChartType: ChartType = 'pie';
+  public pieChartType: ChartType = 'doughnut';
 
   data_book_list: (IUser & IBook & IPayment)[] = [];
 
