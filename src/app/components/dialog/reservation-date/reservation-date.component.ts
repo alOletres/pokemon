@@ -17,8 +17,6 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/model/appState.model';
 import { IUser } from '../../../globals/interface/payload';
 import { BookService } from '../../../services/book.service';
-import * as moment from 'moment';
-import { mergeArray } from 'src/app/utils/method';
 
 @Component({
   selector: 'app-reservation-date',
@@ -103,12 +101,14 @@ export class ReservationDateComponent implements OnInit {
       return false;
     }
 
-    const data = [...this.data_book_list].map((value) => {
-      if (value.cottages && typeof value.cottages === 'string') {
-        value.cottages = JSON.parse(value.cottages);
-      }
-      return value;
-    });
+    const data = [...this.data_book_list]
+      .filter((value) => value.status === 'approved')
+      .map((value) => {
+        if (value.cottages && typeof value.cottages === 'string') {
+          value.cottages = JSON.parse(value.cottages);
+        }
+        return value;
+      });
 
     const book_list = data.filter((value) => {
       let isTrue: boolean = false;

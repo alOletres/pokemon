@@ -1,56 +1,64 @@
 <div class="p-4">
-	<div class="flex justify-between w-full" >
-		<div class="p-2 w-full">
-				<mat-form-field appearance="outline" class="text-xs w-full">
-					<mat-label>Search</mat-label>
-					<mat-icon matPrefix>search</mat-icon>
-					<input type="text" (keyup)="applyFilter($event)" matInput autocomplete="off">
-				</mat-form-field>
-		</div>
-	</div>
+  <div class="flex justify-between w-full">
+    <div class="p-2 w-full">
+      <mat-form-field appearance="outline" class="text-xs w-full">
+        <mat-label>Search</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          type="text"
+          (keyup)="applyFilter($event)"
+          matInput
+          autocomplete="off"
+        />
+      </mat-form-field>
+    </div>
+  </div>
 
-	<div class="">
-		<div class="grid grid-cols-3 gap-3" >
-			<mat-card *ngFor="let list of data | async">
-				<mat-card-header class="p-0">
-					<mat-card-title class="capitalize">{{list.type}}</mat-card-title>
-					<mat-card-subtitle>Capacity: {{list.capacity}}</mat-card-subtitle>
-				</mat-card-header>
+  <div class="">
+    <div class="grid grid-cols-3 gap-3">
+      <mat-card *ngFor="let list of data | async">
+        <mat-card-header class="p-0">
+          <mat-card-title class="capitalize"
+            >{{ list.cottage_number }} {{ list.type }}</mat-card-title
+          >
+          <mat-card-subtitle>Capacity: {{ list.capacity }}</mat-card-subtitle>
+        </mat-card-header>
 
-				<img 
-					mat-card-image 
-					[src]="base64 +', '+ list.images?.[0]" 
-					alt="Photo of a Shiba Inu"
-					class="w-full max-w-fit h-3/6"
-				/>
+        <img
+          mat-card-image
+          [src]="base64 +', '+ list.images?.[0]"
+          alt="Photo of a Shiba Inu"
+          class="w-full max-w-fit h-3/6"
+        />
 
-				<mat-card-content>
-					<div class="flex flex-col">
-						<div class="flex flex-col mt-1">
-							<p class="font-semibold leading-tight">Description: </p>
-							<p class="leading-tight font-thin text-xs pt-0.5 text-gray-500">{{list.description}}</p>
-						</div>
+        <mat-card-content>
+          <div class="flex flex-col">
+            <div class="flex flex-col mt-1">
+              <p class="font-semibold leading-tight">Description:</p>
+              <p class="leading-tight font-thin text-xs pt-0.5 text-gray-500">
+                {{ list.description }}
+              </p>
+            </div>
 
-						<div class="flex flex-col mt-3">
-							<p class="font-bold leading-tight">Price: </p>
-							<p class="leading-tight font-thin text-sm pt-0.5 text-gray-600">{{list.price | currency : "&#8369; " }} </p>
-						</div> 
-					</div>
+            <div class="flex flex-col mt-3">
+              <p class="font-bold leading-tight">Price:</p>
+              <p class="leading-tight font-thin text-sm pt-0.5 text-gray-600">
+                {{ list.price | currency : "&#8369; " }}
+              </p>
+            </div>
+          </div>
+        </mat-card-content>
 
-		
-				</mat-card-content>
-
-					<mat-card-actions>
-						<button
-							(click)="openDialog(list)"  
-							mat-raised-button 
-							class="w-full pb-20 bg-blue-700 capitalize text-white hover:bg-blue-800"
-							>
-							reserve cottage
-					</button>
-					</mat-card-actions>
-			</mat-card>
-		</div>
-		
-	</div>
+        <mat-card-actions>
+          <button
+            (click)="openDialog(list)"
+            mat-raised-button
+            class="w-full pb-20 bg-blue-700 capitalize text-white hover:bg-blue-800"
+          >
+            reserve cottage
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
 </div>

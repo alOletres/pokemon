@@ -174,8 +174,11 @@ export class WalkinComponent implements OnInit {
     /**
      * @check date and get the cottage number
      */
+    const approved_book = [...this.data_book_list].filter(
+      (value) => value.status === 'approved'
+    );
 
-    const checkCottages = [...this.data_book_list]
+    const checkCottages = [...approved_book]
       .filter((value) => {
         const selected_from_date_db = moment(value.selected_date_from).format(
           'YYYY-MM-DD'

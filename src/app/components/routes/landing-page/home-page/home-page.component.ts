@@ -58,19 +58,10 @@ export class HomePageComponent implements OnInit {
   async ngOnInit() {
     await Promise.resolve().then(() => {
       this.getCottage();
-      // this.getBook();
     });
   }
 
-  // async getBook() {
-  //   const response = await this.book.getBook();
-  //   const data = response.data as (IBook & IUser & IPayment)[];
-  //   this.data_book_list = data;
-  // }
-
   async applyFilter(event: Event) {
-    // await this.getCottage()
-
     this.changeDetectorRef.detectChanges();
 
     const filterValue = (event.target as HTMLInputElement).value;
