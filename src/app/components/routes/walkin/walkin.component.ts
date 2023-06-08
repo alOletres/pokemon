@@ -14,7 +14,6 @@ import Method, { mergeArray } from '../../../utils/method';
 import {
   IBook,
   IBookAndCottagePayload,
-  IBookingPayload,
   IPayment,
   TProps,
 } from '../../../globals/interface/book';
