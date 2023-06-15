@@ -21,7 +21,7 @@ export class ReservationComponent implements OnInit {
   data_pendingSource = new MatTableDataSource<IBook>([]);
   data_approveSource = new MatTableDataSource<IBook>([]);
   data_rejectedSource = new MatTableDataSource<IBook>([]);
-  data_voidedSource = new MatTableDataSource<IBook>([]);
+  data_cancelled = new MatTableDataSource<IBook>([]);
 
   data_user!: IUser[];
 
@@ -62,8 +62,10 @@ export class ReservationComponent implements OnInit {
       this.data_rejectedSource.data = rejected;
 
       /** voided */
-      const voided = [...source_data].filter((x) => x.status === 'voided');
-      this.data_voidedSource.data = voided;
+      const cancelled = [...source_data].filter(
+        (x) => x.status === 'cancelled'
+      );
+      this.data_cancelled.data = cancelled;
     } catch (err) {
       throw err;
     }

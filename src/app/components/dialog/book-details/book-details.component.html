@@ -77,11 +77,11 @@
         <p class="text-gray-600 text-sm p-2">Payment details...</p>
 
         <div>
-          <ng-container *ngFor="let payments of data_payments">
+          <ng-container>
             <div class="flex justify-center items-center">
               <div class="w-56 pr-2">
-                <div *ngIf="payments.account_name; else elseBlock">
-                  <img class="h-50 w-45" [src]="payments.receipt" alt="" />
+                <div *ngIf="data.account_name; else elseBlock">
+                  <img class="h-50 w-45" [src]="receipt" alt="" />
                 </div>
                 <ng-template #elseBlock>
                   <div
@@ -102,7 +102,7 @@
                       matInput
                       autocomplete="off"
                       readonly="true"
-                      [value]="payments.account_name"
+                      [value]="data.account_name"
                     />
                   </mat-form-field>
 
@@ -113,7 +113,7 @@
                       matInput
                       autocomplete="off"
                       readonly="true"
-                      [value]="payments.account_number"
+                      [value]="data.account_number"
                     />
                   </mat-form-field>
 
@@ -124,7 +124,7 @@
                       matInput
                       autocomplete="off"
                       readonly="true"
-                      [value]="payments.reference_number"
+                      [value]="data.reference_number"
                     />
                   </mat-form-field>
 
@@ -135,7 +135,7 @@
                       matInput
                       autocomplete="off"
                       readonly="true"
-                      [value]="payments.amount"
+                      [value]="data.amount"
                     />
                   </mat-form-field>
 
@@ -188,6 +188,26 @@
 
 <mat-dialog-actions align="end" class="space-x-1">
   <div class="pr-2">
+    <button
+      *ngIf="this.data.status === 'pending' && user_role === 'customer'"
+      mat-raised-button
+      class="bg-red-600 text-white"
+      (mwlClick)="updateStatus('cancelled')"
+    >
+      Cancel Resservation
+    </button>
+
+    <button
+      *ngIf="
+        (this.data.status === 'approved' && user_role === 'admin') ||
+        (this.data.status === 'approved' && user_role === 'manager')
+      "
+      mat-raised-button
+      class="bg-blue-600 text-white"
+      (mwlClick)="printReceipt()"
+    >
+      Print receipt
+    </button>
     <button mat-button mat-dialog-close>Close</button>
   </div>
 

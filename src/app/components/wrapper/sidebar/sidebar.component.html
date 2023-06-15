@@ -20,7 +20,7 @@
     [routerLink]="['/reservation']"
     routerLinkActive="active"
     [routerLinkActiveOptions]="{ exact: true }"
-    *ngIf="role_name === 'admin'"
+    *ngIf="role_name !== 'customer'"
   >
     <mat-icon>assignment</mat-icon> <span>Reservation List</span>
   </mat-list-item>

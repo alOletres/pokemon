@@ -22,6 +22,7 @@ import { IUser } from '../../../globals/interface/payload';
 import { UserService } from '../../wrapper/user/user.service';
 import { UserMasterService } from '../../../services/user-master.service';
 import * as moment from 'moment';
+import { PrintReceiptService } from '../../../services/print-receipt.service';
 
 interface IPayload_Dialog {
   payload: IBookAndCottagePayload;
@@ -80,6 +81,7 @@ export class BookDetailsComponent implements OnInit {
 
   current_date = new Date();
   booleanRejected: boolean = true;
+  receipt: string = '';
 
   constructor(
     public dialogRef: MatDialogRef<BookDetailsComponent>,
@@ -91,9 +93,11 @@ export class BookDetailsComponent implements OnInit {
     private method: Method,
     private http_payment: PaymentService,
     private store: Store<AppState>,
-    private http_user: UserMasterService
+    private http_user: UserMasterService,
+    private PrintReceiptService: PrintReceiptService
   ) {
     this.data = payload.payload;
+    this.receipt = `${EMage.BASE64_INITIAL}, ${payload.payload.receipt}`;
 
     this.store.select('user').subscribe((data): void => {
       try {
@@ -111,7 +115,7 @@ export class BookDetailsComponent implements OnInit {
   ngOnInit() {
     Promise.resolve().then(() => {
       this.getCottage();
-      this.getPayments();
+      // this.getPayments();
       this.getUser();
     });
   }
@@ -179,8 +183,11 @@ export class BookDetailsComponent implements OnInit {
       const dsply = data.filter((x) => x.id === this.data.payment_record);
 
       const new_arr = dsply.map((x) => {
-        const img = `${EMage.BASE64_INITIAL},${x.receipt?.[0]}`;
-        x.receipt = img;
+        if (x.receipt) {
+          const img = `${EMage.BASE64_INITIAL},${x.receipt?.[0]}`;
+          x.receipt = img;
+        }
+
         return x;
       });
       this.data_payments = new_arr;
@@ -210,5 +217,12 @@ export class BookDetailsComponent implements OnInit {
     } catch (err) {
       throw err;
     }
+  }
+
+  printReceipt() {
+    this.PrintReceiptService.printReceipt(
+      this.data as IBookAndCottagePayload & Pick<IUser, 'address' | 'email'>,
+      [...this.data_cottage.data]
+    );
   }
 }

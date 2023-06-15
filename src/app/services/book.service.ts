@@ -34,6 +34,7 @@ export class BookService {
   ): Promise<IResponse<string>> {
     try {
       const id = payload['id'];
+
       delete payload['id'];
       const url = this.http.post<IResponse<string>>(
         `${ENDPOINT.RESORT}/book/update/${id}`,

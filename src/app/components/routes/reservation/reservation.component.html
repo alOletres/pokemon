@@ -29,9 +29,12 @@
           [data_source]="data_rejectedSource"
         ></app-table>
       </mat-tab>
-      <!-- <mat-tab [label]="'VOIDED('+ data_voidedSource.data.length +')'">
-				<app-table (eventListener)="openDialog($event)" [data_source]="data_voidedSource"></app-table>
-			</mat-tab> -->
+      <mat-tab [label]="'CANCEL(' + data_cancelled.data.length + ')'">
+        <app-table
+          (eventListener)="openDialog($event)"
+          [data_source]="data_cancelled"
+        ></app-table>
+      </mat-tab>
     </mat-tab-group>
   </div>
 </div>

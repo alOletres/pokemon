@@ -1,9 +1,18 @@
 import { IBookPayload } from './cottage';
 import { IUser } from './payload';
 
-export type EBookingStatuses = 'pending' | 'approved' | 'rejected' | 'voided';
+export type EBookingStatuses =
+  | 'pending'
+  | 'approved'
+  | 'rejected'
+  | 'voided'
+  | 'cancelled';
 
-export interface IBook {
+export interface IBook
+  extends Pick<
+    IDBPayment,
+    'account_name' | 'account_number' | 'amount' | 'reference_number'
+  > {
   id: number;
   type: string;
 

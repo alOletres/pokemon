@@ -126,7 +126,7 @@ export const total_amount = (
   ];
 };
 
-const convertNumberWithComma = (value: number): string =>
+export const convertNumberWithComma = (value: number): string =>
   Number(value.toFixed(2)).toLocaleString('en', {
     minimumFractionDigits: 2,
   });
