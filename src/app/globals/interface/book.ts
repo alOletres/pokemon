@@ -1,4 +1,4 @@
-import { IBookPayload } from './cottage';
+import { IBookPayload, ICottage } from './cottage';
 import { IUser } from './payload';
 
 export type EBookingStatuses =
@@ -18,9 +18,9 @@ export interface IBook
 
   date_booked: Date;
   cottage: number;
-  cottages: string | number[];
-  selected_date_from: Date;
-  selected_date_to: Date;
+  cottages: string | number[] | ICottage[];
+  selected_date_from: Date | string;
+  selected_date_to: Date | string;
   payment_type: IBookingPaymentType;
   booker: number;
   receipt: string;
@@ -82,3 +82,8 @@ export type IBookingPaymentType = 'gcash' | 'cash';
 export type IBookAndCottagePayload = IBookPayload & IBook & IBookingPayload;
 
 export type IReportPayload = IBookAndCottagePayload & IUser & IDBPayment;
+
+export interface IBookChangesPayload extends IBook {
+  cottages: ICottage[];
+  books: IBook[];
+}

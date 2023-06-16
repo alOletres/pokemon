@@ -1,0 +1,13 @@
+<mat-toolbar>
+  <span>Book Changes</span>
+</mat-toolbar>
+<div class="mat-elevation-z8 bg-white m-2">
+  <mat-tab-group>
+    <mat-tab>
+      <app-table
+        [data_source]="book_approve"
+        (eventListener)="viewResservation($event)"
+      ></app-table>
+    </mat-tab>
+  </mat-tab-group>
+</div>

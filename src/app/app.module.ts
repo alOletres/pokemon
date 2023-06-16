@@ -1,6 +1,10 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { CommonModule, HashLocationStrategy, LocationStrategy } from '@angular/common';
+import {
+  CommonModule,
+  HashLocationStrategy,
+  LocationStrategy,
+} from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 /** routing module */
@@ -21,22 +25,22 @@ import { CalendarComponent } from './components/routes/calendar/calendar.compone
 import { LandingPageComponent } from './components/routes/landing-page/landing-page.component';
 import { HomePageComponent } from './components/routes/landing-page/home-page/home-page.component';
 /** Angular material */
-import {MatInputModule} from '@angular/material/input';
-import {MatCardModule} from '@angular/material/card';
-import {MatButtonModule} from '@angular/material/button';
-import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
-import {MatSelectModule} from '@angular/material/select';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import {MatStepperModule} from '@angular/material/stepper';
-import {MatBadgeModule} from '@angular/material/badge';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 /** calendar events */
@@ -44,7 +48,6 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 /** chart  */
 import { NgChartsModule } from 'ng2-charts';
-
 
 /** carousel */
 import { CarouselModule } from './module/carousel/carousel.module';
@@ -57,10 +60,10 @@ import { SignInComponent } from './components/dialog/sign-in/sign-in.component';
 import { SignUpComponent } from './components/dialog/sign-up/sign-up.component';
 import { ReportsComponent } from './components/routes/reports/reports.component';
 import { SnackBarComponent } from './shared/components/snack-bar/snack-bar.component';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatTableModule} from '@angular/material/table';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 /**
  * directive
@@ -76,14 +79,17 @@ import { StoreFeature } from '@ngrx/store/src/models';
 import { ProfileComponent } from './shared/components/profile/profile.component';
 import { LoadingInteceptorService } from './services/loading-inteceptor.service';
 import { AuthInteceptorService } from './services/auth-inteceptor.service';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { TableComponent } from './components/props/table/table.component';
 import { ViewReservationComponent } from './components/views/view-reservation/view-reservation.component';
 import { ViewHeaderComponent } from './shared/components/view-header/view-header.component';
 import { CottageTableComponent } from './components/props/cottage-table/cottage-table.component';
 import { BookDetailsComponent } from './components/dialog/book-details/book-details.component';
 import { ChartComponent } from './shared/components/chart/chart.component';
+import { BookChangesComponent } from './components/routes/book-changes/book-changes.component';
+import { BookChangesDialogComponent } from './components/dialog/book-changes-dialog/book-changes-dialog.component';
+import { BookChangesUpdateComponent } from './components/dialog/book-changes-update/book-changes-update.component';
 
 const materialModules = [
   MatProgressBarModule,
@@ -107,8 +113,8 @@ const materialModules = [
   MatTableModule,
   MatSortModule,
   MatPaginatorModule,
-  MatToolbarModule
-]
+  MatToolbarModule,
+];
 @NgModule({
   declarations: [
     AppComponent,
@@ -143,6 +149,9 @@ const materialModules = [
     CottageTableComponent,
     BookDetailsComponent,
     ChartComponent,
+    BookChangesComponent,
+    BookChangesDialogComponent,
+    BookChangesUpdateComponent,
   ],
   imports: [
     CommonModule,
@@ -162,20 +171,29 @@ const materialModules = [
     }),
     StoreModule.forRoot({
       user: UserReducer,
-      cottage: CottageReducer
-    } as any ),
-    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
-
+      cottage: CottageReducer,
+    } as any),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
   ],
-  exports: [
-    ...materialModules,
-  ],
+  exports: [...materialModules],
   providers: [
-    {provide: LocationStrategy, useClass: HashLocationStrategy},
-    {provide: HTTP_INTERCEPTORS, useClass: LoadingInteceptorService, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInteceptorService, multi: true},
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInteceptorService,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInteceptorService,
+      multi: true,
+    },
+    BookDetailsComponent,
   ],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule { }
+export class AppModule {}

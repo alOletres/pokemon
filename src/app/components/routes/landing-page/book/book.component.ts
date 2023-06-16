@@ -236,7 +236,7 @@ export class BookComponent implements OnInit {
         ) as [id: number];
 
         // Getting the selected dates
-        const selectedDates: { from: Date; to: Date } = [
+        const selectedDates: { from: Date | string; to: Date | string } = [
           ...this.dataCottageBook,
         ]
           .filter((item: IBookAndCottagePayload) => {

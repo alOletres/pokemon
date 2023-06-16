@@ -4,8 +4,13 @@ import Method from '../utils/method';
 import { ENDPOINT } from 'src/app/globals/models/endpoint';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { IResponse, IUpdateStatus } from '../globals/interface/default';
-import { IBook, IPayment, IReportPayload } from '../globals/interface/book';
-import { IUser } from '../globals/interface';
+import {
+  IBook,
+  IBookingPayload,
+  IPayment,
+  IReportPayload,
+} from '../globals/interface/book';
+import { ICottage, IUser } from '../globals/interface';
 
 @Injectable({
   providedIn: 'root',
@@ -74,5 +79,22 @@ export class BookService {
     }
   }
 
-  // lumapas park likod
+  async updateBookChanges({
+    cottages,
+    id,
+  }: IBookingPayload & Pick<ICottage, 'id'>) {
+    try {
+      console.log('cottages');
+
+      const url = this.http.put<IResponse<undefined>>(
+        `${ENDPOINT.RESORT}/book/update/${id}`,
+        { cottages: cottages },
+        this.method.authorization()
+      );
+      const response = await firstValueFrom(url);
+      return response;
+    } catch (err) {
+      throw err;
+    }
+  }
 }

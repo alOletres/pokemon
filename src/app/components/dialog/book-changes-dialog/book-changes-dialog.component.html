@@ -1,0 +1,60 @@
+<div class="flex justify-between">
+  <div class="flex justify-start">
+    <img class="h-8 w-8" src="assets/resort.png" alt="" />
+    <h3 mat-dialog-title>RVS RESORT</h3>
+  </div>
+</div>
+
+<mat-dialog-content>
+  <div>
+    <div class="flex justify-between">
+      <p class="text-gray-600 text-sm p-2">Book cottage...</p>
+      <div class="flex text-xs space-x-2 p-2 text-gray-600 font-mono">
+        <p>From: {{ data.selected_date_from | date : "MM-dd-YYYY" }}</p>
+        <p>To: {{ data.selected_date_to | date : "MM-dd-YYYY" }}</p>
+      </div>
+    </div>
+    <table mat-table class="w-full" [dataSource]="data_cottages">
+      <ng-container [matColumnDef]="col.key" *ngFor="let col of column_schema">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="bg-gray-100 font-bold uppercase break-words w-36 max-w-xs"
+        >
+          {{ col.label }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="break-words w-36 max-w-xs text-xs"
+        >
+          <div [ngSwitch]="col.type">
+            <div *ngSwitchCase="'images'">
+              <img class="border-2 w-10 h-10" [src]="element[col.key]" alt="" />
+            </div>
+
+            <div *ngSwitchCase="'isEdit'">
+              <button
+                mat-raised-button
+                (click)="vieCottage(element)"
+                class="bg-orange-600 text-white"
+              >
+                Edit
+              </button>
+            </div>
+            <div *ngSwitchDefault>
+              {{ element[col.key] }}
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="display_column"></tr>
+      <tr mat-row *matRowDef="let row; columns: display_column"></tr>
+    </table>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-dialog-close mat-button>Close</button>
+</mat-dialog-actions>

@@ -1,0 +1,85 @@
+<div class="flex justify-between">
+  <div class="flex justify-start">
+    <img class="h-8 w-8" src="assets/resort.png" alt="" />
+    <h3 mat-dialog-title>RVS RESORT</h3>
+  </div>
+</div>
+
+<mat-dialog-content>
+  <form [formGroup]="cottage_form" class="text-xs">
+    <mat-form-field appearance="fill" floatLabel="always" class="w-1/2 pr-1">
+      <mat-label>Start date</mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="selected_date_from"
+        readonly="true"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" floatLabel="always" class="w-1/2">
+      <mat-label>End date</mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="selected_date_to"
+        readonly="true"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Select cottage type</mat-label>
+      <mat-select
+        formControlName="type"
+        (ngModelChange)="cottageTypeChange($event)"
+      >
+        <mat-option *ngFor="let type of cottage_type" [value]="type">{{
+          type
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Select available cottage</mat-label>
+      <mat-select
+        formControlName="cottage_id"
+        (ngModelChange)="cottageChange($event)"
+      >
+        <div
+          *ngIf="
+            available_cottages && available_cottages.length === 0;
+            else elseBlock
+          "
+        >
+          <mat-option>No Available cottages</mat-option>
+        </div>
+        <ng-template #elseBlock>
+          <mat-option
+            *ngFor="let cottage of available_cottages"
+            [value]="cottage.id"
+            >{{ cottage.cottage_number }}</mat-option
+          >
+        </ng-template>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" floatLabel="always" class="w-full">
+      <mat-label>Capacity</mat-label>
+      <input type="text" formControlName="capacity" matInput readonly="true" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" floatLabel="always" class="w-full">
+      <mat-label>Price</mat-label>
+      <input type="text" matInput readonly="true" formControlName="price" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    mat-raised-button
+    class="bg-blue-600 text-white"
+    (click)="saveChanges()"
+  >
+    Save changes
+  </button>
+  <button mat-dialog-close mat-button>Close</button>
+</mat-dialog-actions>
